@@ -106,9 +106,6 @@ public class TimeTableFragment extends Fragment {
                 timetableData = t.toString();
                 List<String> classes = getClassesAsArray(t);
 
-                for (String s: classes) {
-                    Log.e(LOG_TAG, s);
-                }
 
                 return classes;
                 //return here
@@ -137,9 +134,7 @@ public class TimeTableFragment extends Fragment {
         protected void onPostExecute(List<String> result) {
             if (result != null) {
                 mTimetableAdapter.clear();
-                for (String record: result) {
-                    mTimetableAdapter.add(record);
-                }
+                mTimetableAdapter.addAll(result);
             }
         }
     }
