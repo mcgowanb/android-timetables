@@ -11,8 +11,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -83,9 +85,19 @@ public class TimeTableFragment extends Fragment {
         ListView lv = (ListView) rootView.findViewById(R.id.listview_timetable);
         lv.setAdapter(mTimetableAdapter);
 
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String lecture= mTimetableAdapter.getItem(position);
+                Toast.makeText(getActivity(), lecture, Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return rootView;
     }
+
+
+
     class FetchTimeTableTask extends AsyncTask<String, Void, List<String>> {
         private final String LOG_TAG = FetchTimeTableTask.class.getSimpleName();
 
