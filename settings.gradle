@@ -1,3 +1,1 @@
 include ':app'
-include ':scraper'
-project(':scraper').projectDir = new File(settingsDir, '../../java/timetableScraper')

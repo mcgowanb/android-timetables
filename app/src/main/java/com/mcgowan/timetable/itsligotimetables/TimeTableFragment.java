@@ -1,6 +1,9 @@
 package com.mcgowan.timetable.itsligotimetables;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -28,13 +31,9 @@ import com.mcgowan.timetable.scraper.*;
  */
 public class TimeTableFragment extends Fragment {
 
-    private String timetableUrl;
-    private String studentID;
     ArrayAdapter<String> mTimetableAdapter;
 
     public TimeTableFragment() {
-        this.timetableUrl = "https://itsligo.ie/student-hub/my-timetable/";
-        this.studentID = "S00165159";
     }
 
     @Override
@@ -54,8 +53,11 @@ public class TimeTableFragment extends Fragment {
         int id = item.getItemId();
 
         if (id == R.id.action_refresh) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            String studentID = prefs.getString(getString(R.string.student_id_key),getString(R.string.student_id_default));
+
             FetchTimeTableTask task = new FetchTimeTableTask();
-            task.execute(timetableUrl, studentID);
+            task.execute(MainActivity.TIMETABLE_URL, studentID);
 
             return true;
         }
@@ -88,14 +90,18 @@ public class TimeTableFragment extends Fragment {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String lecture= mTimetableAdapter.getItem(position);
+                String lecture = mTimetableAdapter.getItem(position);
                 Toast.makeText(getActivity(), lecture, Toast.LENGTH_SHORT).show();
+
+                Intent detailIntent = new Intent(getActivity(), DetailActivity.class);
+                detailIntent.putExtra("details", lecture);
+
+               startActivity(detailIntent);
             }
         });
 
         return rootView;
     }
-
 
 
     class FetchTimeTableTask extends AsyncTask<String, Void, List<String>> {
@@ -118,11 +124,10 @@ public class TimeTableFragment extends Fragment {
                 timetableData = t.toString();
                 List<String> classes = getClassesAsArray(t);
 
-
                 return classes;
-                //return here
 
             } catch (IOException e) {
+                Log.e(LOG_TAG, "Shit fell down");
                 Log.e(LOG_TAG, "Error", e);
                 return null;
             }
