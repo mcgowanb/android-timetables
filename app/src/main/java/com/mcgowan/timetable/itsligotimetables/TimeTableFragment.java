@@ -53,16 +53,25 @@ public class TimeTableFragment extends Fragment {
         int id = item.getItemId();
 
         if (id == R.id.action_refresh) {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            String studentID = prefs.getString(getString(R.string.student_id_key),getString(R.string.student_id_default));
-
-            FetchTimeTableTask task = new FetchTimeTableTask();
-            task.execute(MainActivity.TIMETABLE_URL, studentID);
-
+            updateTimetable();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        updateTimetable();
+    }
+
+    private void updateTimetable() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String studentID = prefs.getString(getString(R.string.student_id_key),getString(R.string.student_id_default));
+
+        FetchTimeTableTask task = new FetchTimeTableTask();
+        task.execute(MainActivity.TIMETABLE_URL, studentID);
     }
 
     @Override
@@ -71,23 +80,16 @@ public class TimeTableFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        List<String> sampleTimetable = new ArrayList<>();
-        sampleTimetable.add("Class One");
-        sampleTimetable.add("Class Two");
-        sampleTimetable.add("Class Three");
-        sampleTimetable.add("Class Four");
-        sampleTimetable.add("Class Five");
-
         mTimetableAdapter = new ArrayAdapter<>(
                 getActivity(),
                 R.layout.list_item_class,
                 R.id.list_item_class_textview,
-                sampleTimetable);
+                new ArrayList<String>());
 
-        ListView lv = (ListView) rootView.findViewById(R.id.listview_timetable);
-        lv.setAdapter(mTimetableAdapter);
+        ListView listView = (ListView) rootView.findViewById(R.id.listview_timetable);
+        listView.setAdapter(mTimetableAdapter);
 
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String lecture = mTimetableAdapter.getItem(position);
