@@ -17,10 +17,11 @@
     </string>
 
     <string name="pref_title_display_name">Student ID</string>
-    <string name="pref_default_display_name" translatable="false"></string>
+    <string name="pref_default_display_name" translatable="false"> </string>
     <string name="student_id_hint" translatable="false">S12345678</string>
-    <string name="student_id_default" translatable="false"></string>
+    <string name="student_id_default" translatable="false"> </string>
     <string name="student_id_key" translatable="false">student_id</string>
+    <string name="pref_timetable_type_classes" translatable="false">classes</string>
 
     <string name="pref_title_timetable_type">Timetable Type</string>
     <string name="pref_timetable_key">timetable_type</string>
@@ -29,8 +30,8 @@
         <item>Available Labs</item>
     </string-array>
     <string-array name="timetable_type_list_values">
-        <item>1</item>
-        <item>2</item>
+        <item>classes</item>
+        <item>labs</item>
     </string-array>
 
     <!-- Example settings for Data & Sync -->
