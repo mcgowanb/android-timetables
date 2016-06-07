@@ -63,7 +63,7 @@ public class DetailActivity extends AppCompatActivity {
         String classInformation;
 
         public LectureDetailsFragment() {
-            setHasOptionsMenu(true);
+
         }
 
         @Override
