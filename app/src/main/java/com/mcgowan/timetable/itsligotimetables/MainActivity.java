@@ -1,6 +1,7 @@
 package com.mcgowan.timetable.itsligotimetables;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,6 +14,7 @@ import android.view.MenuItem;
 public class MainActivity extends AppCompatActivity {
 
     public static final String TIMETABLE_URL = "https://itsligo.ie/student-hub/my-timetable/";
+    public static final String LABS_URL = "https://itsligo.ie/student-hub/computer-labs/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; t his adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu, menu);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
@@ -42,19 +43,30 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            Intent settingsIntent = new Intent(this, SettingsActivity.class);
-            startActivity(settingsIntent);
-            return true;
+        switch (id) {
+            case R.id.action_settings:
+                return openSettingsDetail();
+
+            case R.id.action_map:
+                return openMapDetails();
+            default:
+                return super.onOptionsItemSelected(item);
         }
+    }
 
+    public boolean openSettingsDetail() {
+        Intent settingsIntent = new Intent(this, SettingsActivity.class);
+        startActivity(settingsIntent);
+        return true;
+    }
 
-        return super.onOptionsItemSelected(item);
+    public boolean openMapDetails() {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+        return true;
     }
 }
