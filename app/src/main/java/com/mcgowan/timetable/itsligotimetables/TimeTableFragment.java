@@ -94,9 +94,6 @@ public class TimeTableFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String lecture = mTimetableAdapter.getItem(position);
-                Toast.makeText(getActivity(), lecture, Toast.LENGTH_SHORT).show();
-
-
                 Intent detailIntent = new Intent(getActivity(), DetailActivity.class);
                 detailIntent.putExtra("details", lecture);
 
