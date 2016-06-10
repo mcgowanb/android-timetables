@@ -9,10 +9,17 @@ public class TimetableContract {
     public static final String CONTENT_AUTHORITY = "com.mcgowan.timetable.itslitotimetables.app";
 
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
+    //todo have another class here for the available labs data to build with
 
     //paths to match table names
     public static final String PATH_TIMETABLES = "schedule";
-    public static final String PATH_LABS = "labs";
+    public static final String PATH_AVAILABLELABS = "labs";
+
+    public static final class AvailableLalbEntry implements BaseColumns{
+
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_AVAILABLELABS).build();
+        //field names & URI's
+    }
 
     public static final class TimetableEntry implements BaseColumns {
 
@@ -43,7 +50,7 @@ public class TimetableContract {
                     .appendQueryParameter(COLUMN_STUDENT_ID, studentID).build();
         }
 
-        public static Uri buildTimeTableWithDayAndStudentId(String day, String studentId){
+        public static Uri buildTimeTableWithDayAndStudentId(String studentId, String day){
             return CONTENT_URI.buildUpon()
                     .appendQueryParameter(COLUMN_DAY, day)
                     .appendQueryParameter(COLUMN_STUDENT_ID, studentId)
@@ -51,8 +58,12 @@ public class TimetableContract {
         }
 
         public static String getStudentIdFromUri(Uri uri){
-            return uri.getPathSegments().get(1);
+            return uri.getQueryParameter(COLUMN_STUDENT_ID);
         }
 
+        public static String getDayFromUri(Uri uri){
+            return uri.getQueryParameter(COLUMN_DAY);
+        }
+        //todo: Some methods to get next classes and so on would be good, say passing date and time currently
     }
 }
