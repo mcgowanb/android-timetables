@@ -28,6 +28,7 @@ public class TimetableDbHelper extends SQLiteOpenHelper {
                 // should be sorted accordingly.
                 TimetableEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 TimetableEntry.COLUMN_DAY_ID + " INTEGER, " +
+                TimetableEntry.COLUMN_STUDENT_ID + " TEXT NOT NULL, " +
                 TimetableEntry.COLUMN_DAY + " TEXT NOT NULL, " +
                 TimetableEntry.COLUMN_START_TIME + " TEXT NOT NULL, " +
                 TimetableEntry.COLUMN_END_TIME + " TEXT NOT NULL, " +

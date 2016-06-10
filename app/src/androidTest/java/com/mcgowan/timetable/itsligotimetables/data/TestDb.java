@@ -64,6 +64,7 @@ public class TestDb extends AndroidTestCase {
         final HashSet<String> scheduleColumnHashSet = new HashSet<String>();
         scheduleColumnHashSet.add(TimetableEntry._ID);
         scheduleColumnHashSet.add(TimetableEntry.COLUMN_DAY_ID);
+        scheduleColumnHashSet.add(TimetableEntry.COLUMN_STUDENT_ID);
         scheduleColumnHashSet.add(TimetableEntry.COLUMN_DAY);
         scheduleColumnHashSet.add(TimetableEntry.COLUMN_START_TIME);
         scheduleColumnHashSet.add(TimetableEntry.COLUMN_END_TIME);

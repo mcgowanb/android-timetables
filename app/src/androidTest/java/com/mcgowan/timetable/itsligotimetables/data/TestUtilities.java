@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
 
+import com.mcgowan.timetable.itsligotimetables.data.TimetableContract;
+
 import java.util.Map;
 import java.util.Set;
 
@@ -19,6 +21,7 @@ public class TestUtilities extends AndroidTestCase {
         // Create a new map of values, where column names are the keys
         ContentValues testValues = new ContentValues();
         testValues.put(TimetableContract.TimetableEntry.COLUMN_DAY_ID, 3);
+        testValues.put(TimetableContract.TimetableEntry.COLUMN_STUDENT_ID, "S00165159");
         testValues.put(TimetableContract.TimetableEntry.COLUMN_DAY, "Wednesday");
         testValues.put(TimetableContract.TimetableEntry.COLUMN_START_TIME, "09:00");
         testValues.put(TimetableContract.TimetableEntry.COLUMN_END_TIME, "10:11");
@@ -49,6 +52,12 @@ public class TestUtilities extends AndroidTestCase {
                     "' did not match the expected value '" +
                     expectedValue + "'. " + error, expectedValue, valueCursor.getString(idx));
         }
+    }
+
+    static void validateCursor(String error, Cursor valueCursor, ContentValues expectedValues) {
+        assertTrue("Empty cursor returned. " + error, valueCursor.moveToFirst());
+        validateCurrentRecord(error, valueCursor, expectedValues);
+        valueCursor.close();
     }
 
 }

@@ -1,4 +1,4 @@
-package com.mcgowan.timetable.itsligotimetables.data;
+package com.mcgowan.timetable.itsligotimetables;
 
 import android.test.suitebuilder.TestSuiteBuilder;
 
