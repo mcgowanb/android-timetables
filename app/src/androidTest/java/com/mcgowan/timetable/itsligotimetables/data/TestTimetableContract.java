@@ -16,8 +16,10 @@ public class TestTimetableContract extends AndroidTestCase {
 
         assertNotNull("Error: Null Uri returned.  You must fill-in buildTimeTableWithStudents in " +
                 "TimetableContract.", studentUri);
+
         assertEquals("Error: Student ID not properly appended to the end of the Uri",
-                STUDENT_ID, studentUri.getQueryParameters(TimetableContract.TimetableEntry.COLUMN_STUDENT_ID).);
+                STUDENT_ID, studentUri.getQueryParameter(TimetableContract.TimetableEntry.COLUMN_STUDENT_ID));
+
 //        assertEquals("Error: Weather location Uri doesn't match our expected result",
 //                locationUri.toString(),
 //                "content://com.example.android.sunshine.app/weather/%2FNorth%20Pole");
