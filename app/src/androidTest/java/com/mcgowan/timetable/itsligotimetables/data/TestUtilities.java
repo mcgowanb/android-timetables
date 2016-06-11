@@ -1,7 +1,6 @@
 package com.mcgowan.timetable.itsligotimetables.data;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -10,7 +9,6 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.test.AndroidTestCase;
 
-import com.mcgowan.timetable.itsligotimetables.data.TimetableContract;
 import com.mcgowan.timetable.itsligotimetables.utils.PollingCheck;
 
 import java.util.Map;
@@ -30,7 +28,6 @@ public class TestUtilities extends AndroidTestCase {
         testValues.put(TimetableContract.TimetableEntry.COLUMN_END_TIME, "10:11");
         testValues.put(TimetableContract.TimetableEntry.COLUMN_LECTURER, "Person Name");
         testValues.put(TimetableContract.TimetableEntry.COLUMN_SUBJECT, "Mathematics");
-        testValues.put(TimetableContract.TimetableEntry.COLUMN_ROOM, "Room");
         testValues.put(TimetableContract.TimetableEntry.COLUMN_TIME, "09:00 - 17:00");
 
         return testValues;

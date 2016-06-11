@@ -3,9 +3,8 @@ package com.mcgowan.timetable.itsligotimetables.data;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import com.mcgowan.timetable.itsligotimetables.data.TimetableContract.TimetableEntry;
 
-import java.sql.Time;
+import com.mcgowan.timetable.itsligotimetables.data.TimetableContract.TimetableEntry;
 
 
 public class TimetableDbHelper extends SQLiteOpenHelper {
@@ -35,7 +34,7 @@ public class TimetableDbHelper extends SQLiteOpenHelper {
                 TimetableEntry.COLUMN_SUBJECT + " TEXT NOT NULL, " +
                 TimetableEntry.COLUMN_LECTURER + " TEXT NOT NULL, " +
                 TimetableEntry.COLUMN_ROOM + " TEXT, " +
-                TimetableEntry.COLUMN_TIME + " TEXT " +
+                TimetableEntry.COLUMN_TIME + " TEXT NOT NULL" +
                 ");";
 
         db.execSQL(SQL_CREATE_TIMETABLE_DATABASE);
