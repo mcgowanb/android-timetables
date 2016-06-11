@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.test.AndroidTestCase;
+import android.util.Log;
 
 import com.mcgowan.timetable.itsligotimetables.data.TimetableContract.*;
 
@@ -58,7 +59,7 @@ public class TestProvider extends AndroidTestCase {
 
             // Make sure that the registered authority matches the authority from the Contract.
             assertEquals("Error: WeatherProvider registered with authority: " + providerInfo.authority +
-                    " instead of authority: " + TimetableContract.CONTENT_AUTHORITY,
+                            " instead of authority: " + TimetableContract.CONTENT_AUTHORITY,
                     providerInfo.authority, TimetableContract.CONTENT_AUTHORITY);
         } catch (PackageManager.NameNotFoundException e) {
             // I guess the provider isn't registered correctly.
@@ -140,7 +141,7 @@ public class TestProvider extends AndroidTestCase {
         );
 
         // Make sure cursor is empty
-        assertFalse("Cursor has returned records from the database, should be null",timetableCursor.moveToNext());
+        assertFalse("Cursor has returned records from the database, should be null", timetableCursor.moveToNext());
         db.close();
     }
 
@@ -190,11 +191,11 @@ public class TestProvider extends AndroidTestCase {
         );
 
         // Make sure cursor is empty
-        assertFalse("Cursor has returned records from the database, should be null",timetableCursor.moveToNext());
+        assertFalse("Cursor has returned records from the database, should be null", timetableCursor.moveToNext());
         db.close();
     }
 
-    public void testInsertReadProvider(){
+    public void testInsertReadProvider() {
         ContentValues testValues = TestUtilities.createSingleClassTimetableValues();
 
         //register a content observer
@@ -210,7 +211,7 @@ public class TestProvider extends AndroidTestCase {
 
         assertTrue(locationRowId != -1);
 
-         //Data's inserted.  IN THEORY.  Now pull some out to stare at it and verify it made
+        //Data's inserted.  IN THEORY.  Now pull some out to stare at it and verify it made
         // the round trip.
 
         // A cursor is your primary interface to the query results.
@@ -249,7 +250,7 @@ public class TestProvider extends AndroidTestCase {
 
     }
 
-    public void testDeleteRecords(){
+    public void testDeleteRecords() {
         testInsertReadProvider();
 
         // Register a content observer for our Timetable delete.
@@ -272,69 +273,115 @@ public class TestProvider extends AndroidTestCase {
 //        mContext.getContentResolver().unregisterContentObserver(weatherObserver);
     }
 
-//    public void testBulkInsert() {
-//        // first, let's create a location value
-//        ContentValues testValues = TestUtilities.createSingleClassTimetableValues();
-//        Uri locationUri = mContext.getContentResolver().insert(TimetableContract.TimetableEntry.CONTENT_URI, testValues);
-//        long locationRowId = ContentUris.parseId(locationUri);
-//
-//        // Verify we got a row back.
-//        assertTrue(locationRowId != -1);
-//
-//        // Data's inserted.  IN THEORY.  Now pull some out to stare at it and verify it made
-//        // the round trip.
-//
-//        // A cursor is your primary interface to the query results.
-//        Cursor cursor = mContext.getContentResolver().query(
-//                LocationEntry.CONTENT_URI,
-//                null, // leaving "columns" null just returns all the columns.
-//                null, // cols for "where" clause
-//                null, // values for "where" clause
-//                null  // sort order
-//        );
-//
-//        TestUtilities.validateCursor("testBulkInsert. Error validating LocationEntry.",
-//                cursor, testValues);
-//
-//        // Now we can bulkInsert some weather.  In fact, we only implement BulkInsert for weather
-//        // entries.  With ContentProviders, you really only have to implement the features you
-//        // use, after all.
-//        ContentValues[] bulkInsertContentValues = createBulkInsertWeatherValues(locationRowId);
-//
-//        // Register a content observer for our bulk insert.
-//        TestUtilities.TestContentObserver weatherObserver = TestUtilities.getTestContentObserver();
-//        mContext.getContentResolver().registerContentObserver(WeatherEntry.CONTENT_URI, true, weatherObserver);
-//
-//        int insertCount = mContext.getContentResolver().bulkInsert(WeatherEntry.CONTENT_URI, bulkInsertContentValues);
-//
-//        // Students:  If this fails, it means that you most-likely are not calling the
-//        // getContext().getContentResolver().notifyChange(uri, null); in your BulkInsert
-//        // ContentProvider method.
-//        weatherObserver.waitForNotificationOrFail();
-//        mContext.getContentResolver().unregisterContentObserver(weatherObserver);
-//
-//        assertEquals(insertCount, BULK_INSERT_RECORDS_TO_INSERT);
-//
-//        // A cursor is your primary interface to the query results.
-//        cursor = mContext.getContentResolver().query(
-//                WeatherEntry.CONTENT_URI,
-//                null, // leaving "columns" null just returns all the columns.
-//                null, // cols for "where" clause
-//                null, // values for "where" clause
-//                WeatherEntry.COLUMN_DATE + " ASC"  // sort order == by DATE ASCENDING
-//        );
-//
-//        // we should have as many records in the database as we've inserted
-//        assertEquals(cursor.getCount(), BULK_INSERT_RECORDS_TO_INSERT);
-//
-//        // and let's make sure they match the ones we created
-//        cursor.moveToFirst();
-//        for (int i = 0; i < BULK_INSERT_RECORDS_TO_INSERT; i++, cursor.moveToNext()) {
-//            TestUtilities.validateCurrentRecord("testBulkInsert.  Error validating WeatherEntry " + i,
-//                    cursor, bulkInsertContentValues[i]);
-//        }
-//        cursor.close();
-//    }
+    public void testUpdateLocation() {
+        // Create a new map of values, where column names are the keys
+        ContentValues values = TestUtilities.createSingleClassTimetableValues();
+
+        Uri locationUri = mContext.getContentResolver().
+                insert(TimetableEntry.CONTENT_URI, values);
+        long locationRowId = ContentUris.parseId(locationUri);
+
+        // Verify we got a row back.
+        assertTrue(locationRowId != -1);
+        Log.d(LOG_TAG, "New row id: " + locationRowId);
+
+        ContentValues updatedValues = new ContentValues(values);
+        updatedValues.put(TimetableEntry._ID, locationRowId);
+        updatedValues.put(TimetableEntry.COLUMN_LECTURER, "Scooby Doo");
+
+        // Create a cursor with observer to make sure that the content provider is notifying
+        // the observers as expected
+        Cursor timetableCursor = mContext.getContentResolver().query(TimetableEntry.CONTENT_URI, null, null, null, null);
+
+        TestUtilities.TestContentObserver tco = TestUtilities.getTestContentObserver();
+        timetableCursor.registerContentObserver(tco);
+
+        int count = mContext.getContentResolver().update(
+                TimetableEntry.CONTENT_URI, updatedValues, TimetableEntry._ID + "= ?",
+                new String[]{Long.toString(locationRowId)});
+        assertEquals(count, 1);
+
+        // Test to make sure our observer is called.  If not, we throw an assertion.
+        //
+        // Students: If your code is failing here, it means that your content provider
+        // isn't calling getContext().getContentResolver().notifyChange(uri, null);
+        tco.waitForNotificationOrFail();
+
+        timetableCursor.unregisterContentObserver(tco);
+        timetableCursor.close();
+
+        // A cursor is your primary interface to the query results.
+        Cursor cursor = mContext.getContentResolver().query(
+                TimetableEntry.CONTENT_URI,
+                null,   // projection
+                TimetableEntry._ID + " = " + locationRowId,
+                null,   // Values for the "where" clause
+                null    // sort order
+        );
+
+        TestUtilities.validateCursor("testUpdateClass record.  Error validating class entry update.",
+                cursor, updatedValues);
+
+        cursor.close();
+    }
+
+
+    public void testBulkInsert() {
+
+        ContentValues[] bulkInsertContentValues = createBulkInsertClassValues();
+
+        // Register a content observer for our bulk insert.
+        TestUtilities.TestContentObserver observer = TestUtilities.getTestContentObserver();
+        mContext.getContentResolver().registerContentObserver(TimetableEntry.CONTENT_URI, true, observer);
+
+        int insertCount = mContext.getContentResolver().bulkInsert(TimetableEntry.CONTENT_URI, bulkInsertContentValues);
+
+        observer.waitForNotificationOrFail();
+        mContext.getContentResolver().unregisterContentObserver(observer);
+
+        assertEquals(insertCount, BULK_INSERT_RECORDS_TO_INSERT);
+
+        // A cursor is your primary interface to the query results.
+        Cursor cursor = mContext.getContentResolver().query(
+                TimetableEntry.CONTENT_URI,
+                null, // leaving "columns" null just returns all the columns.
+                null, // cols for "where" clause
+                null, // values for "where" clause
+                null  // sort order == by DATE ASCENDING
+        );
+
+        // we should have as many records in the database as we've inserted
+        assertEquals(cursor.getCount(), BULK_INSERT_RECORDS_TO_INSERT);
+
+        // and let's make sure they match the ones we created
+        cursor.moveToFirst();
+        for (int i = 0; i < BULK_INSERT_RECORDS_TO_INSERT; i++, cursor.moveToNext()) {
+            TestUtilities.validateCurrentRecord("testBulkInsert.  Error validating WeatherEntry " + i,
+                    cursor, bulkInsertContentValues[i]);
+        }
+        cursor.close();
+    }
+
+    static private final int BULK_INSERT_RECORDS_TO_INSERT = 10;
+
+    static ContentValues[] createBulkInsertClassValues() {
+        ContentValues[] returnContentValues = new ContentValues[BULK_INSERT_RECORDS_TO_INSERT];
+
+        for (int i = 0; i < BULK_INSERT_RECORDS_TO_INSERT; i++) {
+            ContentValues classValues = new ContentValues();
+            classValues.put(TimetableContract.TimetableEntry.COLUMN_DAY_ID, 3);
+            classValues.put(TimetableContract.TimetableEntry.COLUMN_STUDENT_ID, TestUtilities.STUDENT_ID);
+            classValues.put(TimetableContract.TimetableEntry.COLUMN_DAY, "Wednesday");
+            classValues.put(TimetableContract.TimetableEntry.COLUMN_START_TIME, "09:00");
+            classValues.put(TimetableContract.TimetableEntry.COLUMN_END_TIME, "10:11");
+            classValues.put(TimetableContract.TimetableEntry.COLUMN_LECTURER, "Person Name");
+            classValues.put(TimetableContract.TimetableEntry.COLUMN_SUBJECT, "Mathematics");
+            classValues.put(TimetableContract.TimetableEntry.COLUMN_ROOM, "Room");
+            classValues.put(TimetableContract.TimetableEntry.COLUMN_TIME, "09:00 - 17:00");
+            returnContentValues[i] = classValues;
+        }
+        return returnContentValues;
+    }
 
 
 }

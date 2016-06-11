@@ -101,23 +101,22 @@ public class TimetableProvider extends ContentProvider {
     }
 
     private static final String sStudentIdSelection =
-            TimetableEntry.TABLE_NAME + "."
-                    + TimetableEntry.COLUMN_STUDENT_ID + " = ? ";
+            TimetableEntry.TABLE_NAME + "." + TimetableEntry.COLUMN_STUDENT_ID + " = ? ";
 
     private static final String sStudentIdSelectionWithDay =
-            TimetableEntry.TABLE_NAME + "." +
-                    TimetableEntry.COLUMN_STUDENT_ID + " = ? AND " + TimetableEntry.COLUMN_DAY + " = ?";
+            TimetableEntry.TABLE_NAME + "." + TimetableEntry.COLUMN_STUDENT_ID + " = ? AND "
+                    + TimetableEntry.COLUMN_DAY + " = ?";
 
 
     private Cursor getTimeTableByStudentId(Uri uri, String[] projection, String sortOrder) {
-        //if there's no student id passed, we should just do a select all with no restrictions
         String studentIdSetting = TimetableEntry.getStudentIdFromUri(uri);
         String daySetting = TimetableEntry.getDayFromUri(uri);
         String[] selectionArgs;
         String queryParams;
         boolean selectAll = false;
 
-        if(isEmpty(daySetting) && isEmpty(studentIdSetting)) selectAll = true;
+        //return select all, as no querystring parameters passed
+        if (isEmpty(daySetting) && isEmpty(studentIdSetting)) selectAll = true;
 
         if (isEmpty(daySetting)) {
             queryParams = sStudentIdSelection;
@@ -240,5 +239,32 @@ public class TimetableProvider extends ContentProvider {
             getContext().getContentResolver().notifyChange(uri, null);
         }
         return rowsUpdated;
+    }
+
+    @Override
+    public int bulkInsert(Uri uri, ContentValues[] values) {
+        final SQLiteDatabase db = mHelper.getWritableDatabase();
+        final int match = sUriMatcher.match(uri);
+
+        switch (match) {
+            case TIMETABLE:
+                db.beginTransaction();
+                int returnCount = 0;
+                try {
+                    for (ContentValues value : values) {
+                        long _id = db.insert(TimetableEntry.TABLE_NAME, null, value);
+                        if (_id != -1) {
+                            returnCount++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+                getContext().getContentResolver().notifyChange(uri, null);
+                return returnCount;
+            default:
+                return super.bulkInsert(uri, values);
+        }
     }
 }
