@@ -37,6 +37,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mcgowan.timetable.itsligotimetables.MainActivity" />
         </activity>
+        <provider
+            android:authorities="com.mcgowan.timetable.itsligotimetables.app"
+            android:name=".data.TimetableProvider"
+            />
     </application>
 
 </manifest>
