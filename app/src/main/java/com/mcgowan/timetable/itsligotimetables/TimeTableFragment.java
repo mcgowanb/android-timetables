@@ -92,10 +92,9 @@ public class TimeTableFragment extends Fragment implements LoaderManager.LoaderC
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        Log.d(LOG_TAG, "RUNNIGN onCreateView");
 
         Uri uri = TimetableContract.TimetableEntry.buildTimetableWithStudentId("S00157760");
-        Log.d(LOG_TAG, uri.toString());
         Cursor cursor = getActivity().getContentResolver().query(uri, null, null, null, null);
 
 
@@ -129,6 +128,7 @@ public class TimeTableFragment extends Fragment implements LoaderManager.LoaderC
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Log.d(LOG_TAG, "RUNNIGN OnCreateCursorLoader");
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String studentID = prefs.getString(getString(R.string.student_id_key), getString(R.string.student_id_default));
         Uri uri = TimetableContract.TimetableEntry.buildTimetableWithStudentId(studentID);
