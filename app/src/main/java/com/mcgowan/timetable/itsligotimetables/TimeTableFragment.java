@@ -4,10 +4,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -19,14 +19,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.mcgowan.timetable.itsligotimetables.data.TimetableContract;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.TimerTask;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -101,6 +96,22 @@ public class TimeTableFragment extends Fragment implements LoaderManager.LoaderC
         Log.d(LOG_TAG, "RUNNIGN OnCreateView");
         ListView lv = (ListView) rootView.findViewById(R.id.listview_timetable);
         lv.setAdapter(mTimetableAdapter);
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView adapterView, View view, int position, long id) {
+                // CursorAdapter returns a cursor at the correct position for getItem(), or null
+                // if it cannot seek to that position.
+                Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
+                if(cursor != null){
+                    Intent intent = new Intent(getActivity(), DetailActivity.class).
+                            setData(TimetableContract.TimetableEntry
+                                    .buildTimetableUri(cursor.getInt(COL_TIMETABLE_ID)));
+                    startActivity(intent);
+                }
+            }
+        });
+
 
         return rootView;
     }

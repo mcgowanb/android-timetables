@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 public class DetailActivity extends AppCompatActivity {
 
+    private static final String LOG_TAG = DetailActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,9 +74,8 @@ public class DetailActivity extends AppCompatActivity {
             Intent intent = getActivity().getIntent();
 
             View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
-
-            if (intent != null && intent.hasExtra("details")) {
-                classInformation = intent.getStringExtra("details");
+            if (intent != null) {
+                classInformation = intent.getDataString();
                 ((TextView) rootView.findViewById(R.id.detail_text)).setText(classInformation);
             }
 
