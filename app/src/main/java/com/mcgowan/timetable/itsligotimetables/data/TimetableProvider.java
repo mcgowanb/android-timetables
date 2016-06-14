@@ -8,10 +8,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
-
-import com.mcgowan.timetable.itsligotimetables.data.TimetableContract.*;
-
 import android.support.annotation.Nullable;
+
+import com.mcgowan.timetable.itsligotimetables.data.TimetableContract.AvailableLabEntry;
+import com.mcgowan.timetable.itsligotimetables.data.TimetableContract.TimetableEntry;
 
 import static android.text.TextUtils.isEmpty;
 
@@ -134,8 +134,6 @@ public class TimetableProvider extends ContentProvider {
                 null,
                 sortOrder
         );
-
-
     }
 
     @Nullable
