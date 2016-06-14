@@ -15,27 +15,22 @@ import com.mcgowan.timetable.itsligotimetables.data.TimetableContract.TimetableE
  * Created by Brian on 12/06/2016.
  */
 public class TimetableAdapter extends CursorAdapter {
+    private static final String LOG_TAG = TimeTableFragment.class.getSimpleName();
     public TimetableAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
     }
 
-    /*
-        This is ported from FetchWeatherTask --- but now we go straight from the cursor to the
-        string.
-     */
+
     private String convertCursorRowToUXFormat(Cursor cursor) {
         // get row indices for our cursor
-
-        int idx_day = cursor.getColumnIndex(TimetableEntry.COLUMN_DAY);
-        int idx_time = cursor.getColumnIndex(TimetableEntry.COLUMN_TIME);
-        int idx_lecturer = cursor.getColumnIndex(TimetableEntry.COLUMN_LECTURER);
-        int idx_subject = cursor.getColumnIndex(TimetableEntry.COLUMN_SUBJECT);
-
-
-        String result = String.format("%s : %s : %s : %s", cursor.getString(idx_day),
-                cursor.getString(idx_lecturer),
-                cursor.getString(idx_subject),
-                cursor.getString(idx_time));
+        String result = String.format("%s : %s : %s : %s : %s : %s",
+                cursor.getString(TimeTableFragment.COL_TIMETABLE_ID),
+                cursor.getString(TimeTableFragment.COL_TIMETABLE_DAY_ID),
+                cursor.getString(TimeTableFragment.COL_TIMETABLE_DAY),
+                cursor.getString(TimeTableFragment.COL_TIMETABLE_TIME),
+                cursor.getString(TimeTableFragment.COL_TIMETABLE_SUBJECT),
+                cursor.getString(TimeTableFragment.COL_TIMETABLE_LECTURER)
+        );
 
         return result;
     }

@@ -42,17 +42,23 @@ public class TimeTableFragment extends Fragment implements LoaderManager.LoaderC
             TimetableContract.TimetableEntry._ID,
             TimetableContract.TimetableEntry.COLUMN_DAY,
             TimetableContract.TimetableEntry.COLUMN_TIME,
+            TimetableContract.TimetableEntry.COLUMN_START_TIME,
+            TimetableContract.TimetableEntry.COLUMN_END_TIME,
             TimetableContract.TimetableEntry.COLUMN_LECTURER,
             TimetableContract.TimetableEntry.COLUMN_SUBJECT,
             TimetableContract.TimetableEntry.COLUMN_DAY_ID,
+            TimetableContract.TimetableEntry.COLUMN_ROOM,
     };
 
     static final int COL_TIMETABLE_ID = 0;
     static final int COL_TIMETABLE_DAY = 1;
     static final int COL_TIMETABLE_TIME = 2;
-    static final int COL_TIMETABLE_LECTURER = 3;
-    static final int COL_TIMETABLE_SUBJECT = 4;
-    static final int COL_TIMETABLE_DAY_ID = 5;
+    static final int COL_TIMETABLE_START_TIME = 3;
+    static final int COL_TIMETABLE_END_TIME = 4;
+    static final int COL_TIMETABLE_LECTURER = 5;
+    static final int COL_TIMETABLE_SUBJECT = 6;
+    static final int COL_TIMETABLE_DAY_ID = 7;
+    static final int COL_TIMETABLE_ROOM = 8;
 
 
     public TimeTableFragment() {
@@ -123,7 +129,6 @@ public class TimeTableFragment extends Fragment implements LoaderManager.LoaderC
     }
 
 
-
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Log.d(LOG_TAG, "RUNNIGN OnCreateCursorLoader");
@@ -131,13 +136,20 @@ public class TimeTableFragment extends Fragment implements LoaderManager.LoaderC
         String studentID = prefs.getString(getString(R.string.student_id_key), getString(R.string.student_id_default));
         Uri uri = TimetableContract.TimetableEntry.buildTimetableWithStudentId(studentID);
         Log.d(LOG_TAG, "LOADING URI: " + uri.toString());
-        Loader<Cursor> cx = new CursorLoader(getActivity(), uri, null, null, null, null);
+
+        Loader<Cursor> cx = new CursorLoader(getActivity(),
+                uri,
+                TIMETABLE_COLUMNS,
+                null,
+                null,
+                null);
         return cx;
     }
 
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        Log.d(LOG_TAG, "RUNNIGN CUrsor loader finished");
         mTimetableAdapter.swapCursor(cursor);
     }
 

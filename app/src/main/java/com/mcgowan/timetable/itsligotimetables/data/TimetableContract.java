@@ -56,7 +56,6 @@ public class TimetableContract {
                 CONTENT_AUTHORITY + "/" + PATH_TIMETABLES;
 
         public static final String TABLE_NAME = "schedule";
-
         public static final String COLUMN_DAY_ID = "day_id";
         public static final String COLUMN_STUDENT_ID = "student_id";
         public static final String COLUMN_DAY = "day";
