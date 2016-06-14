@@ -2,10 +2,13 @@ package com.mcgowan.timetable.itsligotimetables;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,6 +19,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.mcgowan.timetable.itsligotimetables.data.TimetableContract;
+
 import java.util.ArrayList;
 
 /**
@@ -23,7 +28,9 @@ import java.util.ArrayList;
  */
 public class TimeTableFragment extends Fragment {
 
-    ArrayAdapter<String> mTimetableAdapter;
+    TimetableAdapter mTimetableAdapter;
+    private static final String LOG_TAG = TimeTableFragment.class.getSimpleName();
+
 
     public TimeTableFragment() {
     }
@@ -59,38 +66,39 @@ public class TimeTableFragment extends Fragment {
     }
 
     private void updateTimetable() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String studentID = prefs.getString(getString(R.string.student_id_key),getString(R.string.student_id_default));
-
-        FetchTimetableTask task = new FetchTimetableTask(getActivity(), mTimetableAdapter);
-        task.execute(MainActivity.TIMETABLE_URL, studentID);
+//        FetchTimetableTask task = new FetchTimetableTask(getActivity(), mTimetableAdapter);
+//        task.execute(MainActivity.TIMETABLE_URL, studentID);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater,
-                             ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String studentID = prefs.getString(getString(R.string.student_id_key),getString(R.string.student_id_default));
 
-        mTimetableAdapter = new ArrayAdapter<>(
-                getActivity(),
-                R.layout.list_item_class,
-                R.id.list_item_class_textview,
-                new ArrayList<String>());
+
+        Uri uri = TimetableContract.TimetableEntry.buildTimetableWithStudentId(studentID);
+        Log.d(LOG_TAG, uri.toString());
+        Cursor cur = getActivity().getContentResolver().query(uri, null, null, null, null);
+
+        mTimetableAdapter = new TimetableAdapter(getActivity(), cur, 0);
+
+
+        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         ListView listView = (ListView) rootView.findViewById(R.id.listview_timetable);
         listView.setAdapter(mTimetableAdapter);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String lecture = mTimetableAdapter.getItem(position);
-                Intent detailIntent = new Intent(getActivity(), DetailActivity.class);
-                detailIntent.putExtra("details", lecture);
-
-               startActivity(detailIntent);
-            }
-        });
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                String lecture = mTimetableAdapter.getItem(position);
+//                Intent detailIntent = new Intent(getActivity(), DetailActivity.class);
+//                detailIntent.putExtra("details", lecture);
+//
+//               startActivity(detailIntent);
+//            }
+//        });
 
         return rootView;
     }
