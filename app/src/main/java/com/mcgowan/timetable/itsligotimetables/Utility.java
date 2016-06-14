@@ -1,8 +1,5 @@
-package com.mcgowan.timetable.itsligotimetables.utils;
+package com.mcgowan.timetable.itsligotimetables;
 
-/**
- * Created by Brian on 11/06/2016.
- */
 public class Utility {
 
     public static int getDayNumberFromDay(String day) {

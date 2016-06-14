@@ -2,6 +2,8 @@ package com.mcgowan.timetable.itsligotimetables.utils;
 
 import android.test.AndroidTestCase;
 
+import com.mcgowan.timetable.itsligotimetables.Utility;
+
 
 public class TestUtility extends AndroidTestCase {
 
