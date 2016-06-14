@@ -2,6 +2,8 @@ package com.mcgowan.timetable.itsligotimetables;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -23,12 +25,10 @@ public class FetchTimetableTask extends AsyncTask<String, Void, List<String>> {
 
 
     private final Context mContext;
-    private ArrayAdapter mAdapter;
 
-    public FetchTimetableTask(Context mContext, ArrayAdapter adapter) {
+    public FetchTimetableTask(Context mContext) {
 
         this.mContext = mContext;
-        this.mAdapter = adapter;
     }
 
     private boolean DEBUG = true;
@@ -40,12 +40,9 @@ public class FetchTimetableTask extends AsyncTask<String, Void, List<String>> {
     @Override
     protected List<String> doInBackground(String... params) {
 
-        if (params.length == 0) {
-            return null;
-        }
 
-        String url = params[0];
-        studentID = params[1];
+        String url = MainActivity.TIMETABLE_URL;
+        studentID = params[0];
 
         try {
             TimeTable t = new TimeTable(url, studentID);
@@ -68,6 +65,7 @@ public class FetchTimetableTask extends AsyncTask<String, Void, List<String>> {
 
         for (Map.Entry<String, List<Course>> entry : days.entrySet()) {
             for (Course c : entry.getValue()) {
+
 
                 ContentValues classValues = new ContentValues();
                 classValues.put(TimetableContract.TimetableEntry.COLUMN_DAY, c.getDay());
@@ -99,29 +97,17 @@ public class FetchTimetableTask extends AsyncTask<String, Void, List<String>> {
 
         Uri timeTableUri = TimetableEntry.buildTimetableWithStudentId(studentID);
 
-//        Cursor cursor = mContext.getContentResolver().query(timeTableUri, null, null, null, null);
+        Cursor cursor = mContext.getContentResolver().query(timeTableUri, null, null, null, null);
 
         Log.d(LOG_TAG, "FetchWeatherTask Complete. " + inserted + " records nserted");
-//        cvVector = new Vector<ContentValues>(cursor.getCount());
-//        if (cursor.moveToFirst()) {
-//            do {
-//                ContentValues cv = new ContentValues();
-//                DatabaseUtils.cursorRowToContentValues(cursor, cv);
-//                cvVector.add(cv);
-//
-//            } while (cursor.moveToNext());
-//        }
-
-
-
-        return classes;
-    }
-
-    @Override
-    protected void onPostExecute(List<String> result) {
-        if (result != null) {
-            mAdapter.clear();
-            mAdapter.addAll(result);
+        cvVector = new Vector<ContentValues>(cursor.getCount());
+        if (cursor.moveToFirst()) {
+            do {
+                ContentValues cv = new ContentValues();
+                DatabaseUtils.cursorRowToContentValues(cursor, cv);
+                cvVector.add(cv);
+            } while (cursor.moveToNext());
         }
+        return classes;
     }
 }

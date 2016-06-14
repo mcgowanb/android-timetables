@@ -8,6 +8,9 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,17 +25,37 @@ import android.widget.ListView;
 import com.mcgowan.timetable.itsligotimetables.data.TimetableContract;
 
 import java.util.ArrayList;
+import java.util.TimerTask;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class TimeTableFragment extends Fragment {
+public class TimeTableFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     TimetableAdapter mTimetableAdapter;
+
     private static final String LOG_TAG = TimeTableFragment.class.getSimpleName();
+    private static final int TIMETABLE_LOADER = 0;
+
+    private static final String[] TIMETABLE_COLUMNS = {
+            TimetableContract.TimetableEntry._ID,
+            TimetableContract.TimetableEntry.COLUMN_DAY,
+            TimetableContract.TimetableEntry.COLUMN_TIME,
+            TimetableContract.TimetableEntry.COLUMN_LECTURER,
+            TimetableContract.TimetableEntry.COLUMN_SUBJECT,
+            TimetableContract.TimetableEntry.COLUMN_DAY_ID,
+    };
+
+    static final int COL_TIMETABLE_ID = 0;
+    static final int COL_TIMETABLE_DAY = 1;
+    static final int COL_TIMETABLE_TIME = 2;
+    static final int COL_TIMETABLE_LECTURER = 3;
+    static final int COL_TIMETABLE_SUBJECT = 4;
+    static final int COL_TIMETABLE_DAY_ID = 5;
 
 
     public TimeTableFragment() {
+
     }
 
     @Override
@@ -40,6 +63,12 @@ public class TimeTableFragment extends Fragment {
         super.onCreate(savedInstanceState);
         //enable fragment to handle menu events
         setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        getLoaderManager().initLoader(TIMETABLE_LOADER, null, this);
+        super.onActivityCreated(savedInstanceState);
     }
 
     @Override
@@ -59,48 +88,62 @@ public class TimeTableFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        updateTimetable();
-    }
-
-    private void updateTimetable() {
-//        FetchTimetableTask task = new FetchTimetableTask(getActivity(), mTimetableAdapter);
-//        task.execute(MainActivity.TIMETABLE_URL, studentID);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String studentID = prefs.getString(getString(R.string.student_id_key),getString(R.string.student_id_default));
 
 
-        Uri uri = TimetableContract.TimetableEntry.buildTimetableWithStudentId(studentID);
+        Uri uri = TimetableContract.TimetableEntry.buildTimetableWithStudentId("S00157760");
         Log.d(LOG_TAG, uri.toString());
-        Cursor cur = getActivity().getContentResolver().query(uri, null, null, null, null);
+        Cursor cursor = getActivity().getContentResolver().query(uri, null, null, null, null);
 
-        mTimetableAdapter = new TimetableAdapter(getActivity(), cur, 0);
 
+        mTimetableAdapter = new TimetableAdapter(getActivity(), cursor, 0);
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        ListView listView = (ListView) rootView.findViewById(R.id.listview_timetable);
-        listView.setAdapter(mTimetableAdapter);
-
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                String lecture = mTimetableAdapter.getItem(position);
-//                Intent detailIntent = new Intent(getActivity(), DetailActivity.class);
-//                detailIntent.putExtra("details", lecture);
-//
-//               startActivity(detailIntent);
-//            }
-//        });
+        ListView lView = (ListView) rootView.findViewById(R.id.listview_timetable);
+        lView.setAdapter(mTimetableAdapter);
 
         return rootView;
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(LOG_TAG, "RUNNIGN START");
+//        updateTimetable();
+    }
+
+
+
+    public void updateTimetable() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String studentID = prefs.getString(getString(R.string.student_id_key), getString(R.string.student_id_default));
+        FetchTimetableTask timetableTask = new FetchTimetableTask(getActivity());
+        timetableTask.execute(studentID);
+    }
+
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String studentID = prefs.getString(getString(R.string.student_id_key), getString(R.string.student_id_default));
+        Uri uri = TimetableContract.TimetableEntry.buildTimetableWithStudentId(studentID);
+
+        return new CursorLoader(getActivity(), uri, null, null, null, null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        mTimetableAdapter.swapCursor(cursor);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mTimetableAdapter.swapCursor(null);
     }
 }
 
