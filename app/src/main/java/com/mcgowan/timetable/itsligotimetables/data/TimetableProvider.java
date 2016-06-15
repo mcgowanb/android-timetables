@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.mcgowan.timetable.itsligotimetables.data.TimetableContract.AvailableLabEntry;
 import com.mcgowan.timetable.itsligotimetables.data.TimetableContract.TimetableEntry;
@@ -21,7 +22,8 @@ public class TimetableProvider extends ContentProvider {
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
     public static final int TIMETABLE = 100;
-    public static final int LABS = 103;
+    public static final int TIMETABLE_BY_ID = 101;
+    public static final int LABS = 300;
 
     private static final SQLiteQueryBuilder sTimetableQueryBuilder, sAvailableLabsQueryBuilder;
 
@@ -53,6 +55,7 @@ public class TimetableProvider extends ContentProvider {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = TimetableContract.CONTENT_AUTHORITY;
 
+        matcher.addURI(authority, TimetableContract.PATH_TIMETABLES + "/*", TIMETABLE_BY_ID);
         matcher.addURI(authority, TimetableContract.PATH_TIMETABLES, TIMETABLE);
 
         matcher.addURI(authority, TimetableContract.PATH_AVAILABLE_LABS, LABS);
@@ -71,6 +74,15 @@ public class TimetableProvider extends ContentProvider {
 
         Cursor retCursor;
         switch (sUriMatcher.match(uri)) {
+            case TIMETABLE_BY_ID:{
+                retCursor = getTimeTableById(
+                        uri,
+                        projection,
+                        sortOrder
+                );
+                break;
+            }
+
             case TIMETABLE: {
                 retCursor = getTimeTableByStudentId(
                         uri,
@@ -103,6 +115,9 @@ public class TimetableProvider extends ContentProvider {
     private static final String sStudentIdSelection =
             TimetableEntry.TABLE_NAME + "." + TimetableEntry.COLUMN_STUDENT_ID + " = ? ";
 
+    private static final String sIdSelection =
+            TimetableEntry.TABLE_NAME + "." + TimetableEntry._ID;
+
     private static final String sStudentIdSelectionWithDay =
             TimetableEntry.TABLE_NAME + "." + TimetableEntry.COLUMN_STUDENT_ID + " = ? AND "
                     + TimetableEntry.COLUMN_DAY + " = ?";
@@ -134,6 +149,27 @@ public class TimetableProvider extends ContentProvider {
                 null,
                 sortOrder
         );
+    }
+
+    private Cursor getTimeTableById(Uri uri, String[] projection, String sortOrder) {
+
+        String id = uri.getLastPathSegment();
+        String queryParams = sIdSelection;
+        Log.d("FUCK", id);
+        Log.d("FUCK", queryParams);
+        Log.d("FUCK", uri.toString());
+
+        return sTimetableQueryBuilder.query(
+                mHelper.getReadableDatabase(),
+                projection,
+                queryParams,
+                new String[]{id},
+                null,
+                null,
+                sortOrder
+        );
+//        Log.d("FUCK", sTimetableQueryBuilder.toString());
+//        return null;
     }
 
     @Nullable

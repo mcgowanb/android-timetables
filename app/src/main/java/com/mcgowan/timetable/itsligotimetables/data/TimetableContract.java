@@ -4,7 +4,7 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
-
+import android.util.Log;
 public class TimetableContract {
 
     public static final String CONTENT_AUTHORITY = "com.mcgowan.timetable.itsligotimetables.app";
@@ -46,7 +46,6 @@ public class TimetableContract {
 
 
     public static final class TimetableEntry implements BaseColumns {
-
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_TIMETABLES).build();
 
         public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" +
