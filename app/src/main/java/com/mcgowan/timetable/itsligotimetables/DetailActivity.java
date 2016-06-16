@@ -2,6 +2,7 @@ package com.mcgowan.timetable.itsligotimetables;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -155,6 +156,8 @@ public class DetailActivity extends AppCompatActivity {
             if(intent == null){
                 return null;
             }
+
+            Uri x = intent.getData();
 
             CursorLoader cursorLoader = new CursorLoader(getActivity(),
                     intent.getData(),

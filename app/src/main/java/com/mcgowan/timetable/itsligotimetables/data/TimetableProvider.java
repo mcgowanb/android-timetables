@@ -116,7 +116,7 @@ public class TimetableProvider extends ContentProvider {
             TimetableEntry.TABLE_NAME + "." + TimetableEntry.COLUMN_STUDENT_ID + " = ? ";
 
     private static final String sIdSelection =
-            TimetableEntry.TABLE_NAME + "." + TimetableEntry._ID;
+            TimetableEntry.TABLE_NAME + "." + TimetableEntry._ID + " =? ";
 
     private static final String sStudentIdSelectionWithDay =
             TimetableEntry.TABLE_NAME + "." + TimetableEntry.COLUMN_STUDENT_ID + " = ? AND "
@@ -159,7 +159,7 @@ public class TimetableProvider extends ContentProvider {
         Log.d("FUCK", queryParams);
         Log.d("FUCK", uri.toString());
 
-        return sTimetableQueryBuilder.query(
+        Cursor result = sTimetableQueryBuilder.query(
                 mHelper.getReadableDatabase(),
                 projection,
                 queryParams,
@@ -168,6 +168,7 @@ public class TimetableProvider extends ContentProvider {
                 null,
                 sortOrder
         );
+        return result;
 //        Log.d("FUCK", sTimetableQueryBuilder.toString());
 //        return null;
     }

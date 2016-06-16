@@ -29,7 +29,7 @@ public class TestProvider extends AndroidTestCase {
     }
 
     public void deleteAllRecords() {
-        deleteAllRecordsFromDB();
+        deleteAllRecordsFromProvider();
     }
 
     /*
@@ -94,7 +94,33 @@ public class TestProvider extends AndroidTestCase {
 
     }
 
-    public void testBasicTimetableQuery() {
+    public void testBasicTimetableQueryById() {
+        // insert our test records into the database
+        TimetableDbHelper dbHelper = new TimetableDbHelper(mContext);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues testValues = TestUtilities.createSingleClassTimetableValues();
+        long rowId = TestUtilities.insertClassTimetableValues(db, testValues);
+
+        assertTrue("Unable to Insert Timetable data into the Database", rowId != -1);
+
+
+        // Test the basic content provider query
+        Cursor timetableCursor = mContext.getContentResolver().query(
+                TimetableEntry.buildTimetableUri(rowId),
+                null,
+                null,
+                null,
+                null
+        );
+
+        // Make sure we get the correct cursor out of the database
+        TestUtilities.validateCursor("Basic Timetable query with student id ", timetableCursor, testValues);
+
+        db.close();
+    }
+
+    public void testBasicTimetableQueryByStudentID() {
         // insert our test records into the database
         TimetableDbHelper dbHelper = new TimetableDbHelper(mContext);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -116,7 +142,7 @@ public class TestProvider extends AndroidTestCase {
         );
 
         // Make sure we get the correct cursor out of the database
-        TestUtilities.validateCursor("testBasicWeatherQuery", timetableCursor, testValues);
+        TestUtilities.validateCursor("basic timetable query with student id", timetableCursor, testValues);
 
         db.close();
     }
