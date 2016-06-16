@@ -7,7 +7,6 @@ import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 
 import com.mcgowan.timetable.itsligotimetables.data.TimetableContract;
 import com.mcgowan.timetable.itsligotimetables.data.TimetableContract.TimetableEntry;
@@ -51,8 +50,7 @@ public class FetchTimetableTask extends AsyncTask<String, Void, List<String>> {
             return classes;
 
         } catch (IOException e) {
-            Log.e(LOG_TAG, "Shit fell down");
-            Log.e(LOG_TAG, "Error", e);
+            Log.e(LOG_TAG, "Error connecting to ITS website", e);
             return null;
         }
     }

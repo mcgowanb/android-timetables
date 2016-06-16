@@ -2,7 +2,6 @@ package com.mcgowan.timetable.itsligotimetables;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -22,7 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.mcgowan.timetable.itsligotimetables.data.TimetableContract.*;
+import com.mcgowan.timetable.itsligotimetables.data.TimetableContract.TimetableEntry;
 
 import static android.database.DatabaseUtils.dumpCursorToString;
 
@@ -159,9 +158,8 @@ public class DetailActivity extends AppCompatActivity {
                 return null;
             }
 
-            Uri x = intent.getData();
-
-            CursorLoader cursorLoader = new CursorLoader(getActivity(),
+            CursorLoader cursorLoader = new CursorLoader(
+                    getActivity(),
                     intent.getData(),
                     TIMETABLE_COLUMNS,
                     null,
@@ -175,6 +173,8 @@ public class DetailActivity extends AppCompatActivity {
         public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
             Log.d(LOG_TAG, "In onLoadFinished");
             Log.d(LOG_TAG, dumpCursorToString(cursor));
+            if(!cursor.moveToFirst()){ return; }
+
             String result = String.format("%s : %s : %s : %s : %s : %s",
                     cursor.getString(LectureDetailsFragment.COL_TIMETABLE_ID),
                     cursor.getString(LectureDetailsFragment.COL_TIMETABLE_DAY_ID),
@@ -184,7 +184,8 @@ public class DetailActivity extends AppCompatActivity {
                     cursor.getString(LectureDetailsFragment.COL_TIMETABLE_LECTURER)
             );
 
-            TextView detailsView = (TextView)getView().findViewById(R.id.list_item_class_textview);
+            Log.d(LOG_TAG, result);
+            TextView detailsView = (TextView)getView().findViewById(R.id.detail_text);
             detailsView.setText(result);
 
             if(mShareActionProvider != null){
