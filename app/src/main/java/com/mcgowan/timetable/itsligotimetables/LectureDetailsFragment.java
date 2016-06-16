@@ -21,8 +21,6 @@ import android.widget.TextView;
 
 import com.mcgowan.timetable.itsligotimetables.data.TimetableContract;
 
-import static android.database.DatabaseUtils.dumpCursorToString;
-
 public class LectureDetailsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String SHARE_CLASS_INFO = " #gettingMySmartOn";
@@ -118,8 +116,7 @@ public class LectureDetailsFragment extends Fragment implements LoaderManager.Lo
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        Log.d(LOG_TAG, "In onLoadFinished");
-        Log.d(LOG_TAG, dumpCursorToString(cursor));
+//        Log.d(LOG_TAG, dumpCursorToString(cursor));
         if (!cursor.moveToFirst()) {
             return;
         }
@@ -133,7 +130,6 @@ public class LectureDetailsFragment extends Fragment implements LoaderManager.Lo
                 cursor.getString(LectureDetailsFragment.COL_TIMETABLE_LECTURER)
         );
 
-        Log.d(LOG_TAG, mClassInformation);
         TextView detailsView = (TextView) getView().findViewById(R.id.detail_text);
         detailsView.setText(mClassInformation);
 

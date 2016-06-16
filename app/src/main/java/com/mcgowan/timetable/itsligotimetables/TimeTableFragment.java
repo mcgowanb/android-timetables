@@ -11,7 +11,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -93,7 +92,6 @@ public class TimeTableFragment extends Fragment implements LoaderManager.LoaderC
         mTimetableAdapter = new TimetableAdapter(getActivity(), null, 0);
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        Log.d(LOG_TAG, "RUNNIGN OnCreateView");
         ListView lv = (ListView) rootView.findViewById(R.id.listview_timetable);
         lv.setAdapter(mTimetableAdapter);
 
@@ -103,7 +101,6 @@ public class TimeTableFragment extends Fragment implements LoaderManager.LoaderC
                 // CursorAdapter returns a cursor at the correct position for getItem(), or null
                 // if it cannot seek to that position.
                 Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-                int x = cursor.getInt(COL_TIMETABLE_ID);
                 if(cursor != null){
                     Intent intent = new Intent(getActivity(), DetailActivity.class).
                             setData(TimetableContract.TimetableEntry
@@ -112,30 +109,24 @@ public class TimeTableFragment extends Fragment implements LoaderManager.LoaderC
                 }
             }
         });
-
-
         return rootView;
     }
 
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d(LOG_TAG, "RUNNIGN START");
-//        updateTimetable();
+    void onStudentIdChanged(){
+        updateTimetable();
+        getLoaderManager().restartLoader(TIMETABLE_LOADER, null, this);
     }
 
 
     public void updateTimetable() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String studentID = prefs.getString(getString(R.string.student_id_key), getString(R.string.student_id_default));
+        String studentID = Utility.getStudentId(getActivity());
         FetchTimetableTask timetableTask = new FetchTimetableTask(getActivity());
         timetableTask.execute(studentID);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        Log.d(LOG_TAG, "RUNNIGN onActivityCreated");
         getLoaderManager().initLoader(TIMETABLE_LOADER, null, this);
         super.onActivityCreated(savedInstanceState);
     }
@@ -143,11 +134,9 @@ public class TimeTableFragment extends Fragment implements LoaderManager.LoaderC
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        Log.d(LOG_TAG, "RUNNIGN OnCreateCursorLoader");
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String studentID = prefs.getString(getString(R.string.student_id_key), getString(R.string.student_id_default));
         Uri uri = TimetableContract.TimetableEntry.buildTimetableWithStudentId(studentID);
-        Log.d(LOG_TAG, "LOADING URI: " + uri.toString());
 
         Loader<Cursor> cx = new CursorLoader(getActivity(),
                 uri,
@@ -161,7 +150,6 @@ public class TimeTableFragment extends Fragment implements LoaderManager.LoaderC
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        Log.d(LOG_TAG, "RUNNIGN CUrsor loader finished");
         mTimetableAdapter.swapCursor(cursor);
     }
 

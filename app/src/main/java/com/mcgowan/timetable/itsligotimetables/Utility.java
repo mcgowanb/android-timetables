@@ -1,5 +1,9 @@
 package com.mcgowan.timetable.itsligotimetables;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
 public class Utility {
 
     public static int getDayNumberFromDay(String day) {
@@ -31,5 +35,14 @@ public class Utility {
                 break;
         }
         return retVal;
+    }
+
+    public static String getStudentId(Context context){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        String studentId = prefs.getString(
+                context.getString(R.string.student_id_key),
+                context.getString(R.string.student_id_default));
+
+        return studentId;
     }
 }
