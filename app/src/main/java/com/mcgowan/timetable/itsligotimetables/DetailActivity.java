@@ -24,6 +24,8 @@ import android.widget.TextView;
 
 import com.mcgowan.timetable.itsligotimetables.data.TimetableContract.*;
 
+import static android.database.DatabaseUtils.dumpCursorToString;
+
 public class DetailActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = DetailActivity.class.getSimpleName();
@@ -172,6 +174,7 @@ public class DetailActivity extends AppCompatActivity {
         @Override
         public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
             Log.d(LOG_TAG, "In onLoadFinished");
+            Log.d(LOG_TAG, dumpCursorToString(cursor));
             String result = String.format("%s : %s : %s : %s : %s : %s",
                     cursor.getString(LectureDetailsFragment.COL_TIMETABLE_ID),
                     cursor.getString(LectureDetailsFragment.COL_TIMETABLE_DAY_ID),
