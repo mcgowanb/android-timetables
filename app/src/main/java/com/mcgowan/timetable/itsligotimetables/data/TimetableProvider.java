@@ -9,7 +9,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.mcgowan.timetable.itsligotimetables.data.TimetableContract.AvailableLabEntry;
 import com.mcgowan.timetable.itsligotimetables.data.TimetableContract.TimetableEntry;
@@ -20,6 +19,7 @@ import static android.text.TextUtils.isEmpty;
 public class TimetableProvider extends ContentProvider {
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
+    private static final String LOG_TAG = TimetableProvider.class.getSimpleName();
 
     public static final int TIMETABLE = 100;
     public static final int TIMETABLE_BY_ID = 101;
@@ -155,9 +155,6 @@ public class TimetableProvider extends ContentProvider {
 
         String id = uri.getLastPathSegment();
         String queryParams = sIdSelection;
-        Log.d("FUCK", id);
-        Log.d("FUCK", queryParams);
-        Log.d("FUCK", uri.toString());
 
         Cursor result = sTimetableQueryBuilder.query(
                 mHelper.getReadableDatabase(),

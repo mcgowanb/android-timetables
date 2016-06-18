@@ -90,14 +90,12 @@ public class LectureDetailsFragment extends Fragment implements LoaderManager.Lo
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        Log.d(LOG_TAG, "In onActivityCreated");
         getLoaderManager().initLoader(DETAIL_LOADER, null, this);
         super.onActivityCreated(savedInstanceState);
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        Log.d(LOG_TAG, "In OnCreateLoader");
         Intent intent = getActivity().getIntent();
         if (intent == null) {
             return null;
