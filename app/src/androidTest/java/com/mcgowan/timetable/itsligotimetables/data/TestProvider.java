@@ -11,9 +11,7 @@ import android.net.Uri;
 import android.test.AndroidTestCase;
 import android.util.Log;
 
-import com.mcgowan.timetable.itsligotimetables.data.TimetableContract.*;
-
-import java.sql.Time;
+import com.mcgowan.timetable.itsligotimetables.data.TimetableContract.TimetableEntry;
 
 /**
  * Created by Brian on 09/06/2016.
@@ -349,6 +347,9 @@ public class TestProvider extends AndroidTestCase {
                 cursor, updatedValues);
 
         cursor.close();
+
+        deleteAllRecordsFromDB();
+
     }
 
 

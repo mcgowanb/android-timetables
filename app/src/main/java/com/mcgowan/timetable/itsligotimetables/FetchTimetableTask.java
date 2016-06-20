@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.mcgowan.timetable.itsligotimetables.data.TimetableContract;
 import com.mcgowan.timetable.itsligotimetables.data.TimetableContract.TimetableEntry;
 import com.mcgowan.timetable.scraper.Course;
 import com.mcgowan.timetable.scraper.TimeTable;
@@ -66,14 +65,15 @@ public class FetchTimetableTask extends AsyncTask<String, Void, List<String>> {
 
 
                 ContentValues classValues = new ContentValues();
-                classValues.put(TimetableContract.TimetableEntry.COLUMN_DAY, c.getDay());
-                classValues.put(TimetableContract.TimetableEntry.COLUMN_LECTURER, c.getLecturer());
-                classValues.put(TimetableContract.TimetableEntry.COLUMN_START_TIME, c.getStartTime());
-                classValues.put(TimetableContract.TimetableEntry.COLUMN_TIME, c.getTime());
-                classValues.put(TimetableContract.TimetableEntry.COLUMN_END_TIME, c.getEndTime());
-                classValues.put(TimetableContract.TimetableEntry.COLUMN_STUDENT_ID, studentID);
-                classValues.put(TimetableContract.TimetableEntry.COLUMN_SUBJECT, c.getSubject());
-                classValues.put(TimetableContract.TimetableEntry.COLUMN_DAY_ID, Utility.getDayNumberFromDay(c.getDay()));
+                classValues.put(TimetableEntry.COLUMN_DAY, c.getDay());
+                classValues.put(TimetableEntry.COLUMN_LECTURER, c.getLecturer());
+                classValues.put(TimetableEntry.COLUMN_START_TIME, c.getStartTime());
+                classValues.put(TimetableEntry.COLUMN_TIME, c.getTime());
+                classValues.put(TimetableEntry.COLUMN_END_TIME, c.getEndTime());
+                classValues.put(TimetableEntry.COLUMN_STUDENT_ID, studentID);
+                classValues.put(TimetableEntry.COLUMN_SUBJECT, c.getSubject());
+                classValues.put(TimetableEntry.COLUMN_ROOM, c.getRoom());
+                classValues.put(TimetableEntry.COLUMN_DAY_ID, Utility.getDayNumberFromDay(c.getDay()));
                 cvVector.add(classValues);
 
                 String line = c.toString();
@@ -97,7 +97,7 @@ public class FetchTimetableTask extends AsyncTask<String, Void, List<String>> {
 
         Cursor cursor = mContext.getContentResolver().query(timeTableUri, null, null, null, null);
 
-        Log.d(LOG_TAG, "FetchWeatherTask Complete. " + inserted + " records nserted");
+        Log.d(LOG_TAG, "FetchTimetableTask Complete. " + inserted + " records inserted");
         cvVector = new Vector<ContentValues>(cursor.getCount());
         if (cursor.moveToFirst()) {
             do {

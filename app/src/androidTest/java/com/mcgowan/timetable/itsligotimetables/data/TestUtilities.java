@@ -28,6 +28,7 @@ public class TestUtilities extends AndroidTestCase {
         testValues.put(TimetableContract.TimetableEntry.COLUMN_END_TIME, "10:11");
         testValues.put(TimetableContract.TimetableEntry.COLUMN_LECTURER, "Person Name");
         testValues.put(TimetableContract.TimetableEntry.COLUMN_SUBJECT, "Mathematics");
+        testValues.put(TimetableContract.TimetableEntry.COLUMN_ROOM, "D2014");
         testValues.put(TimetableContract.TimetableEntry.COLUMN_TIME, "09:00 - 17:00");
 
         return testValues;

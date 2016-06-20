@@ -2,14 +2,11 @@ package com.mcgowan.timetable.itsligotimetables;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
-
-import com.mcgowan.timetable.itsligotimetables.data.TimetableContract.TimetableEntry;
 
 /**
  * Created by Brian on 12/06/2016.
@@ -23,13 +20,14 @@ public class TimetableAdapter extends CursorAdapter {
 
     private String convertCursorRowToUXFormat(Cursor cursor) {
         // get row indices for our cursor
-        String result = String.format("%s : %s : %s : %s : %s : %s",
-                cursor.getString(TimeTableFragment.COL_TIMETABLE_ID),
-                cursor.getString(TimeTableFragment.COL_TIMETABLE_DAY_ID),
+        String result = String.format("%s : %s : %s : %s : %s : %s : %s",
                 cursor.getString(TimeTableFragment.COL_TIMETABLE_DAY),
                 cursor.getString(TimeTableFragment.COL_TIMETABLE_TIME),
                 cursor.getString(TimeTableFragment.COL_TIMETABLE_SUBJECT),
-                cursor.getString(TimeTableFragment.COL_TIMETABLE_LECTURER)
+                cursor.getString(TimeTableFragment.COL_TIMETABLE_LECTURER),
+                cursor.getString(TimeTableFragment.COL_TIMETABLE_ROOM),
+                cursor.getString(TimeTableFragment.COL_TIMETABLE_ID),
+                cursor.getString(TimeTableFragment.COL_TIMETABLE_DAY_ID)
         );
 
         return result;

@@ -119,8 +119,9 @@ public class LectureDetailsFragment extends Fragment implements LoaderManager.Lo
             return;
         }
 
-        mClassInformation = String.format("%s : %s : %s : %s : %s : %s",
+        mClassInformation = String.format("%s : %s : %s : %s : %s : %s : %s",
                 cursor.getString(LectureDetailsFragment.COL_TIMETABLE_ID),
+                cursor.getString(LectureDetailsFragment.COL_TIMETABLE_ROOM),
                 cursor.getString(LectureDetailsFragment.COL_TIMETABLE_DAY_ID),
                 cursor.getString(LectureDetailsFragment.COL_TIMETABLE_DAY),
                 cursor.getString(LectureDetailsFragment.COL_TIMETABLE_TIME),
