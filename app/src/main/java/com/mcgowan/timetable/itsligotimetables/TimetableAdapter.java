@@ -61,6 +61,8 @@ public class TimetableAdapter extends CursorAdapter {
         }
 
         View view = LayoutInflater.from(context).inflate(layoutId, parent, false);
+        ViewHolder viewHolder = new ViewHolder(view);
+        view.setTag(viewHolder);
 
         return view;
     }
@@ -71,34 +73,46 @@ public class TimetableAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
 
-        int classId = cursor.getInt(TimeTableFragment.COL_TIMETABLE_ID);
+        ViewHolder viewHolder = (ViewHolder) view.getTag();
+
+        viewHolder.iconView.setImageResource(R.drawable.friday_icon);
+
+//        int classId = cursor.getInt(TimeTableFragment.COL_TIMETABLE_ID);
 
         String day = cursor.getString(TimeTableFragment.COL_TIMETABLE_DAY) + "_icon";
-        ImageView imageView = (ImageView) view.findViewById(R.id.list_item_icon);
+//        ImageView imageView = (ImageView) view.findViewById(R.id.list_item_icon);
 
         String subject = cursor.getString(TimeTableFragment.COL_TIMETABLE_SUBJECT);
-        TextView subjectView = (TextView) view.findViewById(R.id.list_item_subject);
-        subjectView.setText(subject);
+        viewHolder.subject.setText(subject);
 
         String lecturer = cursor.getString(TimeTableFragment.COL_TIMETABLE_LECTURER);
-        TextView lecturerView = (TextView) view.findViewById(R.id.list_item_lecturer);
-        lecturerView.setText(lecturer);
+        viewHolder.lecturer.setText(lecturer);
 
         String startTime = cursor.getString(TimeTableFragment.COL_TIMETABLE_START_TIME);
-        TextView startTimeView = (TextView) view.findViewById(R.id.list_item_start_time);
-        startTimeView.setText(startTime);
+        viewHolder.startTime.setText(startTime);
 
         String endTime = cursor.getString(TimeTableFragment.COL_TIMETABLE_END_TIME);
-        TextView endTimeView = (TextView) view.findViewById(R.id.list_item_end_time);
-        endTimeView.setText(endTime);
+        viewHolder.endTime.setText(endTime);
 
 //room
 
-
-        // our view is pretty simple here --- just a text view
-        // we'll keep the UI functional with a simple (and slow!) binding.
-
-//        TextView tv = (TextView)view;
-//        tv.setText(convertCursorRowToUXFormat(cursor));
     }
+
+    public static class ViewHolder{
+        public final ImageView iconView;
+        public final TextView subject;
+        public final TextView lecturer;
+        public final TextView startTime;
+        public final TextView endTime;
+
+        public ViewHolder(View view) {
+            this.iconView = (ImageView) view.findViewById(R.id.list_item_icon);
+            this.subject = (TextView) view.findViewById( R.id.list_item_subject);
+            this.lecturer = (TextView) view.findViewById(R.id.list_item_lecturer);
+            this.startTime = (TextView) view.findViewById(R.id.list_item_start_time);
+            this.endTime = (TextView) view.findViewById(R.id.list_item_end_time);
+        }
+    }
+
+
 }
