@@ -6,16 +6,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-/**
- * Created by Brian on 12/06/2016.
- */
 public class TimetableAdapter extends CursorAdapter {
     private static final String LOG_TAG = TimeTableFragment.class.getSimpleName();
     public TimetableAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
     }
+
+    private final int VIEW_TYPE_NEXT = 0;
+    private final int VIEW_TYPE_ALL = 1;
 
 
     private String convertCursorRowToUXFormat(Cursor cursor) {
@@ -33,12 +34,33 @@ public class TimetableAdapter extends CursorAdapter {
         return result;
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return (position == 0) ? VIEW_TYPE_NEXT : VIEW_TYPE_ALL;
+    }
+
+    @Override
+    public int getViewTypeCount() {
+        return 2;
+    }
+
     /*
-        Remember that these views are reused as needed.
-     */
+            Remember that these views are reused as needed.
+         */
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        View view = LayoutInflater.from(context).inflate(R.layout.list_item_class, parent, false);
+
+        int viewType = getItemViewType(cursor.getPosition());
+        int layoutId = -1;
+
+        if(viewType == VIEW_TYPE_NEXT){
+            layoutId = R.layout.list_item_next_class;
+        }
+        else if (viewType == VIEW_TYPE_ALL){
+            layoutId = R.layout.list_item_class;
+        }
+
+        View view = LayoutInflater.from(context).inflate(layoutId, parent, false);
 
         return view;
     }
@@ -48,10 +70,35 @@ public class TimetableAdapter extends CursorAdapter {
      */
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
+
+        int classId = cursor.getInt(TimeTableFragment.COL_TIMETABLE_ID);
+
+        String day = cursor.getString(TimeTableFragment.COL_TIMETABLE_DAY) + "_icon";
+        ImageView imageView = (ImageView) view.findViewById(R.id.list_item_icon);
+
+        String subject = cursor.getString(TimeTableFragment.COL_TIMETABLE_SUBJECT);
+        TextView subjectView = (TextView) view.findViewById(R.id.list_item_subject);
+        subjectView.setText(subject);
+
+        String lecturer = cursor.getString(TimeTableFragment.COL_TIMETABLE_LECTURER);
+        TextView lecturerView = (TextView) view.findViewById(R.id.list_item_lecturer);
+        lecturerView.setText(lecturer);
+
+        String startTime = cursor.getString(TimeTableFragment.COL_TIMETABLE_START_TIME);
+        TextView startTimeView = (TextView) view.findViewById(R.id.list_item_start_time);
+        startTimeView.setText(startTime);
+
+        String endTime = cursor.getString(TimeTableFragment.COL_TIMETABLE_END_TIME);
+        TextView endTimeView = (TextView) view.findViewById(R.id.list_item_end_time);
+        endTimeView.setText(endTime);
+
+//room
+
+
         // our view is pretty simple here --- just a text view
         // we'll keep the UI functional with a simple (and slow!) binding.
 
-        TextView tv = (TextView)view;
-        tv.setText(convertCursorRowToUXFormat(cursor));
+//        TextView tv = (TextView)view;
+//        tv.setText(convertCursorRowToUXFormat(cursor));
     }
 }

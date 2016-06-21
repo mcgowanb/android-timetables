@@ -10,7 +10,7 @@ public class TimetableContract {
     public static final String CONTENT_AUTHORITY = "com.mcgowan.timetable.itsligotimetables.app";
 
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
-    //todo have another class here for the available labs data to build with
+    //todo have another lecture_icon here for the available labs data to build with
 
     //paths to match table names
     public static final String PATH_TIMETABLES = "timetable";

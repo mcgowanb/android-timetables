@@ -47,7 +47,7 @@ public class TestProvider extends AndroidTestCase {
         PackageManager pm = mContext.getPackageManager();
 
         // We define the component name based on the package name from the context and the
-        // WeatherProvider class.
+        // WeatherProvider lecture_icon.
         ComponentName componentName = new ComponentName(mContext.getPackageName(),
                 TimetableProvider.class.getName());
         try {
@@ -343,7 +343,7 @@ public class TestProvider extends AndroidTestCase {
                 null    // sort order
         );
 
-        TestUtilities.validateCursor("testUpdateClass record.  Error validating class entry update.",
+        TestUtilities.validateCursor("testUpdateClass record.  Error validating lecture_icon entry update.",
                 cursor, updatedValues);
 
         cursor.close();
