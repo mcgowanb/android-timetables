@@ -3,8 +3,10 @@ package com.mcgowan.timetable.itsligotimetables;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 public class Utility {
+    private static final String LOG_TAG = Utility.class.getSimpleName();
 
     public static int getDayNumberFromDay(String day) {
         int retVal;
@@ -53,5 +55,30 @@ public class Utility {
 
     public static String createRoomAndLecturerString(String room, String lecturer){
         return String.format("%s, %s", room, lecturer);
+    }
+
+    public static int getDayImageFromDayString(String day){
+        int imageId;
+        switch (day){
+            case "Monday":
+                imageId = R.drawable.monday_icon;
+                break;
+            case "Tuesday":
+                imageId = R.drawable.tuesday_icon;
+                break;
+            case "Wednesday":
+                imageId = R.drawable.wednesday_icon;
+                break;
+            case "Thursday":
+                imageId = R.drawable.thursday_icon;
+                break;
+            case "Friday":
+                imageId = R.drawable.friday_icon;
+                break;
+            default:
+                imageId = R.mipmap.ic_launcher;
+                break;
+        }
+        return imageId;
     }
 }

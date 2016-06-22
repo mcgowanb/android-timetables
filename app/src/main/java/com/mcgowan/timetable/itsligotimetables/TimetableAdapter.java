@@ -77,10 +77,9 @@ public class TimetableAdapter extends CursorAdapter {
 
         ViewHolder viewHolder = (ViewHolder) view.getTag();
 
-        viewHolder.iconView.setImageResource(R.drawable.friday_icon);
 
-        String day = cursor.getString(TimeTableFragment.COL_TIMETABLE_DAY) + "_icon";
-//        ImageView imageView = (ImageView) view.findViewById(R.id.list_item_icon);
+        String day = cursor.getString(TimeTableFragment.COL_TIMETABLE_DAY);
+        viewHolder.iconView.setImageResource(Utility.getDayImageFromDayString(day));
 
         String subject = cursor.getString(TimeTableFragment.COL_TIMETABLE_SUBJECT);
         String room = cursor.getString(TimeTableFragment.COL_TIMETABLE_ROOM);
