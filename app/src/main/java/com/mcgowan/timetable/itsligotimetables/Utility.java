@@ -42,7 +42,7 @@ public class Utility {
         return retVal;
     }
 
-    public static String getStudentId(Context context){
+    public static String getStudentId(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         String studentId = prefs.getString(
                 context.getString(R.string.student_id_key),
@@ -51,38 +51,15 @@ public class Utility {
         return studentId;
     }
 
-
-    public static int getDayImageFromDayString(String day){
-        int imageId;
+    public static int getDayIcon(Context context, String name) {
         String today = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(new Date());
-        switch (day){
-            case "Monday":
-                imageId = R.drawable.monday_48;
-                break;
-            case "Tuesday":
-                imageId = R.drawable.tuesday_48;
-                break;
-            case "Wednesday":
-                imageId = R.drawable.wednesday_48;
-                break;
-            case "Thursday":
-                imageId = R.drawable.thursday_48;
-                break;
-            case "Friday":
-                imageId = R.drawable.friday_48;
-                break;
-            case "Saturday":
-                imageId = R.drawable.saturday_48;
-                break;
-            case "Sunday":
-                imageId = R.drawable.sunday_48;
-                break;
-            default:
-                imageId = R.mipmap.ic_launcher;
-                break;
-        }
-        return imageId;
-    }
+        String fileName = String.format("%s_130", name.toLowerCase());
 
+        if(!today.equals(name)){
+            fileName = fileName.concat("_bw");
+        }
+        return context.getResources().getIdentifier(fileName,
+                "drawable", context.getPackageName());
+    }
 
 }

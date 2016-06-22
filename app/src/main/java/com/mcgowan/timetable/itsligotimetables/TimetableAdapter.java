@@ -77,7 +77,7 @@ public class TimetableAdapter extends CursorAdapter {
 
         ViewHolder viewHolder = (ViewHolder) view.getTag();
         String day = cursor.getString(TimeTableFragment.COL_TIMETABLE_DAY);
-        viewHolder.iconView.setImageResource(Utility.getDayImageFromDayString(day));
+        viewHolder.iconView.setImageResource(Utility.getDayIcon(context, day));
 
         String startTime = cursor.getString(TimeTableFragment.COL_TIMETABLE_START_TIME);
         viewHolder.startTime.setText(startTime);
@@ -87,7 +87,7 @@ public class TimetableAdapter extends CursorAdapter {
 
         String subject = cursor.getString(TimeTableFragment.COL_TIMETABLE_SUBJECT);
         viewHolder.subject.setText(subject);
-//
+
         String room = cursor.getString(TimeTableFragment.COL_TIMETABLE_ROOM);
         viewHolder.room.setText(room);
 
@@ -96,11 +96,6 @@ public class TimetableAdapter extends CursorAdapter {
         String lecturer = cursor.getString(TimeTableFragment.COL_TIMETABLE_LECTURER);
         viewHolder.lecturer.setText(lecturer);
 
-//        String timeAndSubject = Utility.createTimeAndSubject(time, subject);
-//        viewHolder.time.setText(timeAndSubject);
-//
-//        String roomAndLecturer = Utility.createRoomAndLecturerString(room, lecturer);
-//        viewHolder.room.setText(roomAndLecturer);
     }
 
     public static class ViewHolder{
