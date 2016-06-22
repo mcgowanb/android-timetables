@@ -45,4 +45,13 @@ public class Utility {
 
         return studentId;
     }
+
+
+    public static String createTimeAndSubject(String time, String subject){
+        return String.format("%s : %s", time, subject);
+    }
+
+    public static String createRoomAndLecturerString(String room, String lecturer){
+        return String.format("%s, %s", room, lecturer);
+    }
 }

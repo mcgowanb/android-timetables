@@ -48,7 +48,7 @@
             android:src="@android:drawable/sym_def_app_icon" />
 
         <TextView
-            android:id="@+id/list_item_forecast_textview"
+            android:id="@+id/list_item_room"
             android:layout_width="wrap_content"
             android:text="Some text here"
             android:layout_height="wrap_content" />
