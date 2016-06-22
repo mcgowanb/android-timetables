@@ -2,6 +2,7 @@ package com.mcgowan.timetable.itsligotimetables;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.preference.PreferenceManager;
 
 import java.text.SimpleDateFormat;
@@ -55,11 +56,24 @@ public class Utility {
         String today = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(new Date());
         String fileName = String.format("%s_130", name.toLowerCase());
 
-        if(!today.equals(name)){
+        if (!today.equals(name)) {
             fileName = fileName.concat("_bw");
         }
         return context.getResources().getIdentifier(fileName,
                 "drawable", context.getPackageName());
+    }
+
+    public static int checkCursorForToday(Cursor c) {
+        String today = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(new Date());
+        int position = -1;
+        while (c.moveToNext()) {
+            String day = c.getString(TimeTableFragment.COL_TIMETABLE_DAY);
+            if (today.toLowerCase().equals(day.toLowerCase())) {
+                position = c.getPosition();
+                break;
+            }
+        }
+        return position;
     }
 
 }

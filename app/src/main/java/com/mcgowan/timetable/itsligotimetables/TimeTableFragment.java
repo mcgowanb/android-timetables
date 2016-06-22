@@ -31,6 +31,8 @@ public class TimeTableFragment extends Fragment implements LoaderManager.LoaderC
 
     private static final String LOG_TAG = TimeTableFragment.class.getSimpleName();
     private static final int TIMETABLE_LOADER = 1;
+    private int mPosition = ListView.INVALID_POSITION;
+    private ListView mListView;
 
     private static final String[] TIMETABLE_COLUMNS = {
             TimetableContract.TimetableEntry._ID,
@@ -92,16 +94,16 @@ public class TimeTableFragment extends Fragment implements LoaderManager.LoaderC
         mTimetableAdapter = new TimetableAdapter(getActivity(), null, 0);
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        ListView lv = (ListView) rootView.findViewById(R.id.listview_timetable);
-        lv.setAdapter(mTimetableAdapter);
+        mListView = (ListView) rootView.findViewById(R.id.listview_timetable);
+        mListView.setAdapter(mTimetableAdapter);
 
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView adapterView, View view, int position, long id) {
                 // CursorAdapter returns a cursor at the correct position for getItem(), or null
                 // if it cannot seek to that position.
                 Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-                if(cursor != null){
+                if (cursor != null) {
                     Intent intent = new Intent(getActivity(), DetailActivity.class).
                             setData(TimetableContract.TimetableEntry
                                     .buildTimetableUri(cursor.getInt(COL_TIMETABLE_ID)));
@@ -113,7 +115,7 @@ public class TimeTableFragment extends Fragment implements LoaderManager.LoaderC
     }
 
 
-    void onStudentIdChanged(){
+    void onStudentIdChanged() {
         updateTimetable();
         getLoaderManager().restartLoader(TIMETABLE_LOADER, null, this);
     }
@@ -144,13 +146,20 @@ public class TimeTableFragment extends Fragment implements LoaderManager.LoaderC
                 null,
                 null,
                 null);
+
         return cx;
     }
 
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        mPosition = Utility.checkCursorForToday(cursor);
+
         mTimetableAdapter.swapCursor(cursor);
+        if (mPosition != ListView.INVALID_POSITION) {
+            //set the cursor position to the current day
+            mListView.smoothScrollToPositionFromTop(mPosition, 0);
+        }
     }
 
     @Override

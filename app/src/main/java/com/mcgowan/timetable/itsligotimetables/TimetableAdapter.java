@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 public class TimetableAdapter extends CursorAdapter {
     private static final String LOG_TAG = TimeTableFragment.class.getSimpleName();
+
     public TimetableAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
     }
@@ -115,6 +116,8 @@ public class TimetableAdapter extends CursorAdapter {
             this.room = (TextView) view.findViewById(R.id.list_item_room);
         }
     }
+
+
 
 
 }
