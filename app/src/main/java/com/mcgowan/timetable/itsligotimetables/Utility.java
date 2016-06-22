@@ -3,7 +3,6 @@ package com.mcgowan.timetable.itsligotimetables;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 public class Utility {
     private static final String LOG_TAG = Utility.class.getSimpleName();
@@ -50,11 +49,11 @@ public class Utility {
 
 
     public static String createTimeAndSubject(String time, String subject){
-        return String.format("%s : %s", time, subject);
+        return String.format("%s \t| %s", time, subject);
     }
 
     public static String createRoomAndLecturerString(String room, String lecturer){
-        return String.format("%s, %s", room, lecturer);
+        return String.format("Room %s \t| Lecturer %s", room, lecturer);
     }
 
     public static int getDayImageFromDayString(String day){
@@ -81,4 +80,6 @@ public class Utility {
         }
         return imageId;
     }
+
+
 }

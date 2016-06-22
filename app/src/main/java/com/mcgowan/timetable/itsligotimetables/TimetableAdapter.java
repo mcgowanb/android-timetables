@@ -76,32 +76,48 @@ public class TimetableAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
 
         ViewHolder viewHolder = (ViewHolder) view.getTag();
-
-
         String day = cursor.getString(TimeTableFragment.COL_TIMETABLE_DAY);
         viewHolder.iconView.setImageResource(Utility.getDayImageFromDayString(day));
 
+        String startTime = cursor.getString(TimeTableFragment.COL_TIMETABLE_START_TIME);
+        viewHolder.startTime.setText(startTime);
+
+        String endTime = cursor.getString(TimeTableFragment.COL_TIMETABLE_END_TIME);
+        viewHolder.endTime.setText(endTime);
+
         String subject = cursor.getString(TimeTableFragment.COL_TIMETABLE_SUBJECT);
+        viewHolder.subject.setText(subject);
+//
         String room = cursor.getString(TimeTableFragment.COL_TIMETABLE_ROOM);
-        String time = cursor.getString(TimeTableFragment.COL_TIMETABLE_TIME);
+        viewHolder.room.setText(room);
+
+
+
         String lecturer = cursor.getString(TimeTableFragment.COL_TIMETABLE_LECTURER);
+        viewHolder.lecturer.setText(lecturer);
 
-        String timeAndSubject = Utility.createTimeAndSubject(time, subject);
-        viewHolder.timeAndSubject.setText(timeAndSubject);
-
-        String roomAndLecturer = Utility.createRoomAndLecturerString(room, lecturer);
-        viewHolder.roomAndLecturer.setText(roomAndLecturer);
+//        String timeAndSubject = Utility.createTimeAndSubject(time, subject);
+//        viewHolder.time.setText(timeAndSubject);
+//
+//        String roomAndLecturer = Utility.createRoomAndLecturerString(room, lecturer);
+//        viewHolder.room.setText(roomAndLecturer);
     }
 
     public static class ViewHolder{
         public final ImageView iconView;
-        public final TextView timeAndSubject;
-        public final TextView roomAndLecturer;
+        public final TextView startTime;
+        public final TextView endTime;
+        public final TextView subject;
+        public final TextView lecturer;
+        public final TextView room;
 
         public ViewHolder(View view) {
             this.iconView = (ImageView) view.findViewById(R.id.list_item_icon);
-            this.timeAndSubject = (TextView) view.findViewById( R.id.list_item_time_and_subject);
-            this.roomAndLecturer = (TextView) view.findViewById(R.id.list_item_room_and_lecturer);
+            this.startTime = (TextView) view.findViewById( R.id.list_item_start_time);
+            this.endTime = (TextView) view.findViewById( R.id.list_item_end_time);
+            this.subject = (TextView) view.findViewById(R.id.list_item_subject);
+            this.lecturer = (TextView) view.findViewById(R.id.list_item_lecturer);
+            this.room = (TextView) view.findViewById(R.id.list_item_room);
         }
     }
 
