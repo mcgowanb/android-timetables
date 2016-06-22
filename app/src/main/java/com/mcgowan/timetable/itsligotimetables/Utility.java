@@ -4,6 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class Utility {
     private static final String LOG_TAG = Utility.class.getSimpleName();
 
@@ -48,31 +52,30 @@ public class Utility {
     }
 
 
-    public static String createTimeAndSubject(String time, String subject){
-        return String.format("%s \t| %s", time, subject);
-    }
-
-    public static String createRoomAndLecturerString(String room, String lecturer){
-        return String.format("Room %s \t| Lecturer %s", room, lecturer);
-    }
-
     public static int getDayImageFromDayString(String day){
         int imageId;
+        String today = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(new Date());
         switch (day){
             case "Monday":
-                imageId = R.drawable.monday_icon;
+                imageId = R.drawable.monday_48;
                 break;
             case "Tuesday":
-                imageId = R.drawable.tuesday_icon;
+                imageId = R.drawable.tuesday_48;
                 break;
             case "Wednesday":
-                imageId = R.drawable.wednesday_icon;
+                imageId = R.drawable.wednesday_48;
                 break;
             case "Thursday":
-                imageId = R.drawable.thursday_icon;
+                imageId = R.drawable.thursday_48;
                 break;
             case "Friday":
-                imageId = R.drawable.friday_icon;
+                imageId = R.drawable.friday_48;
+                break;
+            case "Saturday":
+                imageId = R.drawable.saturday_48;
+                break;
+            case "Sunday":
+                imageId = R.drawable.sunday_48;
                 break;
             default:
                 imageId = R.mipmap.ic_launcher;
