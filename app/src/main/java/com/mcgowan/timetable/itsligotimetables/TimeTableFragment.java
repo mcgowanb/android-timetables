@@ -124,8 +124,6 @@ public class TimeTableFragment extends Fragment implements LoaderManager.LoaderC
 
     public void updateTimetable() {
         String studentID = Utility.getStudentId(getActivity());
-//        FetchTimetableTask timetableTask = new FetchTimetableTask(getActivity());
-//        timetableTask.execute(studentID);
 
         Intent intent = new Intent(getActivity(), TimetableService.class);
         intent.putExtra(TimetableService.TIMETABLE_QUERY_EXTRA, studentID);

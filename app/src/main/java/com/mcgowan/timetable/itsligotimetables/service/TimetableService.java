@@ -42,14 +42,14 @@ public class TimetableService extends IntentService {
 
         try {
             TimeTable t = new TimeTable(url, studentID);
-            List<String> classes = getClassesAsArray(t);
+            getClassesAsArray(t);
 
         } catch (IOException e) {
             Log.e(LOG_TAG, "Error connecting to ITS website", e);
         }
     }
 
-    private List<String> getClassesAsArray(TimeTable t) {
+    private void getClassesAsArray(TimeTable t) {
         List<String> classes = new ArrayList<String>();
         Map<String, List<Course>> days = t.getDays();
 
@@ -57,8 +57,6 @@ public class TimetableService extends IntentService {
 
         for (Map.Entry<String, List<Course>> entry : days.entrySet()) {
             for (Course c : entry.getValue()) {
-
-
                 ContentValues classValues = new ContentValues();
                 classValues.put(TimetableContract.TimetableEntry.COLUMN_DAY, c.getDay());
                 classValues.put(TimetableContract.TimetableEntry.COLUMN_LECTURER, c.getLecturer());
@@ -102,6 +100,5 @@ public class TimetableService extends IntentService {
                 cvVector.add(cv);
             } while (cursor.moveToNext());
         }
-        return classes;
     }
 }
