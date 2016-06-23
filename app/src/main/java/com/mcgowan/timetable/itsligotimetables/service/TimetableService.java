@@ -1,7 +1,9 @@
 package com.mcgowan.timetable.itsligotimetables.service;
 
 import android.app.IntentService;
+import android.content.BroadcastReceiver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
@@ -99,6 +101,16 @@ public class TimetableService extends IntentService {
                 DatabaseUtils.cursorRowToContentValues(cursor, cv);
                 cvVector.add(cv);
             } while (cursor.moveToNext());
+        }
+    }
+
+    static public class AlarmReciever extends BroadcastReceiver{
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Intent sendIntent = new Intent(context, TimetableService.class);
+            sendIntent.putExtra(TIMETABLE_QUERY_EXTRA, intent.getStringExtra(TIMETABLE_QUERY_EXTRA));
+            context.startService(sendIntent);
+
         }
     }
 }

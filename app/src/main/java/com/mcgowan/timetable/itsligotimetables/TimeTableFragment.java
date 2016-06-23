@@ -1,5 +1,8 @@
 package com.mcgowan.timetable.itsligotimetables;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -125,9 +128,18 @@ public class TimeTableFragment extends Fragment implements LoaderManager.LoaderC
     public void updateTimetable() {
         String studentID = Utility.getStudentId(getActivity());
 
-        Intent intent = new Intent(getActivity(), TimetableService.class);
-        intent.putExtra(TimetableService.TIMETABLE_QUERY_EXTRA, studentID);
-        getActivity().startService(intent);
+        Intent alarmIntent = new Intent(getActivity(), TimetableService.AlarmReciever.class);
+        alarmIntent.putExtra(TimetableService.TIMETABLE_QUERY_EXTRA, studentID);
+
+        //pending intent add delay to when the intent is actioned
+        PendingIntent pi = PendingIntent.getBroadcast(getActivity(), 0, alarmIntent,
+                PendingIntent.FLAG_ONE_SHOT);
+        AlarmManager am = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+        am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+500, pi);
+//
+//        Intent intent = new Intent(getActivity(), TimetableService.class);
+//        intent.putExtra(TimetableService.TIMETABLE_QUERY_EXTRA, studentID);
+//        getActivity().startService(intent);
     }
 
     @Override

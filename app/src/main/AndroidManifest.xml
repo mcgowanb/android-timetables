@@ -32,17 +32,21 @@
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:theme="@style/SettingsTheme"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/SettingsTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mcgowan.timetable.itsligotimetables.MainActivity" />
         </activity>
+
         <provider
-            android:authorities="com.mcgowan.timetable.itsligotimetables.app"
             android:name=".data.TimetableProvider"
-            />
-        <service android:name=".service.TimetableService"/>
+            android:authorities="com.mcgowan.timetable.itsligotimetables.app" />
+        <service
+            android:name=".service.TimetableService" />
+        <receiver
+            android:name=".service.TimetableService$AlarmReciever"/>
+
     </application>
 
 </manifest>
