@@ -42,6 +42,7 @@
             android:authorities="com.mcgowan.timetable.itsligotimetables.app"
             android:name=".data.TimetableProvider"
             />
+        <service android:name=".service.TimetableService"/>
     </application>
 
 </manifest>

@@ -21,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.mcgowan.timetable.itsligotimetables.data.TimetableContract;
+import com.mcgowan.timetable.itsligotimetables.service.TimetableService;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -123,8 +124,12 @@ public class TimeTableFragment extends Fragment implements LoaderManager.LoaderC
 
     public void updateTimetable() {
         String studentID = Utility.getStudentId(getActivity());
-        FetchTimetableTask timetableTask = new FetchTimetableTask(getActivity());
-        timetableTask.execute(studentID);
+//        FetchTimetableTask timetableTask = new FetchTimetableTask(getActivity());
+//        timetableTask.execute(studentID);
+
+        Intent intent = new Intent(getActivity(), TimetableService.class);
+        intent.putExtra(TimetableService.TIMETABLE_QUERY_EXTRA, studentID);
+        getActivity().startService(intent);
     }
 
     @Override
