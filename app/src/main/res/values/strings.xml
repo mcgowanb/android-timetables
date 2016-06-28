@@ -7,6 +7,8 @@
     <string name="title_activity_settings">Settings</string>
 
     <!-- Strings related to Settings -->
+    <string name="sync_account_type">timetables.mcgowan.com</string>
+    <string name="content_authority">com.mcgowan.timetable.itsligotimetables.app</string>
 
     <!-- Example General settings -->
     <string name="pref_header_general">General</string>
