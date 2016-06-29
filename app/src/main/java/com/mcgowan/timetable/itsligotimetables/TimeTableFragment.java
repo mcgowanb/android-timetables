@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.mcgowan.timetable.itsligotimetables.data.TimetableContract;
 import com.mcgowan.timetable.itsligotimetables.sync.TimetableSyncAdapter;
@@ -93,9 +94,12 @@ public class TimeTableFragment extends Fragment implements LoaderManager.LoaderC
                              Bundle savedInstanceState) {
 
         mTimetableAdapter = new TimetableAdapter(getActivity(), null, 0);
-
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
         mListView = (ListView) rootView.findViewById(R.id.listview_timetable);
+        View emptyView = rootView.findViewById(R.id.listview_empty);
+
+        mListView.setEmptyView(emptyView);
         mListView.setAdapter(mTimetableAdapter);
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -158,6 +162,23 @@ public class TimeTableFragment extends Fragment implements LoaderManager.LoaderC
         if (mPosition != ListView.INVALID_POSITION) {
             //set the cursor position to the current day
             mListView.smoothScrollToPositionFromTop(mPosition, 0);
+        }
+       updateEmptyView();
+    }
+
+    /**
+     * Updates the view with empty message, contextually relevant to the network connection
+     */
+    public void updateEmptyView(){
+        if(mTimetableAdapter.getCount() == 0){
+            TextView tv = (TextView) getView().findViewById(R.id.listview_empty);
+            if (null != tv){
+                int message = R.string.no_info_available;
+                if (!Utility.hasNetworkConnectivity(getActivity())){
+                    message = R.string.no_network;
+                }
+                tv.setText(message);
+            }
         }
     }
 

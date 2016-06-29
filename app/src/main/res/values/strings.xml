@@ -24,6 +24,8 @@
     <string name="student_id_default" translatable="false"> </string>
     <string name="student_id_key" translatable="false">student_id</string>
     <string name="pref_timetable_type_classes" translatable="false">classes</string>
+    <string name="no_info_available" translatable="false">No Class information available</string>
+    <string name="no_network" translatable="false">No Class information available. No network conenctivity to fetch data</string>
 
     <string name="pref_title_timetable_type">Timetable Type</string>
     <string name="pref_timetable_key">timetable_type</string>
