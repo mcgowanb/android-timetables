@@ -124,22 +124,6 @@ public class TimeTableFragment extends Fragment implements LoaderManager.LoaderC
 
     public void updateTimetable() {
         TimetableSyncAdapter.syncImmediately(getActivity());
-//        String studentID = Utility.getStudentId(getActivity());
-//
-//        Intent alarmIntent = new Intent(getActivity(), TimetableService.AlarmReciever.class);
-//        alarmIntent.putExtra(TimetableService.TIMETABLE_QUERY_EXTRA, studentID);
-//
-//        //pending intent add delay to when the intent is actioned
-//        PendingIntent pi = PendingIntent.getBroadcast(getActivity(), 0, alarmIntent,
-//                PendingIntent.FLAG_ONE_SHOT);
-//        AlarmManager am = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-//        am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+500, pi);
-
-
-//        This is the old intent for calling it without a service
-//        Intent intent = new Intent(getActivity(), TimetableService.class);
-//        intent.putExtra(TimetableService.TIMETABLE_QUERY_EXTRA, studentID);
-//        getActivity().startService(intent);
     }
 
     @Override

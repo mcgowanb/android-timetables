@@ -20,13 +20,9 @@ import com.mcgowan.timetable.itsligotimetables.MainActivity;
 import com.mcgowan.timetable.itsligotimetables.R;
 import com.mcgowan.timetable.itsligotimetables.Utility;
 import com.mcgowan.timetable.itsligotimetables.data.TimetableContract;
-import com.mcgowan.timetable.scraper.Course;
 import com.mcgowan.timetable.scraper.TimeTable;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.Vector;
 
 
@@ -35,7 +31,7 @@ public class TimetableSyncAdapter extends AbstractThreadedSyncAdapter {
 
 
     public static final int SYNC_INTERVAL = 60 * 720;
-    public static final int SYNC_FLEXTIME = SYNC_INTERVAL/3;
+    public static final int SYNC_FLEXTIME = SYNC_INTERVAL / 3;
 
     public TimetableSyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
@@ -51,59 +47,26 @@ public class TimetableSyncAdapter extends AbstractThreadedSyncAdapter {
 
         try {
             TimeTable t = new TimeTable(url, studentID);
-            getClassesAsArray(t, studentID);
+            Vector<ContentValues> cVector = Utility.convertTimeTableToVector(t, studentID);
 
+            if (cVector.size() > 0) {
+                Utility.deleteRecordsFromDatabase(getContext(), studentID);
+                Utility.addRecordsToDatabase(getContext(), cVector);
+                createCursorFromDatabase(studentID);
+            }
         } catch (IOException e) {
             Log.e(LOG_TAG, "Error connecting to ITS website", e);
         }
 
     }
 
-    //look to refactor this into a utility method
-    private void getClassesAsArray(TimeTable t, String studentID) {
-        List<String> classes = new ArrayList<String>();
-        Map<String, List<Course>> days = t.getDays();
-
-        Vector<ContentValues> cvVector = new Vector<>();
-
-        for (Map.Entry<String, List<Course>> entry : days.entrySet()) {
-            for (Course c : entry.getValue()) {
-                ContentValues classValues = new ContentValues();
-                classValues.put(TimetableContract.TimetableEntry.COLUMN_DAY, c.getDay());
-                classValues.put(TimetableContract.TimetableEntry.COLUMN_LECTURER, c.getLecturer());
-                classValues.put(TimetableContract.TimetableEntry.COLUMN_START_TIME, c.getStartTime());
-                classValues.put(TimetableContract.TimetableEntry.COLUMN_TIME, c.getTime());
-                classValues.put(TimetableContract.TimetableEntry.COLUMN_END_TIME, c.getEndTime());
-                classValues.put(TimetableContract.TimetableEntry.COLUMN_STUDENT_ID, studentID);
-                classValues.put(TimetableContract.TimetableEntry.COLUMN_SUBJECT, c.getSubject());
-                classValues.put(TimetableContract.TimetableEntry.COLUMN_ROOM, c.getRoom());
-                classValues.put(TimetableContract.TimetableEntry.COLUMN_DAY_ID, Utility.getDayNumberFromDay(c.getDay()));
-                cvVector.add(classValues);
-
-                String line = c.toString();
-                classes.add(line);
-            }
-        }
-        int inserted = 0;
-
-        if (cvVector.size() > 0) {
-            ContentValues[] cvArray = new ContentValues[cvVector.size()];
-            cvVector.toArray(cvArray);
-
-            inserted = getContext().getContentResolver().bulkInsert(
-                    TimetableContract.TimetableEntry.CONTENT_URI,
-                    cvArray
-            );
-
-        }
-
+    private void createCursorFromDatabase(String studentID) {
         Uri timeTableUri = TimetableContract.TimetableEntry.buildTimetableWithStudentId(studentID);
 
         Cursor cursor = getContext().getContentResolver().query(timeTableUri, null, null, null, null);
 
-        Log.d(LOG_TAG, "FetchTimetableService Complete. " + inserted + " records inserted");
 
-        cvVector = new Vector<ContentValues>(cursor.getCount());
+        Vector<ContentValues> cvVector = new Vector<ContentValues>(cursor.getCount());
         if (cursor.moveToFirst()) {
             do {
                 ContentValues cv = new ContentValues();
@@ -152,8 +115,10 @@ public class TimetableSyncAdapter extends AbstractThreadedSyncAdapter {
     public static void initializeSyncAdapter(Context context) {
         getSyncAccount(context);
     }
+
     /**
      * Helper method to have the sync adapter sync immediately
+     *
      * @param context The context used to access the account service
      */
     public static void syncImmediately(Context context) {
@@ -182,7 +147,7 @@ public class TimetableSyncAdapter extends AbstractThreadedSyncAdapter {
                 context.getString(R.string.app_name), context.getString(R.string.sync_account_type));
 
         // If the password doesn't exist, the account doesn't exist
-        if ( null == accountManager.getPassword(newAccount) ) {
+        if (null == accountManager.getPassword(newAccount)) {
 
         /*
          * Add the account and account type, no password or user data
@@ -197,7 +162,6 @@ public class TimetableSyncAdapter extends AbstractThreadedSyncAdapter {
              * then call ContentResolver.setIsSyncable(account, AUTHORITY, 1)
              * here.
              */
-
             onAccountCreated(newAccount, context);
         }
         return newAccount;
