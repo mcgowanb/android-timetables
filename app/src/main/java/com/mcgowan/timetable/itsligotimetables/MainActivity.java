@@ -9,6 +9,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import com.mcgowan.timetable.itsligotimetables.sync.TimetableSyncAdapter;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,8 +23,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        mStudentId = Utility.getStudentId(this);
         super.onCreate(savedInstanceState);
+        mStudentId = Utility.getStudentId(this);
         setContentView(R.layout.activity_main);
 
         initMenuDetails();
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
                     .commit();
         }
 
+        TimetableSyncAdapter.initializeSyncAdapter(this);
     }
 
     private void initMenuDetails() {
@@ -102,5 +105,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
+
 
 }

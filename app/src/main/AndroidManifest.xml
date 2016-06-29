@@ -47,11 +47,6 @@
         </activity>
 
 
-        <!--<service-->
-            <!--android:name=".service.TimetableService" />-->
-        <!--<receiver-->
-            <!--android:name=".service.TimetableService$AlarmReciever"/>-->
-
         <!-- SyncAdapter's dummy authentication service -->
         <service
             android:name=".sync.TimetableAuthenticatorService"
