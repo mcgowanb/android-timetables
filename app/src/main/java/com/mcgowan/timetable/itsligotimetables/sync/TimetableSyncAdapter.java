@@ -64,6 +64,8 @@ public class TimetableSyncAdapter extends AbstractThreadedSyncAdapter {
         //todo check here for null for student id
 
         String url = MainActivity.TIMETABLE_URL;
+//        url = "http://google.com/?";
+//        url = "http://google.com/ping?";
         String studentID = Utility.getStudentId(getContext());
 
 //        if (studentID.equals("")) {
