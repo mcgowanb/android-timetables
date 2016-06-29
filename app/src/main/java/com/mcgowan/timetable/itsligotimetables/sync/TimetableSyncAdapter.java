@@ -68,6 +68,7 @@ public class TimetableSyncAdapter extends AbstractThreadedSyncAdapter {
 //        url = "http://google.com/ping?";
         String studentID = Utility.getStudentId(getContext());
 
+        
 //        if (studentID.equals("")) {
 //            setServerStatus(getContext(), SERVER_STATUS_UNKNOWN);
 //            return;
