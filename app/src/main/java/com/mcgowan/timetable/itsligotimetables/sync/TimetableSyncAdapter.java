@@ -7,6 +7,7 @@ import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.SyncRequest;
 import android.content.SyncResult;
 import android.database.Cursor;
@@ -14,6 +15,8 @@ import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.annotation.IntDef;
 import android.util.Log;
 
 import com.mcgowan.timetable.itsligotimetables.MainActivity;
@@ -22,7 +25,11 @@ import com.mcgowan.timetable.itsligotimetables.Utility;
 import com.mcgowan.timetable.itsligotimetables.data.TimetableContract;
 import com.mcgowan.timetable.scraper.TimeTable;
 
+import org.jsoup.HttpStatusException;
+
 import java.io.IOException;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.Vector;
 
 
@@ -32,6 +39,20 @@ public class TimetableSyncAdapter extends AbstractThreadedSyncAdapter {
 
     public static final int SYNC_INTERVAL = 60 * 720;
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL / 3;
+
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({SERVER_STATUS_OK,
+            SERVER_STATUS_SERVER_DOWN,
+            SERVER_STATUS_SERVER_INVALID,
+            SERVER_STATUS_UNKNOWN
+    })
+    public @interface ServerStatus {
+    }
+
+    public static final int SERVER_STATUS_OK = 0;
+    public static final int SERVER_STATUS_SERVER_DOWN = 1;
+    public static final int SERVER_STATUS_SERVER_INVALID = 2;
+    public static final int SERVER_STATUS_UNKNOWN = 3;
 
     public TimetableSyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
@@ -45,6 +66,11 @@ public class TimetableSyncAdapter extends AbstractThreadedSyncAdapter {
         String url = MainActivity.TIMETABLE_URL;
         String studentID = Utility.getStudentId(getContext());
 
+//        if (studentID.equals("")) {
+//            setServerStatus(getContext(), SERVER_STATUS_UNKNOWN);
+//            return;
+//        }
+
         try {
             TimeTable t = new TimeTable(url, studentID);
             Vector<ContentValues> cVector = Utility.convertTimeTableToVector(t, studentID);
@@ -53,12 +79,17 @@ public class TimetableSyncAdapter extends AbstractThreadedSyncAdapter {
                 Utility.deleteRecordsFromDatabase(getContext(), studentID);
                 Utility.addRecordsToDatabase(getContext(), cVector);
                 createCursorFromDatabase(studentID);
-            }
-            else{
+                setServerStatus(getContext(), SERVER_STATUS_OK);
+            } else {
                 Utility.deleteAllRecordsFromDatabase(getContext());
             }
-        } catch (IOException e) {
+        } catch (HttpStatusException e) {
             Log.e(LOG_TAG, "Error connecting to ITS website", e);
+            e.printStackTrace();
+            setServerStatus(getContext(), SERVER_STATUS_SERVER_DOWN);
+        } catch (IOException e) {
+            e.printStackTrace();
+            setServerStatus(getContext(), SERVER_STATUS_UNKNOWN);
         }
 
     }
@@ -168,5 +199,19 @@ public class TimetableSyncAdapter extends AbstractThreadedSyncAdapter {
             onAccountCreated(newAccount, context);
         }
         return newAccount;
+    }
+
+    /**
+     * Sets the server status to shared preferences. This function shouldn't be called from
+     * the UI thread because it uses commit to write to the shared preferences.
+     *
+     * @param context
+     * @param serverStatus
+     */
+    private static void setServerStatus(Context context, @ServerStatus int serverStatus) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor spe = prefs.edit();
+        spe.putInt(context.getString(R.string.server_status_key), serverStatus);
+        spe.commit();
     }
 }

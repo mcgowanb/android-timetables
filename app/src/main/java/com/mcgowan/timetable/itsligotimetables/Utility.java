@@ -10,6 +10,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.mcgowan.timetable.itsligotimetables.data.TimetableContract;
+import com.mcgowan.timetable.itsligotimetables.sync.TimetableSyncAdapter;
 import com.mcgowan.timetable.scraper.Course;
 import com.mcgowan.timetable.scraper.TimeTable;
 
@@ -148,6 +149,12 @@ public class Utility {
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
+    }
 
+    @SuppressWarnings("ResourceType")
+    public static @TimetableSyncAdapter.ServerStatus int getServerStatus(Context c){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(c);
+        return prefs.getInt(c.getString(R.string.server_status_key),
+                TimetableSyncAdapter.SERVER_STATUS_UNKNOWN);
     }
 }

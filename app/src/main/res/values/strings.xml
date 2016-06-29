@@ -25,7 +25,12 @@
     <string name="student_id_key" translatable="false">student_id</string>
     <string name="pref_timetable_type_classes" translatable="false">classes</string>
     <string name="no_info_available" translatable="false">No Class information available</string>
-    <string name="no_network" translatable="false">No Class information available. No network conenctivity to fetch data</string>
+    <string name="no_network" translatable="false">No Class information available. No network connectivity to fetch data</string>
+    <string name="server_down" translatable="false">No Class information available. Server is currently down</string>
+    <string name="server_unknown" translatable="false">No Class information available. Unknown server error</string>
+    <string name="server_invalid" translatable="false">No Class information available. Invalid server</string>
+
+    <string name="server_status_key" translatable="false">server-status</string>
 
     <string name="pref_title_timetable_type">Timetable Type</string>
     <string name="pref_timetable_key">timetable_type</string>

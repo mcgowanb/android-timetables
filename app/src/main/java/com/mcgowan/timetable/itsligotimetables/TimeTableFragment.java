@@ -27,7 +27,8 @@ import com.mcgowan.timetable.itsligotimetables.sync.TimetableSyncAdapter;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class TimeTableFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class TimeTableFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
+SharedPreferences.OnSharedPreferenceChangeListener{
 
     TimetableAdapter mTimetableAdapter;
 
@@ -174,8 +175,21 @@ public class TimeTableFragment extends Fragment implements LoaderManager.LoaderC
             TextView tv = (TextView) getView().findViewById(R.id.listview_empty);
             if (null != tv){
                 int message = R.string.no_info_available;
-                if (!Utility.hasNetworkConnectivity(getActivity())){
-                    message = R.string.no_network;
+                @TimetableSyncAdapter.ServerStatus int serverStatus = Utility.getServerStatus(getContext());
+
+                switch (serverStatus){
+                    case TimetableSyncAdapter.SERVER_STATUS_SERVER_DOWN:
+                        message = R.string.server_down;
+                        break;
+                    case TimetableSyncAdapter.SERVER_STATUS_SERVER_INVALID:
+                        message = R.string.server_invalid;
+                        break;
+                    case TimetableSyncAdapter.SERVER_STATUS_UNKNOWN:
+                        message = R.string.server_unknown;
+                    default:
+                        if (!Utility.hasNetworkConnectivity(getActivity())){
+                            message = R.string.no_network;
+                        }
                 }
                 tv.setText(message);
             }
@@ -185,6 +199,27 @@ public class TimeTableFragment extends Fragment implements LoaderManager.LoaderC
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mTimetableAdapter.swapCursor(null);
+    }
+
+    @Override
+    public void onResume() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+        sp.registerOnSharedPreferenceChangeListener(this);
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+        sp.unregisterOnSharedPreferenceChangeListener(this);
+        super.onPause();
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if(key.equals(getString(R.string.server_status_key))){
+            updateEmptyView();
+        }
     }
 }
 
