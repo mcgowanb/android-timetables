@@ -54,6 +54,9 @@ public class TimetableSyncAdapter extends AbstractThreadedSyncAdapter {
                 Utility.addRecordsToDatabase(getContext(), cVector);
                 createCursorFromDatabase(studentID);
             }
+            else{
+                Utility.deleteAllRecordsFromDatabase(getContext());
+            }
         } catch (IOException e) {
             Log.e(LOG_TAG, "Error connecting to ITS website", e);
         }

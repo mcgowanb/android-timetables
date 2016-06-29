@@ -118,6 +118,15 @@ public class Utility {
         Log.d(LOG_TAG, "Records deleted before insertion");
     }
 
+    public static void deleteAllRecordsFromDatabase(Context context) {
+        context.getContentResolver().delete(
+                TimetableContract.TimetableEntry.CONTENT_URI,
+                null,
+                null
+        );
+        Log.d(LOG_TAG, "All Records deleted");
+    }
+
     public static void addRecordsToDatabase(Context context, Vector<ContentValues> cvVector) {
         ContentValues[] cvArray = new ContentValues[cvVector.size()];
         cvVector.toArray(cvArray);
