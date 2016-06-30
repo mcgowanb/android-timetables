@@ -57,11 +57,9 @@ public class Utility {
 
     public static String getStudentId(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        String studentId = prefs.getString(
+        return prefs.getString(
                 context.getString(R.string.student_id_key),
                 context.getString(R.string.student_id_default));
-
-        return studentId;
     }
 
     public static int getDayIcon(Context context, String name) {
@@ -156,5 +154,12 @@ public class Utility {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(c);
         return prefs.getInt(c.getString(R.string.server_status_key),
                 TimetableSyncAdapter.SERVER_STATUS_UNKNOWN);
+    }
+
+    public static void resetServerStatus(Context c){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(c);
+        SharedPreferences.Editor spe = prefs.edit();
+        spe.putInt(c.getString(R.string.server_status_key), TimetableSyncAdapter.SERVER_STATUS_UNKNOWN);
+        spe.apply();
     }
 }

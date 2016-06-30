@@ -182,12 +182,22 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.pref_general);
             setHasOptionsMenu(true);
 
+            /** Don't need this
+            Preference pref = findPreference(getString(R.string.student_id_key));
+            pref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    Utility.resetServerStatus(getActivity());
+                    TimetableSyncAdapter.syncImmediately(getActivity());
+                    return true;
+                }
+            });
+            */
+
             // Bind the summaries of EditText/List/Dialog/Ringtone preferences
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
             // guidelines.
-//            bindPreferenceSummaryToValue(findPreference(getString()));
-//            bindPreferenceSummaryToValue(findPreference("example_list"));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.student_id_key)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_timetable_key)));
         }
@@ -201,6 +211,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             }
             return super.onOptionsItemSelected(item);
         }
+
+//        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+//            if(key.equals(R.string.student_id_key)){
+//                Utility.resetServerStatus(getActivity());
+//                TimetableSyncAdapter.syncImmediately(getActivity());
+//            }
+//        }
     }
 
 

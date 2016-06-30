@@ -35,7 +35,7 @@ import java.util.Vector;
 
 public class TimetableSyncAdapter extends AbstractThreadedSyncAdapter {
     public final String LOG_TAG = TimetableSyncAdapter.class.getSimpleName();
-
+    public static final int BAD_REQUEST_CODE = 400;
 
     public static final int SYNC_INTERVAL = 60 * 720;
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL / 3;
@@ -61,23 +61,21 @@ public class TimetableSyncAdapter extends AbstractThreadedSyncAdapter {
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
         Log.d(LOG_TAG, "onPerformSync Called.");
-        //todo check here for null for student id
+        //todo check here for null for student id and return an error if it is
 
         String url = MainActivity.TIMETABLE_URL;
 //        url = "http://google.com/?";
 //        url = "http://google.com/ping?";
         String studentID = Utility.getStudentId(getContext());
 
-        
-//        if (studentID.equals("")) {
-//            setServerStatus(getContext(), SERVER_STATUS_UNKNOWN);
-//            return;
-//        }
-
         try {
             TimeTable t = new TimeTable(url, studentID);
-            Vector<ContentValues> cVector = Utility.convertTimeTableToVector(t, studentID);
 
+            if (t.getStatus().contains("400")) {
+                throw new HttpStatusException("Incorrect Student ID or empty", 400, url);
+            }
+
+            Vector<ContentValues> cVector = Utility.convertTimeTableToVector(t, studentID);
             if (cVector.size() > 0) {
                 Utility.deleteRecordsFromDatabase(getContext(), studentID);
                 Utility.addRecordsToDatabase(getContext(), cVector);
@@ -87,14 +85,20 @@ public class TimetableSyncAdapter extends AbstractThreadedSyncAdapter {
                 Utility.deleteAllRecordsFromDatabase(getContext());
             }
         } catch (HttpStatusException e) {
-            Log.e(LOG_TAG, "Error connecting to ITS website", e);
+
+            int error = e.getStatusCode();
+            if (error == BAD_REQUEST_CODE) {
+                Log.e(LOG_TAG, "Malformed request, bad student ID", e);
+                setServerStatus(getContext(), SERVER_STATUS_SERVER_INVALID);
+            } else {
+                Log.e(LOG_TAG, "Error connecting to ITS website", e);
+                setServerStatus(getContext(), SERVER_STATUS_SERVER_DOWN);
+            }
             e.printStackTrace();
-            setServerStatus(getContext(), SERVER_STATUS_SERVER_DOWN);
         } catch (IOException e) {
             e.printStackTrace();
             setServerStatus(getContext(), SERVER_STATUS_UNKNOWN);
         }
-
     }
 
     private void createCursorFromDatabase(String studentID) {
