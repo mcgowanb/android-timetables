@@ -181,7 +181,7 @@ SharedPreferences.OnSharedPreferenceChangeListener{
                     case TimetableSyncAdapter.SERVER_STATUS_SERVER_DOWN:
                         message = R.string.server_down;
                         break;
-                    case TimetableSyncAdapter.SERVER_STATUS_SERVER_INVALID:
+                    case TimetableSyncAdapter.SERVER_STATUS_ID_INVALID:
                         message = R.string.server_invalid;
                         break;
                     case TimetableSyncAdapter.SERVER_STATUS_UNKNOWN:

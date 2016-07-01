@@ -28,7 +28,7 @@ import java.util.List;
  * handset devices, settings are presented as a single list. On tablets,
  * settings are split by category, with category headers shown to the left of
  * the list of settings.
- * <p>
+ * <p/>
  * See <a href="http://developer.android.com/design/patterns/settings.html">
  * Android Design: Settings</a> for design guidelines and the <a
  * href="http://developer.android.com/guide/topics/ui/settings.html">Settings
@@ -50,6 +50,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
     /**
      * Set up the {@link android.app.ActionBar}, if the API is available.
      */
@@ -96,20 +97,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         @Override
         public boolean onPreferenceChange(Preference preference, Object value) {
             String stringValue = value.toString();
-//            String x = preference.getKey();
-//            String y = preference.getContext().getString(R.string.student_id_key);
-//
-//            boolean result = Arrays.equals(x.getBytes(), y.getBytes());
-//
-//            boolean r2 = (x == y);
-//
-//            boolean r3 = preference.getKey().equals(preference.getContext().getString(R.string.student_id_key));
 
-            if(preference.getKey().equals(preference.getContext().getString(R.string.student_id_key))){
+            if (preference.getKey().equals(preference.getContext().getString(R.string.student_id_key))) {
                 setPreferenceSummary(preference, stringValue);
-            }
-
-            if (preference instanceof ListPreference) {
+            } else if (preference instanceof ListPreference) {
                 // For list preferences, look up the correct display value in
                 // the preference's 'entries' list.
                 ListPreference listPreference = (ListPreference) preference;
@@ -164,7 +155,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             if (prefIndex >= 0) {
                 preference.setSummary(listPreference.getEntries()[prefIndex]);
             }
-        } else if (key.equals(preference.getContext().getString(R.string.pref_timetable_key))) {
+        } else if (key.equals(preference.getContext().getString(R.string.student_id_key))) {
             @TimetableSyncAdapter.ServerStatus int status = Utility.getServerStatus(preference.getContext());
             switch (status) {
                 case TimetableSyncAdapter.SERVER_STATUS_OK:
@@ -173,8 +164,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 case TimetableSyncAdapter.SERVER_STATUS_UNKNOWN:
                     preference.setSummary(preference.getContext().getString(R.string.pref_student_id_unknown_description, value.toString()));
                     break;
-                case TimetableSyncAdapter.SERVER_STATUS_SERVER_INVALID:
-                    preference.setSummary(preference.getContext().getString(R.string.pref_student_id_error_description, value.toString()));
+                case TimetableSyncAdapter.SERVER_STATUS_ID_INVALID:
+                    preference.setSummary(preference.getContext().getString(R.string.pref_student_id_invalid_id, value.toString()));
                     break;
                 default:
                     // Note --- if the server is down we still assume the value
@@ -232,22 +223,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.pref_general);
             setHasOptionsMenu(true);
 
-            /** Don't need this
-            Preference pref = findPreference(getString(R.string.student_id_key));
-            pref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    Utility.resetServerStatus(getActivity());
-                    TimetableSyncAdapter.syncImmediately(getActivity());
-                    return true;
-                }
-            });
-            */
-
             // Bind the summaries of EditText/List/Dialog/Ringtone preferences
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
             // guidelines.
+
             bindPreferenceSummaryToValue(findPreference(getString(R.string.student_id_key)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_timetable_key)));
         }
@@ -262,12 +242,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             return super.onOptionsItemSelected(item);
         }
 
-//        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-//            if(key.equals(R.string.student_id_key)){
-//                Utility.resetServerStatus(getActivity());
-//                TimetableSyncAdapter.syncImmediately(getActivity());
-//            }
-//        }
     }
 
 

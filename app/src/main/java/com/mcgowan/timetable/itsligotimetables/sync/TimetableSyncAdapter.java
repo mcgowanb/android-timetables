@@ -43,7 +43,7 @@ public class TimetableSyncAdapter extends AbstractThreadedSyncAdapter {
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({SERVER_STATUS_OK,
             SERVER_STATUS_SERVER_DOWN,
-            SERVER_STATUS_SERVER_INVALID,
+            SERVER_STATUS_ID_INVALID,
             SERVER_STATUS_UNKNOWN
     })
     public @interface ServerStatus {
@@ -51,7 +51,7 @@ public class TimetableSyncAdapter extends AbstractThreadedSyncAdapter {
 
     public static final int SERVER_STATUS_OK = 0;
     public static final int SERVER_STATUS_SERVER_DOWN = 1;
-    public static final int SERVER_STATUS_SERVER_INVALID = 2;
+    public static final int SERVER_STATUS_ID_INVALID = 2;
     public static final int SERVER_STATUS_UNKNOWN = 3;
 
     public TimetableSyncAdapter(Context context, boolean autoInitialize) {
@@ -89,7 +89,7 @@ public class TimetableSyncAdapter extends AbstractThreadedSyncAdapter {
             int error = e.getStatusCode();
             if (error == BAD_REQUEST_CODE) {
                 Log.e(LOG_TAG, "Malformed request, bad student ID", e);
-                setServerStatus(getContext(), SERVER_STATUS_SERVER_INVALID);
+                setServerStatus(getContext(), SERVER_STATUS_ID_INVALID);
             } else {
                 Log.e(LOG_TAG, "Error connecting to ITS website", e);
                 setServerStatus(getContext(), SERVER_STATUS_SERVER_DOWN);
