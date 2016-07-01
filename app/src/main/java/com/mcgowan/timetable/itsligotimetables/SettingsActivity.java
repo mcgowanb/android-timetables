@@ -19,6 +19,8 @@ import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 
+import com.mcgowan.timetable.itsligotimetables.sync.TimetableSyncAdapter;
+
 import java.util.List;
 
 /**
@@ -94,6 +96,18 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         @Override
         public boolean onPreferenceChange(Preference preference, Object value) {
             String stringValue = value.toString();
+//            String x = preference.getKey();
+//            String y = preference.getContext().getString(R.string.student_id_key);
+//
+//            boolean result = Arrays.equals(x.getBytes(), y.getBytes());
+//
+//            boolean r2 = (x == y);
+//
+//            boolean r3 = preference.getKey().equals(preference.getContext().getString(R.string.student_id_key));
+
+            if(preference.getKey().equals(preference.getContext().getString(R.string.student_id_key))){
+                setPreferenceSummary(preference, stringValue);
+            }
 
             if (preference instanceof ListPreference) {
                 // For list preferences, look up the correct display value in
@@ -137,6 +151,42 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             return true;
         }
     };
+
+    private static void setPreferenceSummary(Preference preference, Object value) {
+        String stringValue = value.toString();
+        String key = preference.getKey();
+
+        if (preference instanceof ListPreference) {
+            // For list preferences, look up the correct display value in
+            // the preference's 'entries' list (since they have separate labels/values).
+            ListPreference listPreference = (ListPreference) preference;
+            int prefIndex = listPreference.findIndexOfValue(stringValue);
+            if (prefIndex >= 0) {
+                preference.setSummary(listPreference.getEntries()[prefIndex]);
+            }
+        } else if (key.equals(preference.getContext().getString(R.string.pref_timetable_key))) {
+            @TimetableSyncAdapter.ServerStatus int status = Utility.getServerStatus(preference.getContext());
+            switch (status) {
+                case TimetableSyncAdapter.SERVER_STATUS_OK:
+                    preference.setSummary(stringValue);
+                    break;
+                case TimetableSyncAdapter.SERVER_STATUS_UNKNOWN:
+                    preference.setSummary(preference.getContext().getString(R.string.pref_student_id_unknown_description, value.toString()));
+                    break;
+                case TimetableSyncAdapter.SERVER_STATUS_SERVER_INVALID:
+                    preference.setSummary(preference.getContext().getString(R.string.pref_student_id_error_description, value.toString()));
+                    break;
+                default:
+                    // Note --- if the server is down we still assume the value
+                    // is valid
+                    preference.setSummary(stringValue);
+            }
+        } else {
+            // For other preferences, set the summary to the value's simple string representation.
+            preference.setSummary(stringValue);
+        }
+
+    }
 
     /**
      * Binds a preference's summary to its value. More specifically, when the
