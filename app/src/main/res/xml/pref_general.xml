@@ -1,21 +1,23 @@
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res/com.mcgowan.timetable.itsligotimetables">
 
     <!--<SwitchPreference-->
-        <!--android:defaultValue="true"-->
-        <!--android:key="example_switch"-->
-        <!--android:summary="@string/pref_description_social_recommendations"-->
-        <!--android:title="@string/pref_title_social_recommendations" />-->
+    <!--android:defaultValue="true"-->
+    <!--android:key="example_switch"-->
+    <!--android:summary="@string/pref_description_social_recommendations"-->
+    <!--android:title="@string/pref_title_social_recommendations" />-->
 
     <!-- NOTE: EditTextPreference accepts EditText attributes. -->
     <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->
-    <EditTextPreference
+    <com.mcgowan.timetable.itsligotimetables.StudentIdEditTextPreference
         android:capitalize="words"
         android:defaultValue="@string/student_id_default"
-        android:inputType="textCapWords"
         android:hint="@string/student_id_hint"
+        android:inputType="textCapWords"
         android:key="@string/student_id_key"
-        android:maxLines="1"
         android:maxLength="9"
+        custom:minLength="9"
+        android:maxLines="1"
         android:selectAllOnFocus="true"
         android:singleLine="true"
         android:title="@string/pref_title_display_name" />
