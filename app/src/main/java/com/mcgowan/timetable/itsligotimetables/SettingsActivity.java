@@ -39,6 +39,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupActionBar();
+//        addPreferencesFromResource(R.xml.pref_general);
     }
 
     @Override
@@ -87,6 +88,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public void onBuildHeaders(List<PreferenceActivity.Header> target) {
         loadHeadersFromResource(R.xml.pref_headers, target);
+//        loadHeadersFromResource(R.xml.pref_general, target);
     }
 
     /**
