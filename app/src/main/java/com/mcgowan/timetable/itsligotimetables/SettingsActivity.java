@@ -21,8 +21,6 @@ import android.view.MenuItem;
 
 import com.mcgowan.timetable.itsligotimetables.sync.TimetableSyncAdapter;
 
-import java.util.List;
-
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
  * handset devices, settings are presented as a single list. On tablets,
@@ -39,7 +37,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupActionBar();
-//        addPreferencesFromResource(R.xml.pref_general);
+        addPreferencesFromResource(R.xml.pref_general);
+
+        bindPreferenceSummaryToValue(findPreference(getString(R.string.student_id_key)));
+        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_timetable_key)));
+
     }
 
     @Override
@@ -81,15 +83,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public void onBuildHeaders(List<PreferenceActivity.Header> target) {
-        loadHeadersFromResource(R.xml.pref_headers, target);
-//        loadHeadersFromResource(R.xml.pref_general, target);
-    }
+//    /**
+//     * {@inheritDoc}
+//     */
+//    @Override
+//    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+//    public void onBuildHeaders(List<PreferenceActivity.Header> target) {
+//        loadHeadersFromResource(R.xml.pref_headers, target);
+//    }
 
     /**
      * A preference value change listener that updates the preference's summary
