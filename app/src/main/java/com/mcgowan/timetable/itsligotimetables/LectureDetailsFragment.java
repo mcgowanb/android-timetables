@@ -13,6 +13,8 @@ import android.support.v7.widget.ShareActionProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mcgowan.timetable.itsligotimetables.data.TimetableContract;
@@ -47,6 +49,8 @@ public class LectureDetailsFragment extends Fragment implements LoaderManager.Lo
     static final int COL_TIMETABLE_DAY_ID = 7;
     static final int COL_TIMETABLE_ROOM = 8;
 
+
+
     public LectureDetailsFragment() {
 
     }
@@ -56,7 +60,6 @@ public class LectureDetailsFragment extends Fragment implements LoaderManager.Lo
         super.onCreate(savedInstanceState);
 //        addFloatingActionBar();
     }
-
 
 
     private void addFloatingActionBar() {
@@ -136,8 +139,27 @@ public class LectureDetailsFragment extends Fragment implements LoaderManager.Lo
         );
 
         TextView detailsView = (TextView) getView().findViewById(R.id.detail_text);
-        detailsView.setText(mClassInformation);
+//        detailsView.setText(mClassInformation);
+        setClockTime(mClassInformation);
+//        ImageView clockImage = (ImageView) getView().findViewById(R.id.class_time);
+//        clockImage.setImageResource(R.drawable.time_blank);
+    }
 
+    private void setClockTime(String text) {
+        View currentView = getActivity().findViewById(R.id.fragment_detail);
+        FrameLayout layout = (FrameLayout) currentView.findViewById(R.id.clock_frame_layout);
+
+        ImageView clockImage = new ImageView(getActivity());
+        clockImage.setImageResource(R.drawable.time_blank);
+
+        ImageView timeImage = new ImageView(getActivity());
+        timeImage.setImageResource(R.drawable.nine_ten);
+
+        layout.addView(timeImage);
+        layout.addView(clockImage);
+
+        TextView tv = (TextView) currentView.findViewById(R.id.detail_text);
+        tv.setText(text);
     }
 
     @Override

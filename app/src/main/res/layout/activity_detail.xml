@@ -7,6 +7,11 @@
     android:fitsSystemWindows="true"
     tools:context="com.mcgowan.timetable.itsligotimetables.DetailActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,17 +26,13 @@
 
     </android.support.design.widget.AppBarLayout>
 
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:orientation="horizontal"
+        android:id="@+id/detail_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.example.android.sunshine.app.DetailActivity"
-        tools:ignore="MergeRootFrame" />
-
-
-    <include layout="@layout/fragment_detail" />
+        />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -40,5 +41,5 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:src="@android:drawable/ic_menu_share" />
-
+    </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

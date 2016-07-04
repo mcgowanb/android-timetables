@@ -162,4 +162,48 @@ public class Utility {
         spe.putInt(c.getString(R.string.server_status_key), TimetableSyncAdapter.SERVER_STATUS_UNKNOWN);
         spe.apply();
     }
+
+    public static int getImageForStartTime(Context context, String time){
+        int ref = Integer.parseInt(time.substring(0,2));
+        String fileName;
+
+        switch (ref){
+            case 9:
+                fileName = "time_nine";
+                break;
+            case 10:
+                fileName = "time_ten";
+                break;
+            case 11:
+                fileName = "time_eleven";
+                break;
+            case 12:
+                fileName = "time_twelve";
+                break;
+            case 13:
+                fileName = "time_one";
+                break;
+            case 14:
+                fileName = "time_two";
+                break;
+            case 15:
+                fileName = "time_three";
+                break;
+            case 16:
+                fileName = "time_four";
+                break;
+            case 17:
+                fileName = "time_five";
+                break;
+            case 18:
+                fileName = "time_six";
+                break;
+            default:
+                fileName = "time_blank";
+                break;
+        }
+
+        return context.getResources().getIdentifier("time_blank",
+                "drawable", context.getPackageName());
+    }
 }
