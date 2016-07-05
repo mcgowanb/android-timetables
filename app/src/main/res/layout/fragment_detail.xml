@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment_detail"
     android:layout_width="match_parent"
@@ -7,28 +7,32 @@
     android:paddingBottom="@dimen/activity_horizontal_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_horizontal_margin"
-    android:weightSum="1">
+    android:paddingTop="@dimen/activity_horizontal_margin">
 
+    <FrameLayout
+        android:id="@+id/clock_frame_layout"
+        android:layout_width="120dip"
+        android:layout_height="120dip"
+        android:minHeight="120dip"
+        android:minWidth="120dip"
+        android:padding="@dimen/activity_horizontal_margin">
+        <!-- This is intentionally empty -->
+    </FrameLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/detail_class_name"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <FrameLayout
-            android:id="@+id/clock_frame_layout"
-            android:layout_width="120dip"
-            android:layout_height="120dip"
-            android:layout_weight="3"
-            android:minHeight="120dip"
-            android:minWidth="120dip">
-        </FrameLayout>
-        <TextView
-            android:id="@+id/detail_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="9" />
+        android:layout_toRightOf="@+id/clock_frame_layout"
+        android:padding="@dimen/activity_vertical_margin"
+        android:textSize="27sp"
+        android:textStyle="bold" />
 
-
-    </LinearLayout>
-</LinearLayout>
+    <TextView
+        android:id="@+id/detail_lecturer_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/detail_class_name"
+        android:layout_toRightOf="@+id/clock_frame_layout"
+        android:padding="@dimen/activity_vertical_margin" />
+</RelativeLayout>

@@ -137,10 +137,19 @@ public class LectureDetailsFragment extends Fragment implements LoaderManager.Lo
                 cursor.getString(LectureDetailsFragment.COL_TIMETABLE_LECTURER)
         );
 
-        setClockTime(mClassInformation, startTime, endTime);
+        setClockTime(startTime, endTime);
+
+        TextView classNameView = (TextView) getView().findViewById(R.id.detail_class_name);
+        classNameView.setText(cursor.getString(LectureDetailsFragment.COL_TIMETABLE_SUBJECT));
+
+        TextView lecturerNameView = (TextView) getView().findViewById(R.id.detail_lecturer_name);
+        String lName = "Lecturer: " + cursor.getString(LectureDetailsFragment.COL_TIMETABLE_LECTURER);
+        lecturerNameView.setText(lName);
+
+
     }
 
-    private void setClockTime(String text, String startTime, String endTime) {
+    private void setClockTime(String startTime, String endTime) {
         View currentView = getActivity().findViewById(R.id.fragment_detail);
         FrameLayout layout = (FrameLayout) currentView.findViewById(R.id.clock_frame_layout);
 
@@ -158,8 +167,7 @@ public class LectureDetailsFragment extends Fragment implements LoaderManager.Lo
 
         layout.addView(clockImage);
 
-        TextView tv = (TextView) currentView.findViewById(R.id.detail_text);
-        tv.setText(text);
+
     }
 
     @Override
