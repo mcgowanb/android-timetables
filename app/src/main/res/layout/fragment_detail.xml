@@ -8,9 +8,7 @@
 
     android:orientation="horizontal">
 
-    <Space style="@style/Spacer"
-        android:layout_row="0"
-        android:layout_column="0" />
+    <Space style="@style/Spacer" />
     <TextView
         android:id="@+id/detail_class_name"
         android:layout_columnSpan="2"
@@ -18,7 +16,7 @@
         android:layout_gravity="center_horizontal"
         android:textAlignment="center"
         tools:text="Mathematics"
-        android:textSize="28dp"
+        android:textSize="30dp"
         style="@style/DetailTextView"
         android:layout_row="1"
         android:layout_column="0" />
