@@ -25,7 +25,6 @@ public class DetailActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setIcon(R.drawable.class_details_logo);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
     }
