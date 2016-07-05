@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v7.widget.ShareActionProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +22,6 @@ public class LectureDetailsFragment extends Fragment implements LoaderManager.Lo
 
     private static final String SHARE_CLASS_INFO = " #gettingMySmartOn";
     private String mClassInformation;
-    ShareActionProvider mShareActionProvider;
     private static final int DETAIL_LOADER = 2;
     private static final String LOG_TAG = LectureDetailsFragment.class.getSimpleName();
 
@@ -48,7 +46,6 @@ public class LectureDetailsFragment extends Fragment implements LoaderManager.Lo
     static final int COL_TIMETABLE_SUBJECT = 6;
     static final int COL_TIMETABLE_DAY_ID = 7;
     static final int COL_TIMETABLE_ROOM = 8;
-
 
 
     public LectureDetailsFragment() {
@@ -123,10 +120,12 @@ public class LectureDetailsFragment extends Fragment implements LoaderManager.Lo
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-//        Log.d(LOG_TAG, dumpCursorToString(cursor));
         if (!cursor.moveToFirst()) {
             return;
         }
+
+        String startTime = cursor.getString(LectureDetailsFragment.COL_TIMETABLE_START_TIME);
+        String endTime = cursor.getString(LectureDetailsFragment.COL_TIMETABLE_END_TIME);
 
         mClassInformation = String.format("%s : %s : %s : %s : %s : %s : %s",
                 cursor.getString(LectureDetailsFragment.COL_TIMETABLE_ID),
@@ -138,24 +137,25 @@ public class LectureDetailsFragment extends Fragment implements LoaderManager.Lo
                 cursor.getString(LectureDetailsFragment.COL_TIMETABLE_LECTURER)
         );
 
-        TextView detailsView = (TextView) getView().findViewById(R.id.detail_text);
-//        detailsView.setText(mClassInformation);
-        setClockTime(mClassInformation);
-//        ImageView clockImage = (ImageView) getView().findViewById(R.id.class_time);
-//        clockImage.setImageResource(R.drawable.time_blank);
+        setClockTime(mClassInformation, startTime, endTime);
     }
 
-    private void setClockTime(String text) {
+    private void setClockTime(String text, String startTime, String endTime) {
         View currentView = getActivity().findViewById(R.id.fragment_detail);
         FrameLayout layout = (FrameLayout) currentView.findViewById(R.id.clock_frame_layout);
 
         ImageView clockImage = new ImageView(getActivity());
         clockImage.setImageResource(R.drawable.time_blank);
 
-        ImageView timeImage = new ImageView(getActivity());
-        timeImage.setImageResource(R.drawable.nine_ten);
+        int startIdx = Integer.parseInt(startTime.substring(0, 2));
+        int endIdx = Integer.parseInt(endTime.substring(0, 2));
 
-        layout.addView(timeImage);
+        for (int i = startIdx; i < endIdx; i++) {
+            ImageView timeImage = new ImageView(getActivity());
+            timeImage.setImageResource(Utility.getImageForPeriod(getActivity(), i));
+            layout.addView(timeImage);
+        }
+
         layout.addView(clockImage);
 
         TextView tv = (TextView) currentView.findViewById(R.id.detail_text);

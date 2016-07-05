@@ -2,28 +2,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment_detail"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="horizontal"
     android:paddingBottom="@dimen/activity_horizontal_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_horizontal_margin">
+    android:paddingTop="@dimen/activity_horizontal_margin"
+    android:weightSum="1">
 
-    <FrameLayout
-        android:id="@+id/clock_frame_layout"
-        android:minWidth="120dip"
-        android:layout_height="120dip"
-        android:layout_width="120dip"
-        android:minHeight="120dip"
-        android:layout_weight="3">
-    </FrameLayout>
 
-    <TextView
-        android:id="@+id/detail_text"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="als"
-        android:layout_weight="9" />
+        android:orientation="horizontal">
+        <FrameLayout
+            android:id="@+id/clock_frame_layout"
+            android:layout_width="120dip"
+            android:layout_height="120dip"
+            android:layout_weight="3"
+            android:minHeight="120dip"
+            android:minWidth="120dip">
+        </FrameLayout>
+        <TextView
+            android:id="@+id/detail_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="9" />
 
 
+    </LinearLayout>
 </LinearLayout>

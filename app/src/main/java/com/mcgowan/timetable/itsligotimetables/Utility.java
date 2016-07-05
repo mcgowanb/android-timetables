@@ -163,47 +163,47 @@ public class Utility {
         spe.apply();
     }
 
-    public static int getImageForStartTime(Context context, String time){
-        int ref = Integer.parseInt(time.substring(0,2));
+    public static int getImageForPeriod(Context context, int ref){
         String fileName;
-
         switch (ref){
             case 9:
-                fileName = "time_nine";
+                fileName = "nine";
                 break;
             case 10:
-                fileName = "time_ten";
+                fileName = "ten";
                 break;
             case 11:
-                fileName = "time_eleven";
+                fileName = "eleven";
                 break;
             case 12:
-                fileName = "time_twelve";
+                fileName = "twelve";
                 break;
             case 13:
-                fileName = "time_one";
+                fileName = "one";
                 break;
             case 14:
-                fileName = "time_two";
+                fileName = "two";
                 break;
             case 15:
-                fileName = "time_three";
+                fileName = "three";
                 break;
             case 16:
-                fileName = "time_four";
+                fileName = "four";
                 break;
             case 17:
-                fileName = "time_five";
+                fileName = "five";
                 break;
             case 18:
-                fileName = "time_six";
+                fileName = "six";
                 break;
             default:
-                fileName = "time_blank";
+                fileName = "blank";
                 break;
         }
 
-        return context.getResources().getIdentifier("time_blank",
+        return context.getResources().getIdentifier(fileName,
                 "drawable", context.getPackageName());
     }
+    
+
 }
