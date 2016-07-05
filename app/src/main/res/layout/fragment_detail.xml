@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:columnCount="3"
+    android:background="@color/detailBack"
+
     android:orientation="horizontal">
 
     <Space style="@style/Spacer"
