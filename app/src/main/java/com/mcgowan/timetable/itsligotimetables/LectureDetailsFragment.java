@@ -144,10 +144,16 @@ public class LectureDetailsFragment extends Fragment implements LoaderManager.Lo
         lecturerNameView.setText(lName);
 
         TextView roomNameView = (TextView) getView().findViewById(R.id.detail_room_name);
-        roomNameView.setText(cursor.getString(LectureDetailsFragment.COL_TIMETABLE_ROOM));
+        String rName = "Where: " + cursor.getString(LectureDetailsFragment.COL_TIMETABLE_ROOM);
+        roomNameView.setText(rName);
 
-        TextView timeSlotView = (TextView) getView().findViewById(R.id.detail_times);
-        timeSlotView.setText(cursor.getString(LectureDetailsFragment.COL_TIMETABLE_TIME));
+        TextView startTimeView = (TextView) getView().findViewById(R.id.detail_start_time);
+        String sTime = "From: " + cursor.getString(LectureDetailsFragment.COL_TIMETABLE_START_TIME);
+        startTimeView.setText(sTime);
+
+        TextView endTimeView = (TextView) getView().findViewById(R.id.detail_end_time);
+        String eTime = "To: " + cursor.getString(LectureDetailsFragment.COL_TIMETABLE_END_TIME);
+        endTimeView.setText(eTime);
 
 
     }
