@@ -14,8 +14,7 @@
         android:layout_width="120dip"
         android:layout_height="120dip"
         android:minHeight="120dip"
-        android:minWidth="120dip"
-        android:padding="@dimen/activity_horizontal_margin">
+        android:minWidth="120dip">
         <!-- This is intentionally empty -->
     </FrameLayout>
 
@@ -35,4 +34,22 @@
         android:layout_below="@+id/detail_class_name"
         android:layout_toRightOf="@+id/clock_frame_layout"
         android:padding="@dimen/activity_vertical_margin" />
+
+    <TextView
+        android:id="@+id/detail_room_name"
+        android:layout_width="120dip"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/detail_lecturer_name"
+        android:textAlignment="center"
+        android:padding="@dimen/activity_vertical_margin"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/detail_times"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/detail_lecturer_name"
+        android:layout_toRightOf="@+id/clock_frame_layout"
+        android:padding="@dimen/activity_vertical_margin" />
+
 </RelativeLayout>

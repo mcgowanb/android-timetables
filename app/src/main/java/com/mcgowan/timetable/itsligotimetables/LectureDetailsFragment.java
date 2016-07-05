@@ -20,7 +20,7 @@ import com.mcgowan.timetable.itsligotimetables.data.TimetableContract;
 
 public class LectureDetailsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final String SHARE_CLASS_INFO = " #gettingMySmartOn";
+    private static final String SHARE_CLASS_INFO = " #timetables";
     private String mClassInformation;
     private static final int DETAIL_LOADER = 2;
     private static final String LOG_TAG = LectureDetailsFragment.class.getSimpleName();
@@ -127,13 +127,10 @@ public class LectureDetailsFragment extends Fragment implements LoaderManager.Lo
         String startTime = cursor.getString(LectureDetailsFragment.COL_TIMETABLE_START_TIME);
         String endTime = cursor.getString(LectureDetailsFragment.COL_TIMETABLE_END_TIME);
 
-        mClassInformation = String.format("%s : %s : %s : %s : %s : %s : %s",
-                cursor.getString(LectureDetailsFragment.COL_TIMETABLE_ID),
-                cursor.getString(LectureDetailsFragment.COL_TIMETABLE_ROOM),
-                cursor.getString(LectureDetailsFragment.COL_TIMETABLE_DAY_ID),
-                cursor.getString(LectureDetailsFragment.COL_TIMETABLE_DAY),
+        mClassInformation = String.format("%s, %s. %s, %s",
                 cursor.getString(LectureDetailsFragment.COL_TIMETABLE_TIME),
                 cursor.getString(LectureDetailsFragment.COL_TIMETABLE_SUBJECT),
+                cursor.getString(LectureDetailsFragment.COL_TIMETABLE_ROOM),
                 cursor.getString(LectureDetailsFragment.COL_TIMETABLE_LECTURER)
         );
 
@@ -145,6 +142,12 @@ public class LectureDetailsFragment extends Fragment implements LoaderManager.Lo
         TextView lecturerNameView = (TextView) getView().findViewById(R.id.detail_lecturer_name);
         String lName = "Lecturer: " + cursor.getString(LectureDetailsFragment.COL_TIMETABLE_LECTURER);
         lecturerNameView.setText(lName);
+
+        TextView roomNameView = (TextView) getView().findViewById(R.id.detail_room_name);
+        roomNameView.setText(cursor.getString(LectureDetailsFragment.COL_TIMETABLE_ROOM));
+
+        TextView timeSlotView = (TextView) getView().findViewById(R.id.detail_times);
+        timeSlotView.setText(cursor.getString(LectureDetailsFragment.COL_TIMETABLE_TIME));
 
 
     }
