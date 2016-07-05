@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private void initMenuDetails() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
     }
 
