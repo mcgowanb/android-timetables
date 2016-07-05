@@ -18,7 +18,7 @@
         android:layout_gravity="center_horizontal"
         android:textAlignment="center"
         tools:text="Mathematics"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textSize="28dp"
         style="@style/DetailTextView"
         android:layout_row="1"
         android:layout_column="0" />

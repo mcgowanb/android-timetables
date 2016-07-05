@@ -2,6 +2,7 @@ package com.mcgowan.timetable.itsligotimetables;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -137,6 +138,8 @@ public class LectureDetailsFragment extends Fragment implements LoaderManager.Lo
         setClockTime(startTime, endTime);
 
         TextView classNameView = (TextView) getView().findViewById(R.id.detail_class_name);
+        Typeface face=Typeface.createFromAsset(getActivity().getAssets(),"fonts/RockSalt.ttf");
+        classNameView.setTypeface(face);
         classNameView.setText(cursor.getString(LectureDetailsFragment.COL_TIMETABLE_SUBJECT));
 
         TextView lecturerNameView = (TextView) getView().findViewById(R.id.detail_lecturer_name);
