@@ -56,7 +56,6 @@ public class LectureDetailsFragment extends Fragment implements LoaderManager.Lo
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        addFloatingActionBar();
     }
 
 
@@ -77,9 +76,6 @@ public class LectureDetailsFragment extends Fragment implements LoaderManager.Lo
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
-
-        //create member variables here for additional fields so they are not recreated multiple times
-
         return rootView;
     }
 
@@ -162,7 +158,7 @@ public class LectureDetailsFragment extends Fragment implements LoaderManager.Lo
     }
 
     private void setClockTime(String startTime, String endTime) {
-        View currentView = getActivity().findViewById(R.id.fragment_detail);
+        View currentView = getActivity().findViewById(R.id.fragment_cardView);
         FrameLayout layout = (FrameLayout) currentView.findViewById(R.id.clock_frame_layout);
 
         ImageView clockImage = new ImageView(getActivity());

@@ -64,6 +64,8 @@ SharedPreferences.OnSharedPreferenceChangeListener{
 
     }
 
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,6 +117,7 @@ SharedPreferences.OnSharedPreferenceChangeListener{
                                     .buildTimetableUri(cursor.getInt(COL_TIMETABLE_ID)));
                     startActivity(intent);
                 }
+
             }
         });
         return rootView;

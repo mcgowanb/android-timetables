@@ -9,6 +9,10 @@
         <item name="toolbarStyle">@style/Toolbar</item>
     </style>
 
+    <style name="AppTheme.Main" parent="AppTheme" />
+
+    <style name="AppTheme.Detail" parent="AppTheme" />
+
     <style name="Spacer">
         <item name="android:layout_height">30dp</item>
         <item name="android:layout_width">match_parent</item>
