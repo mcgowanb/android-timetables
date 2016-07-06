@@ -66,7 +66,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             actionBar.setDisplayShowHomeEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
             actionBar.setIcon(R.drawable.settings);
-//            actionBar.setDisplayUseLogoEnabled(true);
         }
     }
 

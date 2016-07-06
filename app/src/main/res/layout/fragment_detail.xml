@@ -1,61 +1,73 @@
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment_detail"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:columnCount="2"
+    android:layout_height="wrap_content"
     android:background="@color/detailBack"
+    app:cardElevation="5dp"
+    app:cardPreventCornerOverlap="false">
 
-    android:orientation="horizontal">
-
-    <TextView
-        android:id="@+id/detail_class_name"
-        android:layout_columnSpan="2"
+    <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_gravity="center_horizontal"
-        android:textAlignment="center"
-        tools:text="Mathematics"
-        android:textSize="30dp"
-        style="@style/DetailTextView" />
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:background="@color/detailBack"
+        android:columnCount="2"
+        android:orientation="horizontal">
 
-
-    <FrameLayout
-        android:id="@+id/clock_frame_layout"
-        android:layout_width="190dip"
-        android:layout_height="190dip"
-        android:minHeight="190dip"
-        android:minWidth="190dip"
-        android:layout_columnWeight="1">
-        <!-- This is intentionally empty -->
-    </FrameLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_columnWeight="1">
 
         <TextView
-            android:id="@+id/detail_lecturer_name"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:id="@+id/detail_class_name"
             style="@style/DetailTextView"
-            tools:text="Lecturer"/>
+            android:layout_width="match_parent"
+            android:layout_columnSpan="2"
+            android:layout_gravity="center_horizontal"
+            android:textAlignment="center"
+            android:textSize="30dp"
+            tools:text="Mathematics" />
 
-        <TextView
-            android:id="@+id/detail_start_time"
-            style="@style/DetailTextView"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            tools:text="Lecturer" />
 
-        <TextView
-            android:id="@+id/detail_end_time"
-            style="@style/DetailTextView"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            tools:text="Lecturer" />
+        <FrameLayout
+            android:id="@+id/clock_frame_layout"
+            android:layout_width="190dip"
+            android:layout_height="190dip"
+            android:layout_columnWeight="1"
+            android:minHeight="190dip"
+            android:minWidth="190dip">
+            <!-- This is intentionally empty -->
+        </FrameLayout>
 
-        <TextView
-            android:id="@+id/detail_room_name"
-            style="@style/DetailTextView"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            tools:text="Lecturer" />
-    </LinearLayout>
+        <LinearLayout
+            android:layout_columnWeight="1"
+            android:orientation="vertical">
 
-</GridLayout>
+            <TextView
+                android:id="@+id/detail_lecturer_name"
+                style="@style/DetailTextView"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                tools:text="Lecturer" />
+
+            <TextView
+                android:id="@+id/detail_start_time"
+                style="@style/DetailTextView"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                tools:text="Lecturer" />
+
+            <TextView
+                android:id="@+id/detail_end_time"
+                style="@style/DetailTextView"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                tools:text="Lecturer" />
+
+            <TextView
+                android:id="@+id/detail_room_name"
+                style="@style/DetailTextView"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                tools:text="Lecturer" />
+        </LinearLayout>
+
+    </GridLayout>
+</android.support.v7.widget.CardView>
