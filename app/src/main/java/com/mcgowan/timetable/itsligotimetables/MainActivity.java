@@ -48,6 +48,13 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 //        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+
+        for (int i=0;i<menu.size();i++) {
+            MenuItem mi = menu.getItem(i);
+            Utility.applyFontToMenuItem(this, mi);
+        }
+
+
         return true;
     }
 
@@ -59,8 +66,6 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_settings:
                 return openSettingsDetail();
 
-            case R.id.action_map:
-                return openMapDetails();
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -69,14 +74,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean openSettingsDetail() {
         Intent settingsIntent = new Intent(this, SettingsActivity.class);
         startActivity(settingsIntent);
-        return true;
-    }
-
-    public boolean openMapDetails() {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivity(intent);
-        }
         return true;
     }
 
@@ -96,7 +93,5 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
-
 
 }

@@ -77,6 +77,11 @@ SharedPreferences.OnSharedPreferenceChangeListener{
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_timetablefragmemt, menu);
+        for (int i=0;i<menu.size();i++) {
+            MenuItem mi = menu.getItem(i);
+            Utility.applyFontToMenuItem(getActivity(), mi);
+        }
+
     }
 
     @Override

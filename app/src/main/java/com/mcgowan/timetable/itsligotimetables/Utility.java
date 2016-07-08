@@ -4,10 +4,14 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.util.Log;
+import android.view.MenuItem;
 
 import com.mcgowan.timetable.itsligotimetables.data.TimetableContract;
 import com.mcgowan.timetable.itsligotimetables.sync.TimetableSyncAdapter;
@@ -204,6 +208,11 @@ public class Utility {
         return context.getResources().getIdentifier(fileName,
                 "drawable", context.getPackageName());
     }
-    
 
+    public static void applyFontToMenuItem(Context context, MenuItem mi) {
+        Typeface font = Typeface.createFromAsset(context.getAssets(), "fonts/RockSalt.ttf");
+        SpannableString mNewTitle = new SpannableString(mi.getTitle());
+        mNewTitle.setSpan(new CustomTypefaceSpan("" , font), 0 , mNewTitle.length(),  Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        mi.setTitle(mNewTitle);
+    }
 }
