@@ -57,6 +57,7 @@
                 <TextView
                     android:id="@+id/detail_start_time"
                     style="@style/DetailTextView"
+                    android:layout_width="wrap_content"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                     tools:text="Lecturer" />
 
