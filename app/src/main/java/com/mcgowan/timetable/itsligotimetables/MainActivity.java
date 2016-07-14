@@ -1,11 +1,16 @@
 package com.mcgowan.timetable.itsligotimetables;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import com.mcgowan.timetable.itsligotimetables.sync.TimetableSyncAdapter;
 
@@ -24,6 +29,23 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mStudentId = Utility.getStudentId(this);
         setContentView(R.layout.activity_main);
+
+        switch (AppVersionCheck.checkAppStart(this)) {
+            case NORMAL:
+
+                // We don't want to get on the user's nerves
+                break;
+            case FIRST_TIME_VERSION:
+                Toast.makeText(this,"First time version", Toast.LENGTH_SHORT).show();
+                // TODO show what's new
+                break;
+            case FIRST_TIME:
+                Toast.makeText(this,"First time", Toast.LENGTH_SHORT).show();
+                // TODO show a tutorial
+                break;
+            default:
+                break;
+        }
 
         initMenuDetails();
 
@@ -83,7 +105,11 @@ public class MainActivity extends AppCompatActivity {
 
         String studentId = Utility.getStudentId(this);
 
-        if(studentId != null && !studentId.equals(mStudentId)){
+        if(studentId.equals("")){
+            showNoStudentIdDialog();
+        }
+
+        else if (studentId != null && !studentId.equals(mStudentId)){
             TimeTableFragment tf = (TimeTableFragment)getSupportFragmentManager()
                     .findFragmentByTag(TIMETABLEFRAGMENT_TAG);
             if(null != tf){
@@ -92,6 +118,24 @@ public class MainActivity extends AppCompatActivity {
             mStudentId = studentId;
         }
 
+    }
+
+    private void showNoStudentIdDialog() {
+
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View view = inflater.inflate(R.layout.dialog_no_id, null);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setView(view).setTitle(getString(R.string.no_id_dialog_title));
+        builder.setCancelable(false);
+        builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                openSettingsDetail();
+            }
+        });
+        builder.create().show();
     }
 
 }

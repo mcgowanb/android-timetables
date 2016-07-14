@@ -9,6 +9,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.DialogPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
@@ -87,14 +88,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE;
     }
 
-//    /**
-//     * {@inheritDoc}
-//     */
-//    @Override
-//    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-//    public void onBuildHeaders(List<PreferenceActivity.Header> target) {
-//        loadHeadersFromResource(R.xml.pref_headers, target);
-//    }
 
     /**
      * A preference value change listener that updates the preference's summary
