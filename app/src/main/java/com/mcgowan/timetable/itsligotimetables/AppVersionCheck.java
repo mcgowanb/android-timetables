@@ -7,9 +7,6 @@ import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-/**
- * Created by Brian on 14/07/2016.
- */
 public class AppVersionCheck {
     /**
      * Distinguishes different kinds of app starts: <li>
@@ -30,7 +27,7 @@ public class AppVersionCheck {
         FIRST_TIME, FIRST_TIME_VERSION, NORMAL;
     }
 
-    private static final String LOG_TAG = LectureDetailsFragment.class.getSimpleName();
+    private static final String LOG_TAG = AppVersionCheck.class.getSimpleName();
 
     /**
      * The app version code (not the version name!) that was used on the last

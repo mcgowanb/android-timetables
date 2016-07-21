@@ -32,8 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
         switch (AppVersionCheck.checkAppStart(this)) {
             case NORMAL:
-
-                // We don't want to get on the user's nerves
+                // No need to do anything
                 break;
             case FIRST_TIME_VERSION:
                 Toast.makeText(this,"First time version", Toast.LENGTH_SHORT).show();
