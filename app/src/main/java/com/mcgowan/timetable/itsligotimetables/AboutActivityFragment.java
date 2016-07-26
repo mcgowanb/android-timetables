@@ -14,7 +14,7 @@ import us.feras.mdv.MarkdownView;
  */
 public class AboutActivityFragment extends Fragment {
 
-    private static final String MARKDOWN_URL = "https://raw.githubusercontent.com/mcgowanb/android-timetables/master/about.md";
+    private static final String MARKDOWN_URL = "https://raw.githubusercontent.com/mcgowanb/itsligo-timetables-android/master/about.md";
 
     public AboutActivityFragment() {
     }
@@ -24,7 +24,6 @@ public class AboutActivityFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         MarkdownView markdownView = (MarkdownView) getActivity().findViewById(R.id.about_markdownView);
-//        markdownView.loadMarkdown("## Hello Markdown");
         markdownView.loadMarkdownFile(MARKDOWN_URL);
 
     }
