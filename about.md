@@ -40,8 +40,8 @@ Enjoy....
 #My Details
 Contact me: mcgowan.b@gmail.com
 
-[Scraper Github:](https://github.com/mcgowanb/scraper)
+[Scraper Github:](https://github.com/mcgowanb/itsligo-timetables-scraper)
 
-[Android Github](https://github.com/mcgowanb/android-timetables)
+[Android Github](https://github.com/mcgowanb/itsligo-timetables-android)
 
 [Blog](https://bmcgowanblog.wordpress.com/)
