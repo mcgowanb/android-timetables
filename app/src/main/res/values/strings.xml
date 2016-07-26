@@ -85,6 +85,7 @@
     <string name="set_id_content">There is currently no student id set for this app. Please enter your student id in order to load in timetable information correctly</string>
     <string name="no_id_dialog_title">Whoops.....</string>
     <string name="ok">OK</string>
+    <string name="action_about">About</string>
 
 
 </resources>

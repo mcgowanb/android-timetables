@@ -86,7 +86,8 @@ public class MainActivity extends AppCompatActivity {
         switch (id) {
             case R.id.action_settings:
                 return openSettingsDetail();
-
+            case R.id.action_about:
+                showAboutDialog();
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -103,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         String studentId = Utility.getStudentId(this);
-
         if(studentId.equals("")){
             showNoStudentIdDialog();
         }
@@ -135,6 +135,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         builder.create().show();
+    }
+
+    private void showAboutDialog(){
+
     }
 
 }
