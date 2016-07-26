@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_settings:
                 return openSettingsDetail();
             case R.id.action_about:
-                showAboutDialog();
+                launchAboutActivity();
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -137,8 +137,9 @@ public class MainActivity extends AppCompatActivity {
         builder.create().show();
     }
 
-    private void showAboutDialog(){
-
+    private void launchAboutActivity(){
+        Intent intent = new Intent(this, AboutActivity.class);
+        startActivity(intent);
     }
 
 }

@@ -28,7 +28,7 @@ import com.mcgowan.timetable.itsligotimetables.sync.TimetableSyncAdapter;
  * A placeholder fragment containing a simple view.
  */
 public class TimeTableFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
-SharedPreferences.OnSharedPreferenceChangeListener{
+        SharedPreferences.OnSharedPreferenceChangeListener {
 
     TimetableAdapter mTimetableAdapter;
 
@@ -65,7 +65,6 @@ SharedPreferences.OnSharedPreferenceChangeListener{
     }
 
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +76,8 @@ SharedPreferences.OnSharedPreferenceChangeListener{
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_timetablefragmemt, menu);
-        for (int i=0;i<menu.size();i++) {
+        //add fonts to all items
+        for (int i = 0; i < menu.size(); i++) {
             MenuItem mi = menu.getItem(i);
             Utility.applyFontToMenuItem(getActivity(), mi);
         }
@@ -172,20 +172,20 @@ SharedPreferences.OnSharedPreferenceChangeListener{
             //set the cursor position to the current day
             mListView.smoothScrollToPositionFromTop(mPosition, 0);
         }
-       updateEmptyView();
+        updateEmptyView();
     }
 
     /**
      * Updates the view with empty message, contextually relevant to the network connection
      */
-    public void updateEmptyView(){
-        if(mTimetableAdapter.getCount() == 0){
+    public void updateEmptyView() {
+        if (mTimetableAdapter.getCount() == 0) {
             TextView tv = (TextView) getView().findViewById(R.id.listview_empty);
-            if (null != tv){
+            if (null != tv) {
                 int message = R.string.no_info_available;
                 @TimetableSyncAdapter.ServerStatus int serverStatus = Utility.getServerStatus(getContext());
 
-                switch (serverStatus){
+                switch (serverStatus) {
                     case TimetableSyncAdapter.SERVER_STATUS_SERVER_DOWN:
                         message = R.string.server_down;
                         break;
@@ -195,7 +195,7 @@ SharedPreferences.OnSharedPreferenceChangeListener{
                     case TimetableSyncAdapter.SERVER_STATUS_UNKNOWN:
                         message = R.string.server_unknown;
                     default:
-                        if (!Utility.hasNetworkConnectivity(getActivity())){
+                        if (!Utility.hasNetworkConnectivity(getActivity())) {
                             message = R.string.no_network;
                         }
                 }
@@ -225,7 +225,7 @@ SharedPreferences.OnSharedPreferenceChangeListener{
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if(key.equals(getString(R.string.server_status_key))){
+        if (key.equals(getString(R.string.server_status_key))) {
             updateEmptyView();
         }
     }
