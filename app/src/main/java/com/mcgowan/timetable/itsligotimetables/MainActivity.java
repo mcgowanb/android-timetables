@@ -88,9 +88,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_settings:
                 return openSettingsDetail();
             case R.id.action_about:
-                launchAboutActivity();
+                return launchAboutActivity();
             case R.id.action_version:
-                displayVersion();
+                return displayVersion();
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -140,12 +140,13 @@ public class MainActivity extends AppCompatActivity {
         builder.create().show();
     }
 
-    private void launchAboutActivity(){
+    private boolean launchAboutActivity(){
         Intent intent = new Intent(this, AboutActivity.class);
         startActivity(intent);
+        return true;
     }
 
-    private void displayVersion(){
+    private boolean displayVersion(){
         LayoutInflater inflater = LayoutInflater.from(this);
 
         View view = inflater.inflate(R.layout.dialog_main, null);
@@ -164,6 +165,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         builder.create().show();
+        return true;
     }
 
 }

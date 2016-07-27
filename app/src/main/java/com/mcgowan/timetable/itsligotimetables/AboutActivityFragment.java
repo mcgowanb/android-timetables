@@ -14,7 +14,7 @@ import us.feras.mdv.MarkdownView;
  */
 public class AboutActivityFragment extends Fragment {
 
-    private static final String MARKDOWN_URL = "https://raw.githubusercontent.com/mcgowanb/itsligo-timetables-android/master/about.md";
+    private static final String MARKDOWN_URL = "file:///android_asset/about.md";
 
     public AboutActivityFragment() {
     }
