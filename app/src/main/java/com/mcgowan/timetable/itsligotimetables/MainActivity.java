@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mcgowan.timetable.itsligotimetables.sync.TimetableSyncAdapter;
@@ -88,6 +89,8 @@ public class MainActivity extends AppCompatActivity {
                 return openSettingsDetail();
             case R.id.action_about:
                 launchAboutActivity();
+            case R.id.action_version:
+                displayVersion();
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -122,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
     private void showNoStudentIdDialog() {
 
         LayoutInflater inflater = LayoutInflater.from(this);
-        View view = inflater.inflate(R.layout.dialog_no_id, null);
+        View view = inflater.inflate(R.layout.dialog_main, null);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -140,6 +143,27 @@ public class MainActivity extends AppCompatActivity {
     private void launchAboutActivity(){
         Intent intent = new Intent(this, AboutActivity.class);
         startActivity(intent);
+    }
+
+    private void displayVersion(){
+        LayoutInflater inflater = LayoutInflater.from(this);
+
+        View view = inflater.inflate(R.layout.dialog_main, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setView(view).setTitle(getString(R.string.app_version_title));
+
+        TextView content = (TextView) view.findViewById(R.id.dialog_main_text_view);
+
+        content.setText(BuildConfig.VERSION_NAME);
+
+        builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+               dialog.dismiss();
+            }
+        });
+        builder.create().show();
     }
 
 }

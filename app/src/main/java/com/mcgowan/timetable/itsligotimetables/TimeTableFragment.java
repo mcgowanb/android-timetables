@@ -117,7 +117,7 @@ public class TimeTableFragment extends Fragment implements LoaderManager.LoaderC
                 // if it cannot seek to that position.
                 Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
                 if (cursor != null) {
-                    Intent intent = new Intent(getActivity(), DetailActivity.class).
+                    Intent intent = new Intent(getActivity(), LectureDetailsActivity.class).
                             setData(TimetableContract.TimetableEntry
                                     .buildTimetableUri(cursor.getInt(COL_TIMETABLE_ID)));
                     startActivity(intent);

@@ -7,6 +7,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/DetailTextView"
+        android:id="@+id/dialog_main_text_view"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/set_id_content"
         android:layout_gravity="center_horizontal" />
