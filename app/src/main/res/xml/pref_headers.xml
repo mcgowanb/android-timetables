@@ -4,17 +4,17 @@
 
     <header
         android:fragment="com.mcgowan.timetable.itsligotimetables.SettingsActivity$GeneralPreferenceFragment"
-        android:icon="@drawable/ic_info_black_24dp"
+        android:icon="@drawable/ic_build_black_24dp"
         android:title="@string/pref_header_general" />
 
     <header
-        android:fragment="com.mcgowan.timetable.itsligotimetables.SettingsActivity$NotificationPreferenceFragment"
-        android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="@string/pref_header_notifications" />
+        android:id="@+id/pref_about"
+        android:icon="@drawable/ic_info_black_24dp"
+        android:title="@string/action_about" />
 
     <header
-        android:fragment="com.mcgowan.timetable.itsligotimetables.SettingsActivity$DataSyncPreferenceFragment"
-        android:icon="@drawable/ic_sync_black_24dp"
-        android:title="@string/pref_header_data_sync" />
+        android:id="@+id/pref_version"
+        android:icon="@drawable/ic_whatshot_black_24dp"
+        android:title="@string/action_version" />
 
 </preference-headers>

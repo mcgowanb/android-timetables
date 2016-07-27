@@ -3,6 +3,8 @@ package com.mcgowan.timetable.itsligotimetables;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -16,11 +18,16 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.mcgowan.timetable.itsligotimetables.sync.TimetableSyncAdapter;
+
+import java.util.List;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -41,19 +48,40 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         super.onCreate(savedInstanceState);
 
         setupActionBar();
-        addPreferencesFromResource(R.xml.pref_general);
+//        addPreferencesFromResource(R.xml.pref_general);
 
-        bindPreferenceSummaryToValue(findPreference(getString(R.string.student_id_key)));
-        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_timetable_key)));
+//        bindPreferenceSummaryToValue(findPreference(getString(R.string.student_id_key)));
+//        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_timetable_key)));
 
     }
+    /**
+     * {@inheritDoc}
+     * remove this when needed to revert
+     */
+    @Override
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public void onBuildHeaders(List<Header> target) {
+        loadHeadersFromResource(R.xml.pref_headers, target);
+    }
 
+    @Override
+    public void onHeaderClick(Header header, int position) {
+        super.onHeaderClick(header, position);
+        switch((int)header.id){
+            case  R.id.pref_about:
+                launchAboutActivity();
+                break;
 
+            case R.id.pref_version:
+                displayVersion();
+                break;
+        }
+
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        Log.d(LOG_TAG, String.valueOf(id));
         if (id == android.R.id.home) {
             this.finish();
             return true;
@@ -310,5 +338,31 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             }
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void launchAboutActivity(){
+        Intent intent = new Intent(this, AboutActivity.class);
+        startActivity(intent);
+    }
+
+    private void displayVersion(){
+        LayoutInflater inflater = LayoutInflater.from(this);
+
+        View view = inflater.inflate(R.layout.dialog_main, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setView(view).setTitle(getString(R.string.app_version_title));
+
+        TextView content = (TextView) view.findViewById(R.id.dialog_main_text_view);
+
+        content.setText(BuildConfig.VERSION_NAME);
+
+        builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
     }
 }

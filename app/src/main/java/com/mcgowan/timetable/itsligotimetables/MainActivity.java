@@ -87,10 +87,7 @@ public class MainActivity extends AppCompatActivity {
         switch (id) {
             case R.id.action_settings:
                 return openSettingsDetail();
-            case R.id.action_about:
-                return launchAboutActivity();
-            case R.id.action_version:
-                return displayVersion();
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -139,33 +136,4 @@ public class MainActivity extends AppCompatActivity {
         });
         builder.create().show();
     }
-
-    private boolean launchAboutActivity(){
-        Intent intent = new Intent(this, AboutActivity.class);
-        startActivity(intent);
-        return true;
-    }
-
-    private boolean displayVersion(){
-        LayoutInflater inflater = LayoutInflater.from(this);
-
-        View view = inflater.inflate(R.layout.dialog_main, null);
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        builder.setView(view).setTitle(getString(R.string.app_version_title));
-
-        TextView content = (TextView) view.findViewById(R.id.dialog_main_text_view);
-
-        content.setText(BuildConfig.VERSION_NAME);
-
-        builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-               dialog.dismiss();
-            }
-        });
-        builder.create().show();
-        return true;
-    }
-
 }
