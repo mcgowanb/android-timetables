@@ -31,7 +31,7 @@ android it renders information to the user.
 
 
 
-This app is and is likely to be for a considerable amount of time a work in progress. I aim to constantly improve it and make changes to it, in addition
+This app is, and is likely to be for a considerable amount of time a work in progress. I aim to constantly improve it and make changes to it, in addition
 to leaving it open to others to make changes to it. Due to the nature of the project, it can only be as accurate as the website itself and so its not guaranteed to be
 100% accurate all of the time. Oh, and this is not affiliated with the institute in any way, and is completely unofficial
 
