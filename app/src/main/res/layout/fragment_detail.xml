@@ -49,26 +49,26 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/detail_lecturer_name"
+                    android:id="@+id/detail_day"
                     style="@style/DetailTextView"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                     tools:text="Lecturer" />
 
                 <TextView
-                    android:id="@+id/detail_start_time"
+                    android:id="@+id/detail_time"
                     style="@style/DetailTextView"
                     android:layout_width="wrap_content"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                     tools:text="Lecturer" />
 
                 <TextView
-                    android:id="@+id/detail_end_time"
+                    android:id="@+id/detail_room_name"
                     style="@style/DetailTextView"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                     tools:text="Lecturer" />
 
                 <TextView
-                    android:id="@+id/detail_room_name"
+                    android:id="@+id/detail_lecturer_name"
                     style="@style/DetailTextView"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                     tools:text="Lecturer" />

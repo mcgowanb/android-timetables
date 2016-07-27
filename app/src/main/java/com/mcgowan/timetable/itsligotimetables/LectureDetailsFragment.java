@@ -21,7 +21,7 @@ import com.mcgowan.timetable.itsligotimetables.data.TimetableContract;
 
 public class LectureDetailsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final String SHARE_CLASS_INFO = " #timetables";
+    private static final String SHARE_CLASS_INFO = " #itsligo";
     private String mClassInformation;
     private static final int DETAIL_LOADER = 2;
     private static final String LOG_TAG = LectureDetailsFragment.class.getSimpleName();
@@ -124,7 +124,8 @@ public class LectureDetailsFragment extends Fragment implements LoaderManager.Lo
         String startTime = cursor.getString(LectureDetailsFragment.COL_TIMETABLE_START_TIME);
         String endTime = cursor.getString(LectureDetailsFragment.COL_TIMETABLE_END_TIME);
 
-        mClassInformation = String.format("%s, %s. %s, %s",
+        mClassInformation = String.format("%s, %s, %s.\nIn %s\nWith %s",
+                cursor.getString(LectureDetailsFragment.COL_TIMETABLE_DAY),
                 cursor.getString(LectureDetailsFragment.COL_TIMETABLE_TIME),
                 cursor.getString(LectureDetailsFragment.COL_TIMETABLE_SUBJECT),
                 cursor.getString(LectureDetailsFragment.COL_TIMETABLE_ROOM),
@@ -139,20 +140,21 @@ public class LectureDetailsFragment extends Fragment implements LoaderManager.Lo
         classNameView.setText(cursor.getString(LectureDetailsFragment.COL_TIMETABLE_SUBJECT));
 
         TextView lecturerNameView = (TextView) getView().findViewById(R.id.detail_lecturer_name);
-        String lName = "Lecturer: " + cursor.getString(LectureDetailsFragment.COL_TIMETABLE_LECTURER);
+        String lName = cursor.getString(LectureDetailsFragment.COL_TIMETABLE_LECTURER);
         lecturerNameView.setText(lName);
 
         TextView roomNameView = (TextView) getView().findViewById(R.id.detail_room_name);
-        String rName = "Where: " + cursor.getString(LectureDetailsFragment.COL_TIMETABLE_ROOM);
+        String rName = cursor.getString(LectureDetailsFragment.COL_TIMETABLE_ROOM);
         roomNameView.setText(rName);
 
-        TextView startTimeView = (TextView) getView().findViewById(R.id.detail_start_time);
-        String sTime = "From: " + cursor.getString(LectureDetailsFragment.COL_TIMETABLE_START_TIME);
-        startTimeView.setText(sTime);
+        TextView startTimeView = (TextView) getView().findViewById(R.id.detail_time);
+        String sTime = cursor.getString(LectureDetailsFragment.COL_TIMETABLE_START_TIME);
+        String eTime = cursor.getString(LectureDetailsFragment.COL_TIMETABLE_END_TIME);
+        startTimeView.setText(String.format("%s - %s", sTime, eTime));
 
-        TextView endTimeView = (TextView) getView().findViewById(R.id.detail_end_time);
-        String eTime = "To: " + cursor.getString(LectureDetailsFragment.COL_TIMETABLE_END_TIME);
-        endTimeView.setText(eTime);
+        TextView endTimeView = (TextView) getView().findViewById(R.id.detail_day);
+        String day = cursor.getString(LectureDetailsFragment.COL_TIMETABLE_DAY);
+        endTimeView.setText(day);
 
 
     }
