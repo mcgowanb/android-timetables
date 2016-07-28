@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.mcgowan.timetable.itsligotimetables">
+    package="com.mcgowan.timetable.android">
 
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name="com.mcgowan.timetable.android.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -25,26 +25,26 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LectureDetailsActivity"
+            android:name="com.mcgowan.timetable.android.LectureDetailsActivity"
             android:label="@string/title_activity_detail"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="com.mcgowan.timetable.android.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mcgowan.timetable.itsligotimetables.MainActivity" />
+                android:value="com.mcgowan.timetable.android.MainActivity" />
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name="com.mcgowan.timetable.android.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="com.mcgowan.timetable.android.MainActivity"
             android:theme="@style/SettingsTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mcgowan.timetable.itsligotimetables.MainActivity" />
+                android:value="com.mcgowan.timetable.android.MainActivity" />
         </activity>
 
         <!-- SyncAdapter's dummy authentication service -->
-        <service android:name=".sync.TimetableAuthenticatorService">
+        <service android:name="com.mcgowan.timetable.android.sync.TimetableAuthenticatorService">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
@@ -55,7 +55,7 @@
         </service>
 
         <provider
-            android:name=".data.TimetableProvider"
+            android:name="com.mcgowan.timetable.android.data.TimetableProvider"
             android:authorities="@string/content_authority"
             android:exported="false"
             android:syncable="true" />
@@ -65,7 +65,7 @@
 
         <!-- The SyncAdapter service -->
         <service
-            android:name=".sync.TimetableSyncService"
+            android:name="com.mcgowan.timetable.android.sync.TimetableSyncService"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.content.SyncAdapter" />
@@ -77,13 +77,13 @@
         </service>
 
         <activity
-            android:name=".AboutActivity"
+            android:name="com.mcgowan.timetable.android.AboutActivity"
             android:label="@string/title_activity_about"
-            android:parentActivityName=".SettingsActivity"
+            android:parentActivityName="com.mcgowan.timetable.android.SettingsActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mcgowan.timetable.itsligotimetables.MainActivity" />
+                android:value="com.mcgowan.timetable.android.MainActivity" />
         </activity>
     </application>
 

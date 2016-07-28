@@ -1,8 +1,8 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res/com.mcgowan.timetable.itsligotimetables">
+    xmlns:custom="http://schemas.android.com/apk/res/com.mcgowan.timetable.android">
 
 
-    <com.mcgowan.timetable.itsligotimetables.StudentIdEditTextPreference
+    <com.mcgowan.timetable.android.StudentIdEditTextPreference
         android:capitalize="words"
         android:defaultValue="@string/student_id_default"
         android:hint="@string/student_id_hint"
