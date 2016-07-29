@@ -1,4 +1,5 @@
 # Timetables app in Android for IT Sligo
+[![Build Status](https://travis-ci.org/mcgowanb/itsligo-timetables-android.svg?branch=master)](https://travis-ci.org/mcgowanb/itsligo-timetables-android)
 
 This app is a personal project and was created to 'appify' the timetable schedule that students have in college. This work is my own and is not affiliated with [IT Sligo](https://itsligo.ie/) in any way
 
