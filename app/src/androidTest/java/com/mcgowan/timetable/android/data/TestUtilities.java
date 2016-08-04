@@ -1,6 +1,7 @@
 package com.mcgowan.timetable.android.data;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -9,6 +10,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.test.AndroidTestCase;
 
+import com.mcgowan.timetable.android.Utility;
 import com.mcgowan.timetable.android.utils.PollingCheck;
 
 import java.util.Map;
@@ -18,6 +20,7 @@ import java.util.Set;
 public class TestUtilities extends AndroidTestCase {
 
     public static final String STUDENT_ID = "S00165159";
+
     static ContentValues createSingleClassTimetableValues() {
         // Create a new map of values, where column names are the keys
         ContentValues testValues = new ContentValues();
@@ -119,6 +122,21 @@ public class TestUtilities extends AndroidTestCase {
 
     static TestContentObserver getTestContentObserver() {
         return TestContentObserver.getTestContentObserver();
+    }
+
+    public void testGetDayNumberFromDayMonday(){
+        int result = Utility.getDayNumberFromDay("Monday");
+        assertEquals(1, result);
+    }
+
+    public void testGetDayNumberFromDayFriday(){
+        int result = Utility.getDayNumberFromDay("Friday");
+        assertEquals(5, result);
+    }
+
+    public void testGetDayNumberFromDayIncorrect(){
+        int result = Utility.getDayNumberFromDay("MAssd");
+        assertEquals(0, result);
     }
 
 

@@ -160,9 +160,6 @@ public class TestProvider extends AndroidTestCase {
         long rowId = TestUtilities.insertClassTimetableValues(db, testValues);
 
         assertTrue("Unable to Insert Timetable data into the Database", rowId != -1);
-
-
-        // Test the basic content provider query
         Cursor timetableCursor = mContext.getContentResolver().query(
                 TimetableEntry.buildTimetableWithStudentIDAndDayID(studentId, dayId),
                 null,
@@ -171,11 +168,56 @@ public class TestProvider extends AndroidTestCase {
                 null
         );
 
-        // Make sure we get the correct cursor out of the database
         TestUtilities.validateCursor("Query by Student ID and day ID returned empty", timetableCursor, testValues);
-
         db.close();
     }
+
+    public void testBasicTimetableQueryByDayIDAndStudentIdIncorrectStudentId() {
+        // insert our test records into the database
+        TimetableDbHelper dbHelper = new TimetableDbHelper(mContext);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String dayId = "2";
+        String studentId = "S04321";
+
+        ContentValues testValues = TestUtilities.createTuesdayClassTimetableValues();
+        long rowId = TestUtilities.insertClassTimetableValues(db, testValues);
+
+        assertTrue("Unable to Insert Timetable data into the Database", rowId != -1);
+        Cursor timetableCursor = mContext.getContentResolver().query(
+                TimetableEntry.buildTimetableWithStudentIDAndDayID(studentId, dayId),
+                null,
+                null,
+                null,
+                null
+        );
+
+        assertFalse("Cursor has returned records from the database, should be null", timetableCursor.moveToNext());
+        db.close();
+    }
+
+    public void testBasicTimetableQueryByDayIDAndStudentIdIncorrectDayId() {
+        // insert our test records into the database
+        TimetableDbHelper dbHelper = new TimetableDbHelper(mContext);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String dayId = "3";
+        String studentId = "S00344321";
+
+        ContentValues testValues = TestUtilities.createTuesdayClassTimetableValues();
+        long rowId = TestUtilities.insertClassTimetableValues(db, testValues);
+
+        assertTrue("Unable to Insert Timetable data into the Database", rowId != -1);
+        Cursor timetableCursor = mContext.getContentResolver().query(
+                TimetableEntry.buildTimetableWithStudentIDAndDayID(studentId, dayId),
+                null,
+                null,
+                null,
+                null
+        );
+
+        assertFalse("Cursor has returned records from the database, should be null", timetableCursor.moveToNext());
+        db.close();
+    }
+
 
     public void testBasicTimetableQueryNoResults() {
         // insert our test records into the database

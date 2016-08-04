@@ -10,7 +10,6 @@ import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.mcgowan.timetable.android.data.TimetableContract;
@@ -27,6 +26,8 @@ import java.util.Vector;
 
 public class Utility {
     private static final String LOG_TAG = Utility.class.getSimpleName();
+
+    private static String mToday = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(new Date());
 
     public static int getDayNumberFromDay(String day) {
         int retVal;
@@ -67,10 +68,9 @@ public class Utility {
     }
 
     public static int getDayIcon(Context context, String name) {
-        String today = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(new Date());
         String fileName = String.format("%s_130", name.toLowerCase());
 
-        if (!today.equals(name)) {
+        if (!mToday.equals(name)) {
             fileName = fileName.concat("_bw");
         }
         return context.getResources().getIdentifier(fileName,
@@ -78,11 +78,10 @@ public class Utility {
     }
 
     public static int checkCursorForToday(Cursor c) {
-        String today = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(new Date());
         int position = -1;
         while (c.moveToNext()) {
             String day = c.getString(TimeTableFragment.COL_TIMETABLE_DAY);
-            if (today.toLowerCase().equals(day.toLowerCase())) {
+            if (mToday.toLowerCase().equals(day.toLowerCase())) {
                 position = c.getPosition();
                 break;
             }
@@ -120,7 +119,6 @@ public class Utility {
                 TimetableContract.TimetableEntry.COLUMN_STUDENT_ID + " = ?",
                 new String[]{studentId}
         );
-        Log.d(LOG_TAG, "Records deleted before insertion");
     }
 
     public static void deleteAllRecordsFromDatabase(Context context) {
@@ -129,7 +127,6 @@ public class Utility {
                 null,
                 null
         );
-        Log.d(LOG_TAG, "All Records deleted");
     }
 
     public static void addRecordsToDatabase(Context context, Vector<ContentValues> cvVector) {
@@ -141,7 +138,6 @@ public class Utility {
                 TimetableContract.TimetableEntry.CONTENT_URI,
                 cvArray
         );
-        Log.d(LOG_TAG, "addRecordsToDatabase Complete. " + inserted + " records inserted");
     }
 
     public static boolean hasNetworkConnectivity(Context context){
