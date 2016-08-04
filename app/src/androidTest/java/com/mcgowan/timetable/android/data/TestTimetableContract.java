@@ -10,6 +10,7 @@ public class TestTimetableContract extends AndroidTestCase {
     public static final String TIMETABLE_REF = "timetable";
     public static final String LABS_REF = "labs";
     public static final String DAY = "Monday";
+    public static final String DAY_ID = "2";
     public static final String LOG_TAG = TestTimetableContract.class.getSimpleName();
 
     public void testBuildTimeTableStudentId() {
@@ -52,10 +53,16 @@ public class TestTimetableContract extends AndroidTestCase {
         assertEquals(STUDENT_ID, res);
     }
 
-    public void testGetDayIdFromUri() {
+    public void testGetDayFromUri() {
         Uri uri = TimetableContract.TimetableEntry.buildTimetableWithStudentIdAndDay(STUDENT_ID, DAY);
         String res = TimetableContract.TimetableEntry.getDayFromUri(uri);
         assertEquals(DAY, res);
+    }
+
+    public void testGetDayIDFromUri() {
+        Uri uri = TimetableContract.TimetableEntry.buildTimetableWithDayID(DAY_ID);
+        String res = TimetableContract.TimetableEntry.getDayIDFromUri(uri);
+        assertEquals(DAY_ID, res);
     }
 
 }

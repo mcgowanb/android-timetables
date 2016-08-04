@@ -89,6 +89,15 @@ public class TestProvider extends AndroidTestCase {
         assertEquals("Error: the TimetableEntry CONTENT_URI with student id and date should return TimetableEntry.CONTENT_ITEM_TYPE",
                 TimetableEntry.CONTENT_TYPE, type);
 
+        String dayID = "2";
+        // content://com.example.android.sunshine.app/weather?studentId=S00165159&day=Friday
+        type = mContext.getContentResolver().getType(
+                TimetableEntry.buildTimetableWithDayID(day));
+
+        // vnd.android.cursor.item/com.example.android.sunshine.app/weather/1419120000
+        assertEquals("Error: the TimetableEntry CONTENT_URI with student id and date should return TimetableEntry.CONTENT_ITEM_TYPE",
+                TimetableEntry.CONTENT_TYPE, type);
+
 
     }
 
@@ -138,9 +147,32 @@ public class TestProvider extends AndroidTestCase {
                 null,
                 null
         );
+    }
+
+    public void testBasicTimetableQueryByDayIDAndStudentId() {
+        // insert our test records into the database
+        TimetableDbHelper dbHelper = new TimetableDbHelper(mContext);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String dayId = "2";
+        String studentId = "S00344321";
+
+        ContentValues testValues = TestUtilities.createTuesdayClassTimetableValues();
+        long rowId = TestUtilities.insertClassTimetableValues(db, testValues);
+
+        assertTrue("Unable to Insert Timetable data into the Database", rowId != -1);
+
+
+        // Test the basic content provider query
+        Cursor timetableCursor = mContext.getContentResolver().query(
+                TimetableEntry.buildTimetableWithStudentIDAndDayID(studentId, dayId),
+                null,
+                null,
+                null,
+                null
+        );
 
         // Make sure we get the correct cursor out of the database
-        TestUtilities.validateCursor("basic timetable query with student id", timetableCursor, testValues);
+        TestUtilities.validateCursor("Query by Student ID and day ID returned empty", timetableCursor, testValues);
 
         db.close();
     }

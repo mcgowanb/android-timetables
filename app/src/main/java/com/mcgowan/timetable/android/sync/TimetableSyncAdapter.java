@@ -77,6 +77,7 @@ public class TimetableSyncAdapter extends AbstractThreadedSyncAdapter {
 
             Vector<ContentValues> cVector = Utility.convertTimeTableToVector(t, studentID);
             if (cVector.size() > 0) {
+                //todo change this to delete all records from database to avoid confusion
                 Utility.deleteRecordsFromDatabase(getContext(), studentID);
                 Utility.addRecordsToDatabase(getContext(), cVector);
                 createCursorFromDatabase(studentID);

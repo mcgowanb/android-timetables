@@ -34,6 +34,22 @@ public class TestUtilities extends AndroidTestCase {
         return testValues;
     }
 
+    static ContentValues createTuesdayClassTimetableValues() {
+        // Create a new map of values, where column names are the keys
+        ContentValues testValues = new ContentValues();
+        testValues.put(TimetableContract.TimetableEntry.COLUMN_DAY_ID, 2);
+        testValues.put(TimetableContract.TimetableEntry.COLUMN_STUDENT_ID, "S00344321");
+        testValues.put(TimetableContract.TimetableEntry.COLUMN_DAY, "Tuesday");
+        testValues.put(TimetableContract.TimetableEntry.COLUMN_START_TIME, "09:00");
+        testValues.put(TimetableContract.TimetableEntry.COLUMN_END_TIME, "10:11");
+        testValues.put(TimetableContract.TimetableEntry.COLUMN_LECTURER, "Person Name");
+        testValues.put(TimetableContract.TimetableEntry.COLUMN_SUBJECT, "Mathematics");
+        testValues.put(TimetableContract.TimetableEntry.COLUMN_ROOM, "D2014");
+        testValues.put(TimetableContract.TimetableEntry.COLUMN_TIME, "09:00 - 17:00");
+
+        return testValues;
+    }
+
     static long insertClassTimetableValues(SQLiteDatabase db, ContentValues testValues) {
         // insert our test records into the database
         long classRowId = db.insert(TimetableContract.TimetableEntry.TABLE_NAME, null, testValues);
