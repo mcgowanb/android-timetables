@@ -242,12 +242,8 @@ public class Utility {
 
                     LinearLayout.LayoutParams loparams = (LinearLayout.LayoutParams) tv.getLayoutParams();
                     loparams.width = 0;
-                    loparams.weight = 10;
+                    loparams.weight = 1;
                     tv.setLayoutParams(loparams);
-
-//                    TableRow.LayoutParams params = new TableRow.LayoutParams();
-//                    tv.setLayoutParams(params);
-
                 }
             }
         }

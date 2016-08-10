@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         //Add a tab bar navigation
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabbar);
         tabLayout.setupWithViewPager(mViewPager);
-
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         Utility.setFontForTabs(this, tabLayout, "RockSalt");
 
     }

@@ -5,8 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import java.util.Locale;
-
 public class TabPagerAdapter extends FragmentPagerAdapter {
 
     private Context mContext;
@@ -19,12 +17,12 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         // getItem is called to instantiate the fragment for the given page.
-        // Return a Fragment (defined as a static inner class below).
+        // Return a Fragment
         switch (position) {
-            case 0:
             case 1:
-                return TimeTableFragment.newInstance(position);
             case 2:
+                return TimeTableFragment.newInstance(position);
+            case 0:
                 //todo add the single day here
                 return TimeTableFragment.newInstance(position);
         }
@@ -34,22 +32,21 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        // Show 3 total pages.
         return 3;
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        Locale l = Locale.getDefault();
         switch (position) {
             case 0:
-                return mContext.getString(R.string.today_title);
-            case 1:
-                return mContext.getString(R.string.week_title);
-            case 2:
                 return mContext.getString(R.string.next_title);
+            case 1:
+                return mContext.getString(R.string.today_title);
+            case 2:
+                return mContext.getString(R.string.week_title);
         }
         return null;
     }
+
 
 }

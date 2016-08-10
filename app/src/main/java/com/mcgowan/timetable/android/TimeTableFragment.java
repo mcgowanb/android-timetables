@@ -99,11 +99,11 @@ public class TimeTableFragment extends Fragment implements LoaderManager.LoaderC
         String studentID = prefs.getString(getString(R.string.student_id_key), getString(R.string.student_id_default));
         Uri uri;
         switch (position){
-            case 0:
+            case 1:
                 String dayNumber = Utility.getDayNumber();
                 uri = TimetableContract.TimetableEntry.buildTimetableWithStudentIDAndDayID(studentID, dayNumber);
                 break;
-            case 1:
+            case 2:
                 uri = TimetableContract.TimetableEntry.buildTimetableWithStudentId(studentID);
                 break;
             default:
