@@ -18,6 +18,7 @@ import com.mcgowan.timetable.scraper.Course;
 import com.mcgowan.timetable.scraper.TimeTable;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -28,6 +29,12 @@ public class Utility {
     private static final String LOG_TAG = Utility.class.getSimpleName();
 
     private static String mToday = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(new Date());
+
+    public static String getDayNumber(){
+        Calendar cal = Calendar.getInstance();
+        cal.setFirstDayOfWeek(Calendar.MONDAY);
+        return String.valueOf(cal.get(Calendar.DAY_OF_WEEK) -1);
+    }
 
     public static int getDayNumberFromDay(String day) {
         int retVal;

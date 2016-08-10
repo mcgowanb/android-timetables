@@ -22,6 +22,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mcgowan.timetable.android.data.TimetableContract;
 import com.mcgowan.timetable.android.sync.TimetableSyncAdapter;
@@ -37,6 +38,7 @@ public class TimeTableFragment extends Fragment implements LoaderManager.LoaderC
     private static final String LOG_TAG = TimeTableFragment.class.getSimpleName();
     private static final int TIMETABLE_LOADER = 1;
     private int mPosition = ListView.INVALID_POSITION;
+    private Uri mUri;
     private ListView mListView;
 
     private static final String[] TIMETABLE_COLUMNS = {
@@ -61,9 +63,24 @@ public class TimeTableFragment extends Fragment implements LoaderManager.LoaderC
     static final int COL_TIMETABLE_DAY_ID = 7;
     static final int COL_TIMETABLE_ROOM = 8;
 
+    private static final String ARG_SECTION_NUMBER = "section_number";
+
 
     public TimeTableFragment() {
 
+    }
+
+
+    /**
+     * Returns a new instance of this fragment for the given section
+     * number.
+     */
+    public static TimeTableFragment newInstance(int sectionNumber) {
+        TimeTableFragment fragment = new TimeTableFragment();
+        Bundle args = new Bundle();
+        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+        fragment.setArguments(args);
+        return fragment;
     }
 
 
@@ -71,7 +88,33 @@ public class TimeTableFragment extends Fragment implements LoaderManager.LoaderC
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //enable fragment to handle menu events
+
+        int position = getArguments().getInt(ARG_SECTION_NUMBER);
+        mUri = getUriForTab(position);
+//        Toast.makeText(getContext(), "POS " + String.valueOf(position), Toast.LENGTH_SHORT).show();
+
+
+
         setHasOptionsMenu(true);
+    }
+
+    private Uri getUriForTab(int position){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String studentID = prefs.getString(getString(R.string.student_id_key), getString(R.string.student_id_default));
+        Uri uri;
+        switch (position){
+            case 0:
+                uri = TimetableContract.TimetableEntry.buildTimetableWithStudentId(studentID);
+                break;
+            case 1:
+                String dayNumber = Utility.getDayNumber();
+                uri = TimetableContract.TimetableEntry.buildTimetableWithStudentIDAndDayID(studentID, dayNumber);
+                break;
+            default:
+                uri = TimetableContract.TimetableEntry.buildTimetableWithStudentIDAndDayID(studentID, "1");
+
+        }
+        return uri;
     }
 
 
@@ -150,12 +193,12 @@ public class TimeTableFragment extends Fragment implements LoaderManager.LoaderC
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String studentID = prefs.getString(getString(R.string.student_id_key), getString(R.string.student_id_default));
-        Uri uri = TimetableContract.TimetableEntry.buildTimetableWithStudentId(studentID);
+//        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+//        String studentID = prefs.getString(getString(R.string.student_id_key), getString(R.string.student_id_default));
+//        Uri uri = TimetableContract.TimetableEntry.buildTimetableWithStudentId(studentID);
 
         Loader<Cursor> cx = new CursorLoader(getActivity(),
-                uri,
+                mUri,
                 TIMETABLE_COLUMNS,
                 null,
                 null,
