@@ -22,7 +22,6 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mcgowan.timetable.android.data.TimetableContract;
 import com.mcgowan.timetable.android.sync.TimetableSyncAdapter;
@@ -92,9 +91,6 @@ public class TimeTableFragment extends Fragment implements LoaderManager.LoaderC
         int position = getArguments().getInt(ARG_SECTION_NUMBER);
         mUri = getUriForTab(position);
 //        Toast.makeText(getContext(), "POS " + String.valueOf(position), Toast.LENGTH_SHORT).show();
-
-
-
         setHasOptionsMenu(true);
     }
 
@@ -104,14 +100,15 @@ public class TimeTableFragment extends Fragment implements LoaderManager.LoaderC
         Uri uri;
         switch (position){
             case 0:
-                uri = TimetableContract.TimetableEntry.buildTimetableWithStudentId(studentID);
-                break;
-            case 1:
                 String dayNumber = Utility.getDayNumber();
                 uri = TimetableContract.TimetableEntry.buildTimetableWithStudentIDAndDayID(studentID, dayNumber);
                 break;
+            case 1:
+                uri = TimetableContract.TimetableEntry.buildTimetableWithStudentId(studentID);
+                break;
             default:
                 uri = TimetableContract.TimetableEntry.buildTimetableWithStudentIDAndDayID(studentID, "1");
+                break;
 
         }
         return uri;
@@ -124,7 +121,7 @@ public class TimeTableFragment extends Fragment implements LoaderManager.LoaderC
         //add fonts to all items
         for (int i = 0; i < menu.size(); i++) {
             MenuItem mi = menu.getItem(i);
-            Utility.applyFontToMenuItem(getActivity(), mi);
+            Utility.applyFontToMenuItem(getActivity(), mi, "RockSalt");
         }
 
     }

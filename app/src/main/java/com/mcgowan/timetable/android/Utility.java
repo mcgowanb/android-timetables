@@ -8,9 +8,14 @@ import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
+import android.support.design.widget.TabLayout;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.mcgowan.timetable.android.data.TimetableContract;
 import com.mcgowan.timetable.android.sync.TimetableSyncAdapter;
@@ -30,10 +35,10 @@ public class Utility {
 
     private static String mToday = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(new Date());
 
-    public static String getDayNumber(){
+    public static String getDayNumber() {
         Calendar cal = Calendar.getInstance();
         cal.setFirstDayOfWeek(Calendar.MONDAY);
-        return String.valueOf(cal.get(Calendar.DAY_OF_WEEK) -1);
+        return String.valueOf(cal.get(Calendar.DAY_OF_WEEK) - 1);
     }
 
     public static int getDayNumberFromDay(String day) {
@@ -147,9 +152,9 @@ public class Utility {
         );
     }
 
-    public static boolean hasNetworkConnectivity(Context context){
+    public static boolean hasNetworkConnectivity(Context context) {
         ConnectivityManager cm =
-                (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return activeNetwork != null &&
@@ -157,22 +162,24 @@ public class Utility {
     }
 
     @SuppressWarnings("ResourceType")
-    public static @TimetableSyncAdapter.ServerStatus int getServerStatus(Context c){
+    public static
+    @TimetableSyncAdapter.ServerStatus
+    int getServerStatus(Context c) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(c);
         return prefs.getInt(c.getString(R.string.server_status_key),
                 TimetableSyncAdapter.SERVER_STATUS_UNKNOWN);
     }
 
-    public static void resetServerStatus(Context c){
+    public static void resetServerStatus(Context c) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(c);
         SharedPreferences.Editor spe = prefs.edit();
         spe.putInt(c.getString(R.string.server_status_key), TimetableSyncAdapter.SERVER_STATUS_UNKNOWN);
         spe.apply();
     }
 
-    public static int getImageForPeriod(Context context, int ref){
+    public static int getImageForPeriod(Context context, int ref) {
         String fileName;
-        switch (ref){
+        switch (ref) {
             case 9:
                 fileName = "nine";
                 break;
@@ -212,10 +219,37 @@ public class Utility {
                 "drawable", context.getPackageName());
     }
 
-    public static void applyFontToMenuItem(Context context, MenuItem mi) {
-        Typeface font = Typeface.createFromAsset(context.getAssets(), "fonts/RockSalt.ttf");
+    public static void applyFontToMenuItem(Context context, MenuItem mi, String fontName) {
+        Typeface font = Typeface.createFromAsset(context.getAssets(), "fonts/" + fontName + ".ttf");
         SpannableString mNewTitle = new SpannableString(mi.getTitle());
-        mNewTitle.setSpan(new CustomTypefaceSpan("" , font), 0 , mNewTitle.length(),  Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        mNewTitle.setSpan(new CustomTypefaceSpan("", font), 0, mNewTitle.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         mi.setTitle(mNewTitle);
+    }
+
+    public static void setFontForTabs(Context context, TabLayout tabLayout, String fontName) {
+        ViewGroup vg = (ViewGroup) tabLayout.getChildAt(0);
+        Typeface tf = Typeface.createFromAsset(context.getAssets(), "fonts/" + fontName + ".ttf");
+
+        int tabsCount = vg.getChildCount();
+        for (int j = 0; j < tabsCount; j++) {
+            ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
+            int tabChildsCount = vgTab.getChildCount();
+            for (int i = 0; i < tabChildsCount; i++) {
+                View tabViewChild = vgTab.getChildAt(i);
+                if (tabViewChild instanceof TextView) {
+                    TextView tv = (TextView) tabViewChild;
+                    tv.setTypeface(tf);
+
+                    LinearLayout.LayoutParams loparams = (LinearLayout.LayoutParams) tv.getLayoutParams();
+                    loparams.width = 0;
+                    loparams.weight = 10;
+                    tv.setLayoutParams(loparams);
+
+//                    TableRow.LayoutParams params = new TableRow.LayoutParams();
+//                    tv.setLayoutParams(params);
+
+                }
+            }
+        }
     }
 }

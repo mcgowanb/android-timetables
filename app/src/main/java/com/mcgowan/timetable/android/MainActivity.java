@@ -4,9 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -19,8 +16,6 @@ import android.widget.Toast;
 
 import com.mcgowan.timetable.android.sync.TimetableSyncAdapter;
 
-import java.util.Locale;
-
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String LABS_URL = "https://itsligo.ie/student-hub/computer-labs/";
     public static final String LOG_TAG = MainActivity.class.getSimpleName();
 
-    SectionsPagerAdapter mSectionsPagerAdapter;
+    TabPagerAdapter mTabsPagerAdapter;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -70,15 +65,18 @@ public class MainActivity extends AppCompatActivity {
 
         TimetableSyncAdapter.initializeSyncAdapter(this);
 
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        mTabsPagerAdapter = new TabPagerAdapter(getSupportFragmentManager(), this);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setAdapter(mTabsPagerAdapter);
 
         //Add a tab bar navigation
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabbar);
         tabLayout.setupWithViewPager(mViewPager);
+
+        Utility.setFontForTabs(this, tabLayout, "RockSalt");
+
     }
 
     private void initMenuDetails() {
@@ -92,11 +90,10 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu, menu);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-//        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 
         for (int i = 0; i < menu.size(); i++) {
             MenuItem mi = menu.getItem(i);
-            Utility.applyFontToMenuItem(this, mi);
+            Utility.applyFontToMenuItem(this, mi, "RockSalt");
         }
 
 
@@ -158,56 +155,4 @@ public class MainActivity extends AppCompatActivity {
         builder.create().show();
     }
 
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-        public SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            switch (position) {
-                case 0:
-//                    Toast.makeText(getApplicationContext(), "POS " + String.valueOf(position), Toast.LENGTH_SHORT).show();
-                    return TimeTableFragment.newInstance(position);
-
-                case 1:
-//                    Toast.makeText(getApplicationContext(), "POS " + String.valueOf(position), Toast.LENGTH_SHORT).show();
-                    return TimeTableFragment.newInstance(position);
-                case 2:
-//                    Toast.makeText(getApplicationContext(), "POS " + String.valueOf(position), Toast.LENGTH_SHORT).show();
-                    return TimeTableFragment.newInstance(position);
-            }
-            return null;
-        }
-
-
-        @Override
-        public int getCount() {
-            // Show 3 total pages.
-            return 3;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            Locale l = Locale.getDefault();
-            switch (position) {
-                case 0:
-                    return getString(R.string.this_week_title).toUpperCase(l);
-                case 1:
-                    return getString(R.string.today_title).toUpperCase(l);
-                case 2:
-                    return getString(R.string.next_title).toUpperCase(l);
-            }
-            return null;
-        }
-
-
-    }
 }
