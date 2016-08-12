@@ -2,7 +2,9 @@ package com.mcgowan.timetable.android;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -23,12 +25,15 @@ public class MainActivity extends AppCompatActivity {
 
     private final String TIMETABLEFRAGMENT_TAG = "TFTAG";
     private String mStudentId;
+    SharedPreferences.OnSharedPreferenceChangeListener mPrefsListener;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mStudentId = Utility.getStudentId(this);
         setContentView(R.layout.activity_main);
+        addPreferenceChangeListener();
 
         switch (AppVersionCheck.checkAppStart(this)) {
             case NORMAL:
@@ -57,6 +62,35 @@ public class MainActivity extends AppCompatActivity {
         TimetableSyncAdapter.initializeSyncAdapter(this);
     }
 
+    /**
+     * adds listener for on change of preference settings
+     */
+    private void addPreferenceChangeListener() {
+        SharedPreferences mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        mPrefsListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+            public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+                if (key.equals(getString(R.string.student_id_key))) {
+                    syncTimetableAdapter(prefs.getString(key, getString(R.string.student_id_default)));
+                }
+            }
+        };
+        mSharedPrefs.registerOnSharedPreferenceChangeListener(mPrefsListener);
+    }
+
+    /**
+     * updates the Sync adapter and refreshes the current single fragment instance
+     * @param studentId
+     */
+    private void syncTimetableAdapter(String studentId) {
+        TimetableSyncAdapter.syncImmediately(this);
+        TimeTableFragment tf = (TimeTableFragment) getSupportFragmentManager()
+                .findFragmentByTag(TIMETABLEFRAGMENT_TAG);
+        if (null != tf) {
+            tf.onStudentIdChanged();
+        }
+        mStudentId = studentId;
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -64,18 +98,12 @@ public class MainActivity extends AppCompatActivity {
         String studentId = Utility.getStudentId(this);
         if (studentId.equals("")) {
             showNoStudentIdDialog();
-        } else if (studentId != null && !studentId.equals(mStudentId)) {
-//            TimetableSyncAdapter.syncImmediately(this);
-            TimeTableFragment tf = (TimeTableFragment) getSupportFragmentManager()
-                    .findFragmentByTag(TIMETABLEFRAGMENT_TAG);
-            if (null != tf) {
-                tf.onStudentIdChanged();
-            }
-            mStudentId = studentId;
         }
-
     }
 
+    /**
+     * loads the menu toolbar
+     */
     private void initMenuDetails() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -121,19 +149,24 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * launches settings as an intent
+     * @return
+     */
     public boolean openSettingsDetail() {
         Intent settingsIntent = new Intent(this, SettingsActivity.class);
         startActivity(settingsIntent);
         return true;
     }
 
+    /**
+     * No Student ID set dialog launcher
+     */
     private void showNoStudentIdDialog() {
 
         LayoutInflater inflater = LayoutInflater.from(this);
         View view = inflater.inflate(R.layout.dialog_main, null);
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
         builder.setView(view).setTitle(getString(R.string.no_id_dialog_title));
         builder.setCancelable(false);
         builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {

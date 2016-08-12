@@ -117,7 +117,7 @@ public class TimeTableFragment extends Fragment implements LoaderManager.LoaderC
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         String studentID = Utility.getStudentId(getContext());
-        Uri uri = TimetableContract.TimetableEntry.buildTimetableWithStudentIDAndDayID(studentID, "3");
+        Uri uri = TimetableContract.TimetableEntry.buildTimetableWithStudentId(studentID);
 
         Loader<Cursor> cx = new CursorLoader(getActivity(),
                 uri,
