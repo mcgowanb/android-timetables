@@ -74,7 +74,7 @@ public class TimetableProvider extends ContentProvider {
 
         Cursor retCursor;
         switch (sUriMatcher.match(uri)) {
-            case TIMETABLE_BY_ID:{
+            case TIMETABLE_BY_ID: {
                 retCursor = getTimeTableById(
                         uri,
                         projection,
@@ -118,25 +118,39 @@ public class TimetableProvider extends ContentProvider {
     private static final String sIdSelection =
             TimetableEntry.TABLE_NAME + "." + TimetableEntry._ID + " =? ";
 
+    private static final String sDayIDSelection =
+            TimetableEntry.TABLE_NAME + "." + TimetableEntry.COLUMN_DAY_ID + " =? ";
+
     private static final String sStudentIdSelectionWithDay =
             TimetableEntry.TABLE_NAME + "." + TimetableEntry.COLUMN_STUDENT_ID + " = ? AND "
                     + TimetableEntry.COLUMN_DAY + " = ?";
+
+    private static final String sStudentIdSelectionWithDayID =
+            TimetableEntry.TABLE_NAME + "." + TimetableEntry.COLUMN_STUDENT_ID + " = ? AND "
+                    + TimetableEntry.COLUMN_DAY_ID + " = ?";
 
 
     private Cursor getTimeTableByStudentId(Uri uri, String[] projection, String sortOrder) {
         String studentIdSetting = TimetableEntry.getStudentIdFromUri(uri);
         String daySetting = TimetableEntry.getDayFromUri(uri);
+        String dayIDSetting = TimetableEntry.getDayIDFromUri(uri);
         String[] selectionArgs;
         String queryParams;
         boolean selectAll = false;
 
         //return select all, as no querystring parameters passed
-        if (isEmpty(daySetting) && isEmpty(studentIdSetting)) selectAll = true;
-
-        if (isEmpty(daySetting)) {
+        if (isEmpty(daySetting) && isEmpty(studentIdSetting) && isEmpty(dayIDSetting))
+            selectAll = true;
+        //get by student id
+        if (isEmpty(daySetting) && isEmpty(dayIDSetting)) {
             queryParams = sStudentIdSelection;
             selectionArgs = new String[]{studentIdSetting};
+            //get by day id and student id
+        } else if (!isEmpty(dayIDSetting) && !isEmpty(studentIdSetting)) {
+            queryParams = sStudentIdSelectionWithDayID;
+            selectionArgs = new String[]{studentIdSetting, dayIDSetting};
         } else {
+            //look for day_id field here
             queryParams = sStudentIdSelectionWithDay;
             selectionArgs = new String[]{studentIdSetting, daySetting};
         }

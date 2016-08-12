@@ -86,9 +86,19 @@ public class TimetableContract {
             return uri.getQueryParameter(COLUMN_STUDENT_ID);
         }
 
+        public static Uri buildTimetableWithStudentIDAndDayID(String studentId, String dayID) {
+            return CONTENT_URI.buildUpon()
+                    .appendQueryParameter(COLUMN_STUDENT_ID, studentId)
+                    .appendQueryParameter(COLUMN_DAY_ID, dayID)
+                    .build();
+        }
+
         public static String getDayFromUri(Uri uri) {
             return uri.getQueryParameter(COLUMN_DAY);
         }
-        //todo: Some methods to get next classes and so on would be good, say passing date and time currently
+
+        public static String getDayIDFromUri(Uri uri) {
+            return uri.getQueryParameter(COLUMN_DAY_ID);
+        }
     }
 }
