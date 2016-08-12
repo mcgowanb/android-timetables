@@ -35,11 +35,11 @@ public class MainActivity extends AppCompatActivity {
                 // No need to do anything
                 break;
             case FIRST_TIME_VERSION:
-                Toast.makeText(this,"First time version", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "First time version", Toast.LENGTH_SHORT).show();
                 // TODO show what's new
                 break;
             case FIRST_TIME:
-                Toast.makeText(this,"First time", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "First time", Toast.LENGTH_SHORT).show();
                 // TODO show a tutorial
                 break;
             default:
@@ -66,11 +66,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
+
+        getMenuInflater().inflate(R.menu.menu_timetablefragmemt, menu);
+        //add fonts to all items
+        for (int i = 0; i < menu.size(); i++) {
+            MenuItem mi = menu.getItem(i);
+            Utility.applyFontToMenuItem(this, mi);
+        }
+
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 //        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 
-        for (int i=0;i<menu.size();i++) {
+        for (int i = 0; i < menu.size(); i++) {
             MenuItem mi = menu.getItem(i);
             Utility.applyFontToMenuItem(this, mi);
         }
@@ -86,6 +94,9 @@ public class MainActivity extends AppCompatActivity {
         switch (id) {
             case R.id.action_settings:
                 return openSettingsDetail();
+            case R.id.action_refresh:
+                TimetableSyncAdapter.syncImmediately(this);
+                return true;
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -103,14 +114,12 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         String studentId = Utility.getStudentId(this);
-        if(studentId.equals("")){
+        if (studentId.equals("")) {
             showNoStudentIdDialog();
-        }
-
-        else if (studentId != null && !studentId.equals(mStudentId)){
-            TimeTableFragment tf = (TimeTableFragment)getSupportFragmentManager()
+        } else if (studentId != null && !studentId.equals(mStudentId)) {
+            TimeTableFragment tf = (TimeTableFragment) getSupportFragmentManager()
                     .findFragmentByTag(TIMETABLEFRAGMENT_TAG);
-            if(null != tf){
+            if (null != tf) {
                 tf.onStudentIdChanged();
             }
             mStudentId = studentId;
