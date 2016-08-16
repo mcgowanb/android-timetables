@@ -33,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mStudentId = Utility.getStudentId(this);
         setContentView(R.layout.activity_main);
+
+        //set listener for the change in student id
         addPreferenceChangeListener();
 
         switch (AppVersionCheck.checkAppStart(this)) {
