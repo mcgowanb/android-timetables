@@ -36,6 +36,7 @@ public class TimeTableWeekFragment extends Fragment implements LoaderManager.Loa
     private int mPosition = ListView.INVALID_POSITION;
     private ListView mListView;
     SharedPreferences.OnSharedPreferenceChangeListener mPrefsListener;
+    private SharedPreferences mSharedPrefs;
 
     private static final String[] TIMETABLE_COLUMNS = {
             TimetableContract.TimetableEntry._ID,
@@ -70,6 +71,7 @@ public class TimeTableWeekFragment extends Fragment implements LoaderManager.Loa
         super.onCreate(savedInstanceState);
         //enable fragment to handle menu events
         setHasOptionsMenu(true);
+        mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
         addPreferenceChangeListener();
     }
 
@@ -249,7 +251,6 @@ public class TimeTableWeekFragment extends Fragment implements LoaderManager.Loa
      * adds listener for on change of preference settings
      */
     private void addPreferenceChangeListener() {
-        SharedPreferences mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
         mPrefsListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
                 if (key.equals(getResources().getString(R.string.student_id_key))) {

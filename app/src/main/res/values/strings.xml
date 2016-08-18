@@ -89,6 +89,8 @@
     <string name="title_activity_about">AboutActivity</string>
     <string name="action_version">Version</string>
     <string name="app_version_title">App Version</string>
+    <string name="title_today">Today</string>
+    <string name="title_week">This week</string>
 
 
 </resources>
