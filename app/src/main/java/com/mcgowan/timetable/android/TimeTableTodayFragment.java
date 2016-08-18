@@ -33,6 +33,7 @@ public class TimeTableTodayFragment extends Fragment implements LoaderManager.Lo
     private static final int TIMETABLE_LOADER = 1;
     private int mPosition = ListView.INVALID_POSITION;
     private ListView mListView;
+    SharedPreferences.OnSharedPreferenceChangeListener mPrefsListener;
 
     private static final String[] TIMETABLE_COLUMNS = {
             TimetableContract.TimetableEntry._ID,
@@ -67,6 +68,7 @@ public class TimeTableTodayFragment extends Fragment implements LoaderManager.Lo
         super.onCreate(savedInstanceState);
         //enable fragment to handle menu events
         setHasOptionsMenu(true);
+        addPreferenceChangeListener();
     }
 
     @Override
@@ -191,6 +193,21 @@ public class TimeTableTodayFragment extends Fragment implements LoaderManager.Lo
         if (key.equals(getString(R.string.server_status_key))) {
             updateEmptyView();
         }
+    }
+
+    /**
+     * adds listener for on change of preference settings
+     */
+    private void addPreferenceChangeListener() {
+        SharedPreferences mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        mPrefsListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+            public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+                if (key.equals(getResources().getString(R.string.student_id_key))) {
+                    onStudentIdChanged();
+                }
+            }
+        };
+        mSharedPrefs.registerOnSharedPreferenceChangeListener(mPrefsListener);
     }
 }
 

@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -34,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //set listener for the change in student id
-        addPreferenceChangeListener();
+//        addPreferenceChangeListener();
 
         switch (AppVersionCheck.checkAppStart(this)) {
             case NORMAL:
@@ -61,35 +60,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         TimetableSyncAdapter.initializeSyncAdapter(this);
-    }
-
-    /**
-     * adds listener for on change of preference settings
-     */
-    private void addPreferenceChangeListener() {
-        SharedPreferences mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        mPrefsListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
-            public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-                if (key.equals(getString(R.string.student_id_key))) {
-                    syncTimetableAdapter(prefs.getString(key, getString(R.string.student_id_default)));
-                }
-            }
-        };
-        mSharedPrefs.registerOnSharedPreferenceChangeListener(mPrefsListener);
-    }
-
-    /**
-     * updates the Sync adapter and refreshes the current single fragment instance
-     * @param studentId
-     */
-    private void syncTimetableAdapter(String studentId) {
-        TimetableSyncAdapter.syncImmediately(this);
-        //todo Implement fragment manager here to update all fragments - or implement the listener in all frags individually
-        TimeTableWeekFragment tf = (TimeTableWeekFragment) getSupportFragmentManager()
-                .findFragmentByTag(TIMETABLEWEEK_TAG);
-        if (null != tf) {
-            tf.onStudentIdChanged();
-        }
     }
 
     @Override
