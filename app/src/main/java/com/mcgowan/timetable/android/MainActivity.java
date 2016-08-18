@@ -23,15 +23,14 @@ public class MainActivity extends AppCompatActivity {
     public static final String LABS_URL = "https://itsligo.ie/student-hub/computer-labs/";
     public static final String LOG_TAG = MainActivity.class.getSimpleName();
 
-    private final String TIMETABLEFRAGMENT_TAG = "TFTAG";
-    private String mStudentId;
+    private final String TIMETABLEWEEK_TAG = "TFWKTAG";
+    private final String TIMETABLETODAY_TAG = "TFTDTAG";
     SharedPreferences.OnSharedPreferenceChangeListener mPrefsListener;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mStudentId = Utility.getStudentId(this);
         setContentView(R.layout.activity_main);
 
         //set listener for the change in student id
@@ -57,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new TimeTableFragment(), TIMETABLEFRAGMENT_TAG)
+                    .add(R.id.container, new TimeTableWeekFragment(), TIMETABLEWEEK_TAG)
                     .commit();
         }
 
@@ -85,18 +84,17 @@ public class MainActivity extends AppCompatActivity {
      */
     private void syncTimetableAdapter(String studentId) {
         TimetableSyncAdapter.syncImmediately(this);
-        TimeTableFragment tf = (TimeTableFragment) getSupportFragmentManager()
-                .findFragmentByTag(TIMETABLEFRAGMENT_TAG);
+        //todo Implement fragment manager here to update all fragments - or implement the listener in all frags individually
+        TimeTableWeekFragment tf = (TimeTableWeekFragment) getSupportFragmentManager()
+                .findFragmentByTag(TIMETABLEWEEK_TAG);
         if (null != tf) {
             tf.onStudentIdChanged();
         }
-        mStudentId = studentId;
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
         String studentId = Utility.getStudentId(this);
         if (studentId.equals("")) {
             showNoStudentIdDialog();

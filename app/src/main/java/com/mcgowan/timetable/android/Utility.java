@@ -19,6 +19,7 @@ import com.mcgowan.timetable.scraper.Course;
 import com.mcgowan.timetable.scraper.TimeTable;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -81,7 +82,7 @@ public class Utility {
         String today = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(new Date());
         int position = -1;
         while (c.moveToNext()) {
-            String day = c.getString(TimeTableFragment.COL_TIMETABLE_DAY);
+            String day = c.getString(TimeTableWeekFragment.COL_TIMETABLE_DAY);
             if (today.toLowerCase().equals(day.toLowerCase())) {
                 position = c.getPosition();
                 break;
@@ -214,5 +215,11 @@ public class Utility {
         SpannableString mNewTitle = new SpannableString(mi.getTitle());
         mNewTitle.setSpan(new CustomTypefaceSpan("" , font), 0 , mNewTitle.length(),  Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         mi.setTitle(mNewTitle);
+    }
+
+    public static String getDayNumberAsString() {
+        Calendar cal = Calendar.getInstance();
+        cal.setFirstDayOfWeek(Calendar.MONDAY);
+        return String.valueOf(cal.get(Calendar.DAY_OF_WEEK) - 1);
     }
 }

@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class TimetableAdapter extends CursorAdapter {
-    private static final String LOG_TAG = TimeTableFragment.class.getSimpleName();
+    private static final String LOG_TAG = TimeTableWeekFragment.class.getSimpleName();
 
     public TimetableAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
@@ -23,13 +23,13 @@ public class TimetableAdapter extends CursorAdapter {
     private String convertCursorRowToUXFormat(Cursor cursor) {
         // get row indices for our cursor
         String result = String.format("%s : %s : %s : %s : %s : %s : %s",
-                cursor.getString(TimeTableFragment.COL_TIMETABLE_DAY),
-                cursor.getString(TimeTableFragment.COL_TIMETABLE_TIME),
-                cursor.getString(TimeTableFragment.COL_TIMETABLE_SUBJECT),
-                cursor.getString(TimeTableFragment.COL_TIMETABLE_LECTURER),
-                cursor.getString(TimeTableFragment.COL_TIMETABLE_ROOM),
-                cursor.getString(TimeTableFragment.COL_TIMETABLE_ID),
-                cursor.getString(TimeTableFragment.COL_TIMETABLE_DAY_ID)
+                cursor.getString(TimeTableWeekFragment.COL_TIMETABLE_DAY),
+                cursor.getString(TimeTableWeekFragment.COL_TIMETABLE_TIME),
+                cursor.getString(TimeTableWeekFragment.COL_TIMETABLE_SUBJECT),
+                cursor.getString(TimeTableWeekFragment.COL_TIMETABLE_LECTURER),
+                cursor.getString(TimeTableWeekFragment.COL_TIMETABLE_ROOM),
+                cursor.getString(TimeTableWeekFragment.COL_TIMETABLE_ID),
+                cursor.getString(TimeTableWeekFragment.COL_TIMETABLE_DAY_ID)
         );
 
         return result;
@@ -77,24 +77,24 @@ public class TimetableAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
 
         ViewHolder viewHolder = (ViewHolder) view.getTag();
-        String day = cursor.getString(TimeTableFragment.COL_TIMETABLE_DAY);
+        String day = cursor.getString(TimeTableWeekFragment.COL_TIMETABLE_DAY);
         viewHolder.iconView.setImageResource(Utility.getDayIcon(context, day));
 
-        String startTime = cursor.getString(TimeTableFragment.COL_TIMETABLE_START_TIME);
+        String startTime = cursor.getString(TimeTableWeekFragment.COL_TIMETABLE_START_TIME);
         viewHolder.startTime.setText(startTime);
 
-        String endTime = cursor.getString(TimeTableFragment.COL_TIMETABLE_END_TIME);
+        String endTime = cursor.getString(TimeTableWeekFragment.COL_TIMETABLE_END_TIME);
         viewHolder.endTime.setText(endTime);
 
-        String subject = cursor.getString(TimeTableFragment.COL_TIMETABLE_SUBJECT);
+        String subject = cursor.getString(TimeTableWeekFragment.COL_TIMETABLE_SUBJECT);
         viewHolder.subject.setText(subject);
 
-        String room = cursor.getString(TimeTableFragment.COL_TIMETABLE_ROOM);
+        String room = cursor.getString(TimeTableWeekFragment.COL_TIMETABLE_ROOM);
         viewHolder.room.setText(room);
 
 
 
-        String lecturer = cursor.getString(TimeTableFragment.COL_TIMETABLE_LECTURER);
+        String lecturer = cursor.getString(TimeTableWeekFragment.COL_TIMETABLE_LECTURER);
         viewHolder.lecturer.setText(lecturer);
 
     }
