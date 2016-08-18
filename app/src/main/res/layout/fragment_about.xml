@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/about_fragment_detail"
-    tools:context="com.mcgowan.timetable.android.AboutActivityFragment">
+    tools:context=".fragments.AboutActivityFragment">
 
 
     <us.feras.mdv.MarkdownView

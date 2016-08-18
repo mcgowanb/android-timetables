@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
+import com.mcgowan.timetable.android.fragments.AboutActivityFragment;
+
 public class AboutActivity extends AppCompatActivity {
 
     @Override

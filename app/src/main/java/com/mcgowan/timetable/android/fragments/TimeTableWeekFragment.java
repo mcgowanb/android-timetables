@@ -1,4 +1,4 @@
-package com.mcgowan.timetable.android;
+package com.mcgowan.timetable.android.fragments;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,6 +20,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.mcgowan.timetable.android.LectureDetailsActivity;
+import com.mcgowan.timetable.android.R;
+import com.mcgowan.timetable.android.TimetableAdapter;
+import com.mcgowan.timetable.android.Utility;
 import com.mcgowan.timetable.android.data.TimetableContract;
 import com.mcgowan.timetable.android.sync.TimetableSyncAdapter;
 

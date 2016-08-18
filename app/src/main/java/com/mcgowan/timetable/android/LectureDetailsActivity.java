@@ -7,6 +7,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.mcgowan.timetable.android.fragments.LectureDetailsFragment;
+
 public class LectureDetailsActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = LectureDetailsActivity.class.getSimpleName();
