@@ -104,13 +104,7 @@ public class TimeTableFragment extends Fragment implements LoaderManager.LoaderC
 
 
     void onStudentIdChanged() {
-        updateTimetable();
         getLoaderManager().restartLoader(TIMETABLE_LOADER, null, this);
-    }
-
-
-    public void updateTimetable() {
-        TimetableSyncAdapter.syncImmediately(getActivity());
     }
 
     @Override
@@ -122,8 +116,7 @@ public class TimeTableFragment extends Fragment implements LoaderManager.LoaderC
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String studentID = prefs.getString(getString(R.string.student_id_key), getString(R.string.student_id_default));
+        String studentID = Utility.getStudentId(getContext());
         Uri uri = TimetableContract.TimetableEntry.buildTimetableWithStudentIDAndDayID(studentID, "3");
 
         Loader<Cursor> cx = new CursorLoader(getActivity(),

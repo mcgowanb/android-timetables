@@ -57,6 +57,25 @@ public class MainActivity extends AppCompatActivity {
         TimetableSyncAdapter.initializeSyncAdapter(this);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        String studentId = Utility.getStudentId(this);
+        if (studentId.equals("")) {
+            showNoStudentIdDialog();
+        } else if (studentId != null && !studentId.equals(mStudentId)) {
+//            TimetableSyncAdapter.syncImmediately(this);
+            TimeTableFragment tf = (TimeTableFragment) getSupportFragmentManager()
+                    .findFragmentByTag(TIMETABLEFRAGMENT_TAG);
+            if (null != tf) {
+                tf.onStudentIdChanged();
+            }
+            mStudentId = studentId;
+        }
+
+    }
+
     private void initMenuDetails() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -76,7 +95,6 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-//        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 
         for (int i = 0; i < menu.size(); i++) {
             MenuItem mi = menu.getItem(i);
@@ -107,24 +125,6 @@ public class MainActivity extends AppCompatActivity {
         Intent settingsIntent = new Intent(this, SettingsActivity.class);
         startActivity(settingsIntent);
         return true;
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        String studentId = Utility.getStudentId(this);
-        if (studentId.equals("")) {
-            showNoStudentIdDialog();
-        } else if (studentId != null && !studentId.equals(mStudentId)) {
-            TimeTableFragment tf = (TimeTableFragment) getSupportFragmentManager()
-                    .findFragmentByTag(TIMETABLEFRAGMENT_TAG);
-            if (null != tf) {
-                tf.onStudentIdChanged();
-            }
-            mStudentId = studentId;
-        }
-
     }
 
     private void showNoStudentIdDialog() {
