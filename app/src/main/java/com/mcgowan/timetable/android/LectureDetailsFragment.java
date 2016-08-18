@@ -1,4 +1,4 @@
-package com.mcgowan.timetable.android.fragments;
+package com.mcgowan.timetable.android;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -17,8 +17,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.mcgowan.timetable.android.R;
-import com.mcgowan.timetable.android.Utility;
 import com.mcgowan.timetable.android.data.TimetableContract;
 
 public class LectureDetailsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {

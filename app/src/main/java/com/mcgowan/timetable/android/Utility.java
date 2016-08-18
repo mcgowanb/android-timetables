@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.mcgowan.timetable.android.data.TimetableContract;
-import com.mcgowan.timetable.android.fragments.TimeTableWeekFragment;
 import com.mcgowan.timetable.android.sync.TimetableSyncAdapter;
 import com.mcgowan.timetable.scraper.Course;
 import com.mcgowan.timetable.scraper.TimeTable;
