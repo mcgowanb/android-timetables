@@ -11,6 +11,7 @@ import com.mcgowan.timetable.android.data.TimetableContract;
 public class TabPagesAdapter extends FragmentPagerAdapter {
 
     private Context mContext;
+    private static final String LOG_TAG = FragmentPagerAdapter.class.getSimpleName();
 
     public TabPagesAdapter(FragmentManager fm, Context context) {
         super(fm);
@@ -23,19 +24,24 @@ public class TabPagesAdapter extends FragmentPagerAdapter {
         // Return a PlaceholderFragment (defined as a static inner class below).
         switch (position) {
             case 0:
-                Fragment fragment = new NextClassFragment();
-                Bundle bundle = new Bundle();
-                String uri  = TimetableContract.TimetableEntry
-                        .buildTimetableUri(107).toString();
-                bundle.putString("URI", uri);
-                fragment.setArguments(bundle);
-                return fragment;
+              return createNextClassFragment();
             case 1:
                 return new TimeTableTodayFragment();
             case 2:
                 return new TimeTableWeekFragment();
         }
         return null;
+    }
+
+    private Fragment createNextClassFragment(){
+        //should be able to load a uri directly here to return the query
+        Fragment fragment = new NextClassFragment();
+        Bundle bundle = new Bundle();
+        String uri  = TimetableContract.TimetableEntry.buildTimetableUri(107).toString();
+        String zz = TimetableContract.TimetableEntry.buildNextClassUri().toString();
+        bundle.putString("URI", uri);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     @Override

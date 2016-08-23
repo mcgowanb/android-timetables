@@ -9,6 +9,8 @@ import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.mcgowan.timetable.android.utility.Utility;
+
 public class TimetableAdapter extends CursorAdapter {
     private static final String LOG_TAG = TimeTableWeekFragment.class.getSimpleName();
 

@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mcgowan.timetable.android.data.TimetableContract;
+import com.mcgowan.timetable.android.utility.Utility;
 
 public class LectureDetailsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 

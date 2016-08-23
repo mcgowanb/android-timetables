@@ -26,6 +26,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.mcgowan.timetable.android.sync.TimetableSyncAdapter;
+import com.mcgowan.timetable.android.utility.Utility;
 
 import java.util.List;
 

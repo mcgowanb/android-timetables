@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.mcgowan.timetable.android.sync.TimetableSyncAdapter;
+import com.mcgowan.timetable.android.utility.Utility;
 
 
 public class MainActivity extends AppCompatActivity {

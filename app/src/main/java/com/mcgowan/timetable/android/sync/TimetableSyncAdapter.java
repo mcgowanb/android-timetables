@@ -21,7 +21,7 @@ import android.util.Log;
 
 import com.mcgowan.timetable.android.MainActivity;
 import com.mcgowan.timetable.android.R;
-import com.mcgowan.timetable.android.Utility;
+import com.mcgowan.timetable.android.utility.Utility;
 import com.mcgowan.timetable.android.data.TimetableContract;
 import com.mcgowan.timetable.scraper.TimeTable;
 

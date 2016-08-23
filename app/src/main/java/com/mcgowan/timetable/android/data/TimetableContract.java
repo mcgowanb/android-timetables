@@ -4,11 +4,14 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
+import android.util.Log;
+
+import com.mcgowan.timetable.android.utility.DateUtility;
 
 public class TimetableContract {
 
     public static final String CONTENT_AUTHORITY = "com.mcgowan.timetable.itsligotimetables.app";
-
+    private static final String LOG_TAG = TimetableContract.class.getSimpleName();
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
     //todo have another lecture_icon here for the available labs data to build with
 
@@ -36,13 +39,10 @@ public class TimetableContract {
 
         public static final String COLUMN_DAY = "day";
 
-        public static Uri buildLabsUri(long id){
+        public static Uri buildLabsUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
     }
-
-
-
 
 
     public static final class TimetableEntry implements BaseColumns {
@@ -66,7 +66,7 @@ public class TimetableContract {
         public static final String COLUMN_TIME = "time";
 
 
-        public static Uri buildTimetableUri(long id){
+        public static Uri buildTimetableUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
 
@@ -91,6 +91,14 @@ public class TimetableContract {
                     .appendQueryParameter(COLUMN_STUDENT_ID, studentId)
                     .appendQueryParameter(COLUMN_DAY_ID, dayID)
                     .build();
+        }
+
+        public static Uri buildNextClassUri(){
+            int day = DateUtility.getTodayId();
+            String time = DateUtility.getTime();
+            Log.d(LOG_TAG, String.valueOf(day));
+            Log.d(LOG_TAG, time);
+            return Uri.parse("");
         }
 
         public static String getDayFromUri(Uri uri) {

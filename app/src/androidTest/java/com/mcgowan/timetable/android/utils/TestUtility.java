@@ -2,7 +2,7 @@ package com.mcgowan.timetable.android.utils;
 
 import android.test.AndroidTestCase;
 
-import com.mcgowan.timetable.android.Utility;
+import com.mcgowan.timetable.android.utility.Utility;
 
 
 public class TestUtility extends AndroidTestCase {

@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.mcgowan.timetable.android.data.TimetableContract;
 import com.mcgowan.timetable.android.sync.TimetableSyncAdapter;
+import com.mcgowan.timetable.android.utility.Utility;
 
 /**
  * A placeholder fragment containing a simple view.

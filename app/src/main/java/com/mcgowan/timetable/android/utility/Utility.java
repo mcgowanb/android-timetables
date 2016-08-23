@@ -1,4 +1,4 @@
-package com.mcgowan.timetable.android;
+package com.mcgowan.timetable.android.utility;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -13,6 +13,9 @@ import android.text.SpannableString;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.mcgowan.timetable.android.CustomTypefaceSpan;
+import com.mcgowan.timetable.android.R;
+import com.mcgowan.timetable.android.TimeTableWeekFragment;
 import com.mcgowan.timetable.android.data.TimetableContract;
 import com.mcgowan.timetable.android.sync.TimetableSyncAdapter;
 import com.mcgowan.timetable.scraper.Course;
@@ -221,5 +224,10 @@ public class Utility {
         Calendar cal = Calendar.getInstance();
         cal.setFirstDayOfWeek(Calendar.MONDAY);
         return String.valueOf(cal.get(Calendar.DAY_OF_WEEK) - 1);
+    }
+
+    public static String getNecessaryDay() {
+//        String dayOfWeek = new SimpleDateFormat("EEEE", Locale.ENGLISH).format();
+        return "";
     }
 }

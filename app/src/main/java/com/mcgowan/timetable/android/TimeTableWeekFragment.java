@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.mcgowan.timetable.android.data.TimetableContract;
 import com.mcgowan.timetable.android.sync.TimetableSyncAdapter;
+import com.mcgowan.timetable.android.utility.Utility;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -51,7 +52,7 @@ public class TimeTableWeekFragment extends Fragment implements LoaderManager.Loa
     };
 
     static final int COL_TIMETABLE_ID = 0;
-    static final int COL_TIMETABLE_DAY = 1;
+    public static final int COL_TIMETABLE_DAY = 1;
     static final int COL_TIMETABLE_TIME = 2;
     static final int COL_TIMETABLE_START_TIME = 3;
     static final int COL_TIMETABLE_END_TIME = 4;
