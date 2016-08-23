@@ -91,6 +91,7 @@
     <string name="app_version_title">App Version</string>
     <string name="title_today">Today</string>
     <string name="title_week">This week</string>
+    <string name="title_next">Next</string>
 
 
 </resources>
