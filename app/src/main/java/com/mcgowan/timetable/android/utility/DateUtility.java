@@ -2,6 +2,7 @@ package com.mcgowan.timetable.android.utility;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 
 public class DateUtility {
@@ -14,7 +15,7 @@ public class DateUtility {
 
     public static String getTime(){
         Calendar c = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.UK);
         return sdf.format(c.getTime());
     }
 }

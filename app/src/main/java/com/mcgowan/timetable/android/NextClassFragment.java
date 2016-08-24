@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,7 @@ public class NextClassFragment extends Fragment implements LoaderManager.LoaderC
     private String mClassInformation;
     private static final int DETAIL_LOADER = 2;
     private static final String LOG_TAG = NextClassFragment.class.getSimpleName();
-    private String mPosition;
+    private String mPosition = "107";
     private Uri mUri;
 
     private static final String[] TIMETABLE_COLUMNS = {
@@ -61,7 +62,7 @@ public class NextClassFragment extends Fragment implements LoaderManager.LoaderC
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPosition = getArguments().getString("URI");
-        mUri = Uri.parse(mPosition);
+        mUri = TimetableContract.TimetableEntry.buildNextClassUri(Utility.getStudentId(getContext()));
     }
 
 
@@ -76,6 +77,11 @@ public class NextClassFragment extends Fragment implements LoaderManager.LoaderC
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+//        mUri = TimetableContract.TimetableEntry.buildNextClassUri();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -109,10 +115,12 @@ public class NextClassFragment extends Fragment implements LoaderManager.LoaderC
 //        if (intent == null || intent.getData() == null) {
 //            return null;
 //        }
-
+        Uri uri = TimetableContract.TimetableEntry
+                .buildTimetableUri(126);
+        //here need to build the mUri to SELECT FROM BLAH WHERE CONDITIONS LIMIT 1 etc
         CursorLoader cursorLoader = new CursorLoader(
                 getActivity(),
-                mUri,  //Uri should be
+                uri,  //mUri should be
                 TIMETABLE_COLUMNS,
                 null,
                 null,
@@ -124,6 +132,7 @@ public class NextClassFragment extends Fragment implements LoaderManager.LoaderC
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         if (!cursor.moveToFirst()) {
+            Log.d(LOG_TAG, "Empty Cursor");
             return;
         }
 
@@ -141,7 +150,7 @@ public class NextClassFragment extends Fragment implements LoaderManager.LoaderC
         setClockTime(startTime, endTime);
 
         TextView classNameView = (TextView) getView().findViewById(R.id.detail_class_name);
-        Typeface face=Typeface.createFromAsset(getActivity().getAssets(),"fonts/RockSalt.ttf");
+        Typeface face = Typeface.createFromAsset(getActivity().getAssets(), "fonts/RockSalt.ttf");
         classNameView.setTypeface(face);
         classNameView.setText(cursor.getString(NextClassFragment.COL_TIMETABLE_SUBJECT));
 

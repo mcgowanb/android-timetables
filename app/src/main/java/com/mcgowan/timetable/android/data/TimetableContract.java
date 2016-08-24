@@ -4,8 +4,8 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
-import android.util.Log;
 
+import com.mcgowan.timetable.android.utility.ClassTime;
 import com.mcgowan.timetable.android.utility.DateUtility;
 
 public class TimetableContract {
@@ -93,12 +93,17 @@ public class TimetableContract {
                     .build();
         }
 
-        public static Uri buildNextClassUri(){
-            int day = DateUtility.getTodayId();
+        public static Uri buildNextClassUri(String studentID){
+            int dayID = DateUtility.getTodayId();
             String time = DateUtility.getTime();
-            Log.d(LOG_TAG, String.valueOf(day));
-            Log.d(LOG_TAG, time);
-            return Uri.parse("");
+            ClassTime classTime = new ClassTime(dayID, time);
+            classTime.checkTimeAndDateForNextClass();
+
+            return CONTENT_URI.buildUpon()
+                    .appendQueryParameter(COLUMN_DAY_ID, classTime.getDayIDAsString())
+                    .appendQueryParameter(COLUMN_START_TIME, classTime.getCurrentTime())
+                    .appendQueryParameter(COLUMN_STUDENT_ID, studentID)
+                    .build();
         }
 
         public static String getDayFromUri(Uri uri) {
