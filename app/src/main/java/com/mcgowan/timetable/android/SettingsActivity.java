@@ -5,6 +5,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -44,17 +45,29 @@ import java.util.List;
 public class SettingsActivity extends AppCompatPreferenceActivity {
 
     public static final String LOG_TAG = SettingsActivity.class.getSimpleName();
+    private SharedPreferences.OnSharedPreferenceChangeListener mPrefsListener;
+    private SharedPreferences mSharedPrefs;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setupActionBar();
-//        addPreferencesFromResource(R.xml.pref_general);
-
-//        bindPreferenceSummaryToValue(findPreference(getString(R.string.student_id_key)));
-//        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_timetable_key)));
-
+        addPreferenceChangeListener();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mSharedPrefs.registerOnSharedPreferenceChangeListener(mPrefsListener);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mSharedPrefs.unregisterOnSharedPreferenceChangeListener(mPrefsListener);
+    }
+
     /**
      * {@inheritDoc}
      * remove this when needed to revert
@@ -68,8 +81,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     @Override
     public void onHeaderClick(Header header, int position) {
         super.onHeaderClick(header, position);
-        switch((int)header.id){
-            case  R.id.pref_about:
+        switch ((int) header.id) {
+            case R.id.pref_about:
                 launchAboutActivity();
                 break;
 
@@ -258,7 +271,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             setHasOptionsMenu(true);
 
 
-
             // Bind the summaries of EditText/List/Dialog/Ringtone preferences
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
@@ -341,12 +353,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }
     }
 
-    private void launchAboutActivity(){
+    private void launchAboutActivity() {
         Intent intent = new Intent(this, AboutActivity.class);
         startActivity(intent);
     }
 
-    private void displayVersion(){
+    private void displayVersion() {
         LayoutInflater inflater = LayoutInflater.from(this);
 
         View view = inflater.inflate(R.layout.dialog_main, null);
@@ -365,5 +377,20 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             }
         });
         builder.create().show();
+    }
+
+    /**
+     * adds listener for on change of preference settings
+     */
+    private void addPreferenceChangeListener() {
+        mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        mPrefsListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+            public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+                if (key.equals(getResources().getString(R.string.student_id_key))) {
+                    TimetableSyncAdapter.syncImmediately(getApplicationContext());
+                }
+            }
+        };
+        mSharedPrefs.registerOnSharedPreferenceChangeListener(mPrefsListener);
     }
 }

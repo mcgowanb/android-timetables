@@ -2,9 +2,7 @@ package com.mcgowan.timetable.android;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
@@ -14,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.mcgowan.timetable.android.sync.TimetableSyncAdapter;
 import com.mcgowan.timetable.android.utility.Utility;
@@ -26,55 +23,33 @@ public class MainActivity extends AppCompatActivity {
     public static final String LABS_URL = "https://itsligo.ie/student-hub/computer-labs/";
     public static final String LOG_TAG = MainActivity.class.getSimpleName();
 
-    private final String TIMETABLEWEEK_TAG = "TFWKTAG";
-    private final String TIMETABLETODAY_TAG = "TFTDTAG";
-    TabPagesAdapter mTabsPagesAdapter;
-    SharedPreferences.OnSharedPreferenceChangeListener mPrefsListener;
-    private SharedPreferences mSharedPrefs;
-    ViewPager mViewPager;
+    private TabPagesAdapter mTabsPagesAdapter;
+    private ViewPager mViewPager;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        addPreferenceChangeListener();
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         switch (AppVersionCheck.checkAppStart(this)) {
-            case NORMAL:
-                // No need to do anything
-                break;
+//            case NORMAL:
+//                // No need to do anything
+//                break;
             case FIRST_TIME_VERSION:
-                Toast.makeText(this, "First time version", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "First time version", Toast.LENGTH_SHORT).show();
                 // TODO show what's new
                 break;
             case FIRST_TIME:
-                Toast.makeText(this, "First time", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "First time", Toast.LENGTH_SHORT).show();
                 // TODO show a tutorial
                 break;
             default:
                 break;
         }
-
-        initMenuDetails();
-
-//        String studentId = Utility.getStudentId(this);
-//        if (studentId.equals("")) {
-//            showNoStudentIdDialog();
-//        }
-
-        if (savedInstanceState == null) {
-
-            mTabsPagesAdapter = new TabPagesAdapter(getSupportFragmentManager(), this);
-
-            mViewPager = (ViewPager) findViewById(R.id.container);
-            mViewPager.setAdapter(mTabsPagesAdapter);
-
-            TabLayout tabLayout = (TabLayout) findViewById(R.id.tabbar);
-            tabLayout.setupWithViewPager(mViewPager);
-
-        }
-
         TimetableSyncAdapter.initializeSyncAdapter(this);
     }
 
@@ -84,23 +59,20 @@ public class MainActivity extends AppCompatActivity {
         String studentId = Utility.getStudentId(this);
         if (studentId.equals("")) {
             showNoStudentIdDialog();
+        } else {
+            mTabsPagesAdapter = new TabPagesAdapter(getSupportFragmentManager(), this);
+
+            mViewPager = (ViewPager) findViewById(R.id.container);
+            mViewPager.setAdapter(mTabsPagesAdapter);
+
+            TabLayout tabLayout = (TabLayout) findViewById(R.id.tabbar);
+            tabLayout.setupWithViewPager(mViewPager);
         }
-        mSharedPrefs.registerOnSharedPreferenceChangeListener(mPrefsListener);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mSharedPrefs.unregisterOnSharedPreferenceChangeListener(mPrefsListener);
-    }
-
-    /**
-     * loads the menu toolbar
-     */
-    private void initMenuDetails() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
     }
 
     @Override
@@ -170,20 +142,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         builder.create().show();
-    }
-
-    /**
-     * adds listener for on change of preference settings
-     */
-    private void addPreferenceChangeListener() {
-        mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        mPrefsListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
-            public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-                if (key.equals(getResources().getString(R.string.student_id_key))) {
-                    TimetableSyncAdapter.syncImmediately(getApplicationContext());
-                }
-            }
-        };
-        mSharedPrefs.registerOnSharedPreferenceChangeListener(mPrefsListener);
     }
 }
