@@ -23,11 +23,11 @@ public class TabPagesAdapter extends FragmentPagerAdapter {
         // getItem is called to instantiate the fragment for the given page.
         // Return a PlaceholderFragment (defined as a static inner class below).
         switch (position) {
+//            case 0:
+//              return createNextClassFragment();
             case 0:
-              return createNextClassFragment();
-            case 1:
                 return new TimeTableTodayFragment();
-            case 2:
+            case 1:
                 return new TimeTableWeekFragment();
         }
         return null;
@@ -38,7 +38,7 @@ public class TabPagesAdapter extends FragmentPagerAdapter {
         Fragment fragment = new NextClassFragment();
         Bundle bundle = new Bundle();
         String uri  = TimetableContract.TimetableEntry.buildTimetableUri(107).toString();
-        String zz = TimetableContract.TimetableEntry.buildNextClassUri().toString();
+//        String zz = TimetableContract.TimetableEntry.buildNextClassUri().toString();
         bundle.putString("URI", uri);
         fragment.setArguments(bundle);
         return fragment;
@@ -47,17 +47,17 @@ public class TabPagesAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         // Show 3 total pages.
-        return 3;
+        return 2;
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
         switch (position) {
+//            case 0:
+//                return mContext.getString(R.string.title_next);
             case 0:
-                return mContext.getString(R.string.title_next);
-            case 1:
                 return mContext.getString(R.string.title_today);
-            case 2:
+            case 1:
                 return mContext.getString(R.string.title_week);
         }
         return null;

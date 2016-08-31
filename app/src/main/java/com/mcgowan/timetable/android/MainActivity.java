@@ -2,7 +2,9 @@ package com.mcgowan.timetable.android;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
@@ -27,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     private final String TIMETABLEWEEK_TAG = "TFWKTAG";
     private final String TIMETABLETODAY_TAG = "TFTDTAG";
     TabPagesAdapter mTabsPagesAdapter;
+    SharedPreferences.OnSharedPreferenceChangeListener mPrefsListener;
+    private SharedPreferences mSharedPrefs;
     ViewPager mViewPager;
 
 
@@ -34,9 +38,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //set listener for the change in student id
-//        addPreferenceChangeListener();
+        addPreferenceChangeListener();
 
         switch (AppVersionCheck.checkAppStart(this)) {
             case NORMAL:
@@ -56,6 +58,11 @@ public class MainActivity extends AppCompatActivity {
 
         initMenuDetails();
 
+//        String studentId = Utility.getStudentId(this);
+//        if (studentId.equals("")) {
+//            showNoStudentIdDialog();
+//        }
+
         if (savedInstanceState == null) {
 
             mTabsPagesAdapter = new TabPagesAdapter(getSupportFragmentManager(), this);
@@ -63,13 +70,9 @@ public class MainActivity extends AppCompatActivity {
             mViewPager = (ViewPager) findViewById(R.id.container);
             mViewPager.setAdapter(mTabsPagesAdapter);
 
-//Add a tab bar navigation
             TabLayout tabLayout = (TabLayout) findViewById(R.id.tabbar);
             tabLayout.setupWithViewPager(mViewPager);
 
-//            getSupportFragmentManager().beginTransaction()
-//                    .add(R.id.container, new TimeTableWeekFragment(), TIMETABLEWEEK_TAG)
-//                    .commit();
         }
 
         TimetableSyncAdapter.initializeSyncAdapter(this);
@@ -82,6 +85,13 @@ public class MainActivity extends AppCompatActivity {
         if (studentId.equals("")) {
             showNoStudentIdDialog();
         }
+        mSharedPrefs.registerOnSharedPreferenceChangeListener(mPrefsListener);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mSharedPrefs.unregisterOnSharedPreferenceChangeListener(mPrefsListener);
     }
 
     /**
@@ -160,5 +170,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         builder.create().show();
+    }
+
+    /**
+     * adds listener for on change of preference settings
+     */
+    private void addPreferenceChangeListener() {
+        mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        mPrefsListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+            public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+                if (key.equals(getResources().getString(R.string.student_id_key))) {
+                    TimetableSyncAdapter.syncImmediately(getApplicationContext());
+                }
+            }
+        };
+        mSharedPrefs.registerOnSharedPreferenceChangeListener(mPrefsListener);
     }
 }
