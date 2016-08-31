@@ -61,8 +61,8 @@ public class NextClassFragment extends Fragment implements LoaderManager.LoaderC
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPosition = getArguments().getString("URI");
-        mUri = TimetableContract.TimetableEntry.buildNextClassUri(Utility.getStudentId(getContext()));
+//        mPosition = getArguments().getString("URI");
+//        mUri = TimetableContract.TimetableEntry.buildNextClassUri(Utility.getStudentId(getContext()));
     }
 
 
@@ -111,17 +111,17 @@ public class NextClassFragment extends Fragment implements LoaderManager.LoaderC
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-//        Intent intent = getActivity().getIntent();
-//        if (intent == null || intent.getData() == null) {
-//            return null;
-//        }
+
         Uri uri = TimetableContract.TimetableEntry
                 .buildTimetableUri(126);
+
+        Uri zip = TimetableContract.TimetableEntry.buildNextClassUri(Utility.getStudentId(getContext()));
+        Log.d(LOG_TAG, zip.toString());
         //here need to build the mUri to SELECT FROM BLAH WHERE CONDITIONS LIMIT 1 etc
         CursorLoader cursorLoader = new CursorLoader(
                 getActivity(),
-                uri,  //mUri should be
-                TIMETABLE_COLUMNS,
+                uri,  // table to query
+                TIMETABLE_COLUMNS, // projection to return
                 null,
                 null,
                 null

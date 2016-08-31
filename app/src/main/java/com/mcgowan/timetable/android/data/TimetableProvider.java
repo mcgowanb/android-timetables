@@ -129,6 +129,11 @@ public class TimetableProvider extends ContentProvider {
             TimetableEntry.TABLE_NAME + "." + TimetableEntry.COLUMN_STUDENT_ID + " = ? AND "
                     + TimetableEntry.COLUMN_DAY_ID + " = ?";
 
+    private static final String sNextAvailableClass =
+            TimetableEntry.TABLE_NAME + "." + TimetableEntry.COLUMN_STUDENT_ID + " = ? AND "
+                    + TimetableEntry.COLUMN_DAY_ID + " = ? AND "
+                    + TimetableEntry.COLUMN_START_TIME + " >= ? LIMIT 1";
+
 
     private Cursor getTimeTableByStudentId(Uri uri, String[] projection, String sortOrder) {
         String studentIdSetting = TimetableEntry.getStudentIdFromUri(uri);

@@ -72,8 +72,6 @@ public class TimeTableWeekFragment extends Fragment implements LoaderManager.Loa
         super.onCreate(savedInstanceState);
         //enable fragment to handle menu events
         setHasOptionsMenu(true);
-//        mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-//        addPreferenceChangeListener();
     }
 
     @Override
@@ -107,12 +105,6 @@ public class TimeTableWeekFragment extends Fragment implements LoaderManager.Loa
         return rootView;
     }
 
-
-//    void onStudentIdChanged() {
-//        TimetableSyncAdapter.syncImmediately(getActivity());
-//        getLoaderManager().restartLoader(TIMETABLE_LOADER, null, this);
-//    }
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         getLoaderManager().initLoader(TIMETABLE_LOADER, null, this);
@@ -141,10 +133,10 @@ public class TimeTableWeekFragment extends Fragment implements LoaderManager.Loa
         mPosition = Utility.checkCursorForToday(cursor);
 
         mTimetableAdapter.swapCursor(cursor);
-        if (mPosition != ListView.INVALID_POSITION) {
-            //set the cursor position to the current day
-            smoothScrollToPositionFromTop(mListView, mPosition);
-        }
+//        if (mPosition != ListView.INVALID_POSITION) {
+//            //set the cursor position to the current day
+//            smoothScrollToPositionFromTop(mListView, mPosition);
+//        }
         updateEmptyView();
     }
 

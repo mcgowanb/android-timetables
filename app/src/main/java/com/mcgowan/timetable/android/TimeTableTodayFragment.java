@@ -106,10 +106,6 @@ public class TimeTableTodayFragment extends Fragment implements LoaderManager.Lo
     }
 
 
-//    void onStudentIdChanged() {
-//        getLoaderManager().restartLoader(TIMETABLE_LOADER, null, this);
-//    }
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         getLoaderManager().initLoader(TIMETABLE_LOADER, null, this);
@@ -199,18 +195,5 @@ public class TimeTableTodayFragment extends Fragment implements LoaderManager.Lo
         }
     }
 
-    /**
-     * adds listener for on change of preference settings
-     */
-//    private void addPreferenceChangeListener() {
-//        mPrefsListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
-//            public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-//                if (key.equals(getResources().getString(R.string.student_id_key))) {
-//                    onStudentIdChanged();
-//                }
-//            }
-//        };
-//        mSharedPrefs.registerOnSharedPreferenceChangeListener(mPrefsListener);
-//    }
 }
 
