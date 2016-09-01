@@ -220,27 +220,7 @@ public class TimetableProvider extends ContentProvider {
                 sortOrder
         );
         return result;
-//        Log.d("FUCK", sTimetableQueryBuilder.toString());
-//        return null;
     }
-
-//    private Cursor getNextClass(Uri uri, String[] projectionIn, String[] selectionArgs, String sortOrder){
-//        String selection = sNextAvailableClass;
-//        Log.d(LOG_TAG, uri.toString());
-//
-//        Cursor result = sTimetableQueryBuilder.query(
-//                mHelper.getReadableDatabase(), //db
-//                projectionIn, //projection in
-//                selection, //selection
-//                selectionArgs, //selection args will come from the conditions to match
-//                null, // group
-//                null, //having
-//                sortOrder, //sort
-//                "1" //limit
-//        );
-//
-//        return result;
-//    }
 
     @Nullable
     @Override

@@ -11,7 +11,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -114,7 +113,6 @@ public class NextClassFragment extends Fragment implements LoaderManager.LoaderC
 
         Uri uri = TimetableContract.TimetableEntry.
                 buildNextClassUri(Utility.getStudentId(getContext()));
-        Log.d(LOG_TAG, uri.toString());
         //here need to build the mUri to SELECT FROM BLAH WHERE CONDITIONS LIMIT 1 etc
         CursorLoader cursorLoader = new CursorLoader(
                 getActivity(),
@@ -130,7 +128,7 @@ public class NextClassFragment extends Fragment implements LoaderManager.LoaderC
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         if (!cursor.moveToFirst()) {
-            Log.d(LOG_TAG, "Empty Cursor");
+            // TODO: 01/09/2016 need to return an empty screen here saying no next class or something 
             return;
         }
 
