@@ -34,8 +34,6 @@ public class TimeTableTodayFragment extends Fragment implements LoaderManager.Lo
     private static final int TIMETABLE_LOADER = 1;
     private int mPosition = ListView.INVALID_POSITION;
     private ListView mListView;
-    private SharedPreferences.OnSharedPreferenceChangeListener mPrefsListener;
-    private SharedPreferences mSharedPrefs;
 
     private static final String[] TIMETABLE_COLUMNS = {
             TimetableContract.TimetableEntry._ID,
@@ -70,8 +68,6 @@ public class TimeTableTodayFragment extends Fragment implements LoaderManager.Lo
         super.onCreate(savedInstanceState);
         //enable fragment to handle menu events
         setHasOptionsMenu(true);
-        mSharedPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-//        addPreferenceChangeListener();
     }
 
     @Override

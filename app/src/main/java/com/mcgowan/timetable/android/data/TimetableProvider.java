@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.mcgowan.timetable.android.data.TimetableContract.AvailableLabEntry;
 import com.mcgowan.timetable.android.data.TimetableContract.TimetableEntry;
@@ -23,6 +24,7 @@ public class TimetableProvider extends ContentProvider {
 
     public static final int TIMETABLE = 100;
     public static final int TIMETABLE_BY_ID = 101;
+//    public static final int TIMETABLE_NEXT_CLASS = 110;
     public static final int LABS = 300;
 
     private static final SQLiteQueryBuilder sTimetableQueryBuilder, sAvailableLabsQueryBuilder;
@@ -71,7 +73,6 @@ public class TimetableProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-
         Cursor retCursor;
         switch (sUriMatcher.match(uri)) {
             case TIMETABLE_BY_ID: {
@@ -99,6 +100,16 @@ public class TimetableProvider extends ContentProvider {
                 );
                 break;
             }
+//            case TIMETABLE_NEXT_CLASS:{
+//                retCursor = getNextClass(
+//                        uri,
+//                        projection,
+//                        selectionArgs,
+//                        sortOrder
+//                );
+//                break;
+//            }
+
             default:
                 throw new UnsupportedOperationException("Unknown Uri: " + uri);
         }
@@ -132,7 +143,7 @@ public class TimetableProvider extends ContentProvider {
     private static final String sNextAvailableClass =
             TimetableEntry.TABLE_NAME + "." + TimetableEntry.COLUMN_STUDENT_ID + " = ? AND "
                     + TimetableEntry.COLUMN_DAY_ID + " = ? AND "
-                    + TimetableEntry.COLUMN_START_TIME + " >= ? LIMIT 1";
+                    + TimetableEntry.COLUMN_START_TIME + " >= ?";
 
 
     private Cursor getTimeTableByStudentId(Uri uri, String[] projection, String sortOrder) {
@@ -142,6 +153,10 @@ public class TimetableProvider extends ContentProvider {
         String[] selectionArgs;
         String queryParams;
         boolean selectAll = false;
+
+        if(!isEmpty(TimetableEntry.getStartTimeFromUri(uri))){
+            return getNextStudentClass(uri, projection, sortOrder);
+        }
 
         //return select all, as no querystring parameters passed
         if (isEmpty(daySetting) && isEmpty(studentIdSetting) && isEmpty(dayIDSetting))
@@ -170,6 +185,26 @@ public class TimetableProvider extends ContentProvider {
         );
     }
 
+    private Cursor getNextStudentClass(Uri uri, String[] projectionIn, String sortOrder) {
+        String queryParams = sNextAvailableClass;
+        String limit = "1";
+        String studentIdSetting = TimetableEntry.getStudentIdFromUri(uri);
+        String dayIdSetting = TimetableEntry.getDayIDFromUri(uri);
+        String startTimeSetting = TimetableEntry.getStartTimeFromUri(uri);
+        String[] selectionArgs = {studentIdSetting, dayIdSetting, startTimeSetting};
+
+        return sTimetableQueryBuilder.query(
+                mHelper.getReadableDatabase(),
+                projectionIn,
+                queryParams,
+                selectionArgs,
+                null,
+                null,
+                sortOrder,
+                limit
+        );
+    }
+
     private Cursor getTimeTableById(Uri uri, String[] projection, String sortOrder) {
 
         String id = uri.getLastPathSegment();
@@ -188,6 +223,24 @@ public class TimetableProvider extends ContentProvider {
 //        Log.d("FUCK", sTimetableQueryBuilder.toString());
 //        return null;
     }
+
+//    private Cursor getNextClass(Uri uri, String[] projectionIn, String[] selectionArgs, String sortOrder){
+//        String selection = sNextAvailableClass;
+//        Log.d(LOG_TAG, uri.toString());
+//
+//        Cursor result = sTimetableQueryBuilder.query(
+//                mHelper.getReadableDatabase(), //db
+//                projectionIn, //projection in
+//                selection, //selection
+//                selectionArgs, //selection args will come from the conditions to match
+//                null, // group
+//                null, //having
+//                sortOrder, //sort
+//                "1" //limit
+//        );
+//
+//        return result;
+//    }
 
     @Nullable
     @Override

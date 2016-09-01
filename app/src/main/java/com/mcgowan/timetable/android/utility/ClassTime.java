@@ -44,6 +44,7 @@ public class ClassTime {
 
             if (nowCalendar.getTime().after(lastClassCalendar.getTime())) {
                 dayID++;
+                if(dayID > 6) dayID = 1;
                 currentTime = TIME_START;
             }
 

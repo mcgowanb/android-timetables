@@ -80,7 +80,7 @@ public class NextClassFragment extends Fragment implements LoaderManager.LoaderC
     @Override
     public void onResume() {
         super.onResume();
-//        mUri = TimetableContract.TimetableEntry.buildNextClassUri();
+        getLoaderManager().restartLoader(DETAIL_LOADER, null, this);
     }
 
     @Override
@@ -112,19 +112,17 @@ public class NextClassFragment extends Fragment implements LoaderManager.LoaderC
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
-        Uri uri = TimetableContract.TimetableEntry
-                .buildTimetableUri(126);
-
-        Uri zip = TimetableContract.TimetableEntry.buildNextClassUri(Utility.getStudentId(getContext()));
-        Log.d(LOG_TAG, zip.toString());
+        Uri uri = TimetableContract.TimetableEntry.
+                buildNextClassUri(Utility.getStudentId(getContext()));
+        Log.d(LOG_TAG, uri.toString());
         //here need to build the mUri to SELECT FROM BLAH WHERE CONDITIONS LIMIT 1 etc
         CursorLoader cursorLoader = new CursorLoader(
                 getActivity(),
                 uri,  // table to query
                 TIMETABLE_COLUMNS, // projection to return
-                null,
-                null,
-                null
+                null,//selection
+                null,//selectionArgs
+                null//sort order
         );
         return cursorLoader;
     }

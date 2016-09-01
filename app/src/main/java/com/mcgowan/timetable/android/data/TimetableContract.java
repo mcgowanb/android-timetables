@@ -113,5 +113,9 @@ public class TimetableContract {
         public static String getDayIDFromUri(Uri uri) {
             return uri.getQueryParameter(COLUMN_DAY_ID);
         }
+
+        public static String getStartTimeFromUri(Uri uri) {
+            return uri.getQueryParameter(COLUMN_START_TIME);
+        }
     }
 }
