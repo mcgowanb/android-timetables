@@ -100,15 +100,6 @@ public class TimetableProvider extends ContentProvider {
                 );
                 break;
             }
-//            case TIMETABLE_NEXT_CLASS:{
-//                retCursor = getNextClass(
-//                        uri,
-//                        projection,
-//                        selectionArgs,
-//                        sortOrder
-//                );
-//                break;
-//            }
 
             default:
                 throw new UnsupportedOperationException("Unknown Uri: " + uri);
