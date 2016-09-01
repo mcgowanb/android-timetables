@@ -48,15 +48,6 @@ public class TimeTableTodayFragment extends Fragment implements LoaderManager.Lo
     };
 
     static final int COL_TIMETABLE_ID = 0;
-    static final int COL_TIMETABLE_DAY = 1;
-    static final int COL_TIMETABLE_TIME = 2;
-    static final int COL_TIMETABLE_START_TIME = 3;
-    static final int COL_TIMETABLE_END_TIME = 4;
-    static final int COL_TIMETABLE_LECTURER = 5;
-    static final int COL_TIMETABLE_SUBJECT = 6;
-    static final int COL_TIMETABLE_DAY_ID = 7;
-    static final int COL_TIMETABLE_ROOM = 8;
-
 
     public TimeTableTodayFragment() {
 

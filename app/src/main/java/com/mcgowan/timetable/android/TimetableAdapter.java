@@ -53,17 +53,7 @@ public class TimetableAdapter extends CursorAdapter {
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
 
-        int viewType = getItemViewType(cursor.getPosition());
-        int layoutId = -1;
-
-        if(viewType == VIEW_TYPE_NEXT){
-            layoutId = R.layout.list_item_next_class;
-        }
-        else if (viewType == VIEW_TYPE_ALL){
-            layoutId = R.layout.list_item_class;
-        }
-
-        layoutId = R.layout.list_item_class;
+        int layoutId = R.layout.list_item_class;
 
         View view = LayoutInflater.from(context).inflate(layoutId, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);

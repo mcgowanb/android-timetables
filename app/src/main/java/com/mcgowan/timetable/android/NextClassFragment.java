@@ -27,8 +27,6 @@ public class NextClassFragment extends Fragment implements LoaderManager.LoaderC
     private String mClassInformation;
     private static final int DETAIL_LOADER = 2;
     private static final String LOG_TAG = NextClassFragment.class.getSimpleName();
-    private String mPosition = "107";
-    private Uri mUri;
 
     private static final String[] TIMETABLE_COLUMNS = {
             TimetableContract.TimetableEntry._ID,
@@ -42,14 +40,12 @@ public class NextClassFragment extends Fragment implements LoaderManager.LoaderC
             TimetableContract.TimetableEntry.COLUMN_ROOM,
     };
 
-    static final int COL_TIMETABLE_ID = 0;
     static final int COL_TIMETABLE_DAY = 1;
     static final int COL_TIMETABLE_TIME = 2;
     static final int COL_TIMETABLE_START_TIME = 3;
     static final int COL_TIMETABLE_END_TIME = 4;
     static final int COL_TIMETABLE_LECTURER = 5;
     static final int COL_TIMETABLE_SUBJECT = 6;
-    static final int COL_TIMETABLE_DAY_ID = 7;
     static final int COL_TIMETABLE_ROOM = 8;
 
 
@@ -60,8 +56,6 @@ public class NextClassFragment extends Fragment implements LoaderManager.LoaderC
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        mPosition = getArguments().getString("URI");
-//        mUri = TimetableContract.TimetableEntry.buildNextClassUri(Utility.getStudentId(getContext()));
     }
 
 

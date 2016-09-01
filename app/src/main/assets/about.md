@@ -1,7 +1,7 @@
 #About me
-My name is Brian and I am a second year BSC(Hons) student in computing (SG246). I have always had a keen interest in software and software
+My name is Brian and I am starting second year in BSC(Hons) student in computing (SG246). I have always had a keen interest in software and software
 development.
-I decided to create this app for a couple of reasons:
+I decided to create this app for a couple of reasons, which are:
 
 - Learning experience: I wanted this to be a learning experience for myself in android development. I've created a small app in it
 before, but I was looking for something more in depth to work on
@@ -15,6 +15,8 @@ and not everyone has internet access all of the time, I found that I was without
 -  Sharing code. I believe in the open source movement, and all of the code is available for this app on github (details below) I would encourage
 anyone who wants to, to create pull requests to improve the project and submit changes. Alternatively if anyone has an interest in porting this 
 over to IOS, please use this code to do so.
+
+- Oh, and  I also wanted to challenge myself to see if I could do something like this on my own back.
 
 #App Details
 The app is split into two separate components.

@@ -46,7 +46,6 @@ public class LectureDetailsFragment extends Fragment implements LoaderManager.Lo
     static final int COL_TIMETABLE_END_TIME = 4;
     static final int COL_TIMETABLE_LECTURER = 5;
     static final int COL_TIMETABLE_SUBJECT = 6;
-    static final int COL_TIMETABLE_DAY_ID = 7;
     static final int COL_TIMETABLE_ROOM = 8;
 
 

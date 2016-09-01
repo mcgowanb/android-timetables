@@ -40,11 +40,9 @@ public class MainActivity extends AppCompatActivity {
 //                // No need to do anything
 //                break;
             case FIRST_TIME_VERSION:
-//                Toast.makeText(this, "First time version", Toast.LENGTH_SHORT).show();
                 // TODO show what's new
                 break;
             case FIRST_TIME:
-//                Toast.makeText(this, "First time", Toast.LENGTH_SHORT).show();
                 // TODO show a tutorial
                 break;
             default:

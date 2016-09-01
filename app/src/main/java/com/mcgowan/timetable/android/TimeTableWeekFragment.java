@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,7 +14,6 @@ import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -36,8 +34,6 @@ public class TimeTableWeekFragment extends Fragment implements LoaderManager.Loa
     private static final int TIMETABLE_LOADER = 1;
     private int mPosition = ListView.INVALID_POSITION;
     private ListView mListView;
-//    SharedPreferences.OnSharedPreferenceChangeListener mPrefsListener;
-//    private SharedPreferences mSharedPrefs;
 
     private static final String[] TIMETABLE_COLUMNS = {
             TimetableContract.TimetableEntry._ID,
@@ -133,10 +129,6 @@ public class TimeTableWeekFragment extends Fragment implements LoaderManager.Loa
         mPosition = Utility.checkCursorForToday(cursor);
 
         mTimetableAdapter.swapCursor(cursor);
-//        if (mPosition != ListView.INVALID_POSITION) {
-//            //set the cursor position to the current day
-//            smoothScrollToPositionFromTop(mListView, mPosition);
-//        }
         updateEmptyView();
     }
 
@@ -194,43 +186,6 @@ public class TimeTableWeekFragment extends Fragment implements LoaderManager.Loa
         if (key.equals(getString(R.string.server_status_key))) {
             updateEmptyView();
         }
-    }
-
-    public static void smoothScrollToPositionFromTop(final AbsListView view, final int position) {
-        View child = getChildAtPosition(view, position);
-        // There's no need to scroll if child is already at top or view is already scrolled to its end
-        if ((child != null) && ((child.getTop() == 0) || ((child.getTop() > 0) && !view.canScrollVertically(1)))) {
-            return;
-        }
-
-        view.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(final AbsListView view, final int scrollState) {
-                if (scrollState == SCROLL_STATE_IDLE) {
-                    view.setOnScrollListener(null);
-
-                    // Fix for scrolling bug
-                    new Handler().post(new Runnable() {
-                        @Override
-                        public void run() {
-                            view.setSelection(position);
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onScroll(final AbsListView view, final int firstVisibleItem, final int visibleItemCount,
-                                 final int totalItemCount) { }
-        });
-
-        // Perform scrolling to position
-        new Handler().post(new Runnable() {
-            @Override
-            public void run() {
-                view.smoothScrollToPositionFromTop(position, 0);
-            }
-        });
     }
 
     public static View getChildAtPosition(final AdapterView view, final int position) {
