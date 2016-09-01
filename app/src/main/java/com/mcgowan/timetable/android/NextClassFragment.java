@@ -105,7 +105,7 @@ public class NextClassFragment extends Fragment implements LoaderManager.LoaderC
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         getLoaderManager().initLoader(DETAIL_LOADER, null, this);
         super.onActivityCreated(savedInstanceState);
-//        addFloatingActionBar();
+        addFloatingActionBar();
 
     }
 
