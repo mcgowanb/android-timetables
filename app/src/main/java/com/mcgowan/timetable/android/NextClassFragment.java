@@ -26,6 +26,7 @@ public class NextClassFragment extends Fragment implements LoaderManager.LoaderC
     private static final String SHARE_CLASS_INFO = " #itsligo";
     private String mClassInformation;
     private static final int DETAIL_LOADER = 2;
+    private FloatingActionButton mFab;
     private static final String LOG_TAG = NextClassFragment.class.getSimpleName();
 
     private static final String[] TIMETABLE_COLUMNS = {
@@ -60,14 +61,15 @@ public class NextClassFragment extends Fragment implements LoaderManager.LoaderC
 
 
     private void addFloatingActionBar() {
-        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        mFab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
+        mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = createShareTimetableIntent();
                 startActivity(intent);
             }
         });
+        mFab.hide();
     }
 
     @Override
@@ -79,7 +81,6 @@ public class NextClassFragment extends Fragment implements LoaderManager.LoaderC
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
         return rootView;
     }
@@ -121,10 +122,16 @@ public class NextClassFragment extends Fragment implements LoaderManager.LoaderC
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+
         if (!cursor.moveToFirst()) {
-            // TODO: 01/09/2016 need to return an empty screen here saying no next class or something 
+            TextView tv = (TextView) getView().findViewById(R.id.class_empty);
+            tv.setText(R.string.no_classes_left_today);
+            mFab.hide();
             return;
         }
+
+        TextView tv = (TextView) getView().findViewById(R.id.class_empty);
+        tv.setText(R.string.blank);
 
         String startTime = cursor.getString(NextClassFragment.COL_TIMETABLE_START_TIME);
         String endTime = cursor.getString(NextClassFragment.COL_TIMETABLE_END_TIME);
@@ -140,6 +147,7 @@ public class NextClassFragment extends Fragment implements LoaderManager.LoaderC
         setClockTime(startTime, endTime);
 
         TextView classNameView = (TextView) getView().findViewById(R.id.detail_class_name);
+
         Typeface face = Typeface.createFromAsset(getActivity().getAssets(), "fonts/RockSalt.ttf");
         classNameView.setTypeface(face);
         classNameView.setText(cursor.getString(NextClassFragment.COL_TIMETABLE_SUBJECT));
@@ -160,7 +168,7 @@ public class NextClassFragment extends Fragment implements LoaderManager.LoaderC
         TextView endTimeView = (TextView) getView().findViewById(R.id.detail_day);
         String day = cursor.getString(NextClassFragment.COL_TIMETABLE_DAY);
         endTimeView.setText(day);
-
+        mFab.show();
 
     }
 

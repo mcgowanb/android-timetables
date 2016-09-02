@@ -92,6 +92,9 @@
     <string name="title_today">Today</string>
     <string name="title_week">This week</string>
     <string name="title_next">Next</string>
+    <string name="blank"> </string>
+    <string name="no_classes_left_today">No more classes today or tomorrow :-)</string>
+    <string name="no_classes_today">No classes today :-)</string>
 
 
 </resources>

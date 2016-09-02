@@ -133,7 +133,7 @@ public class TimeTableTodayFragment extends Fragment implements LoaderManager.Lo
         if (mTimetableAdapter.getCount() == 0) {
             TextView tv = (TextView) getView().findViewById(R.id.listview_empty);
             if (null != tv) {
-                int message = R.string.no_info_available;
+                int message = R.string.no_classes_today;
                 @TimetableSyncAdapter.ServerStatus int serverStatus = Utility.getServerStatus(getContext());
 
                 switch (serverStatus) {

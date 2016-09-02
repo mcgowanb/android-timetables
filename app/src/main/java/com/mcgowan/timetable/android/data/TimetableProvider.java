@@ -9,7 +9,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.mcgowan.timetable.android.data.TimetableContract.AvailableLabEntry;
 import com.mcgowan.timetable.android.data.TimetableContract.TimetableEntry;
@@ -183,7 +182,6 @@ public class TimetableProvider extends ContentProvider {
         String dayIdSetting = TimetableEntry.getDayIDFromUri(uri);
         String startTimeSetting = TimetableEntry.getStartTimeFromUri(uri);
         String[] selectionArgs = {studentIdSetting, dayIdSetting, startTimeSetting};
-
         return sTimetableQueryBuilder.query(
                 mHelper.getReadableDatabase(),
                 projectionIn,
