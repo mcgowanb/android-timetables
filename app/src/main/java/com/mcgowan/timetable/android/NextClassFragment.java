@@ -108,7 +108,6 @@ public class NextClassFragment extends Fragment implements LoaderManager.LoaderC
 
         Uri uri = TimetableContract.TimetableEntry.
                 buildNextClassUri(Utility.getStudentId(getContext()));
-        //here need to build the mUri to SELECT FROM BLAH WHERE CONDITIONS LIMIT 1 etc
         CursorLoader cursorLoader = new CursorLoader(
                 getActivity(),
                 uri,  // table to query

@@ -42,9 +42,8 @@ public class ClassTime {
             Calendar lastClassCalendar = Calendar.getInstance();
             lastClassCalendar.setTime(date2);
 
-            if (nowCalendar.getTime().after(lastClassCalendar.getTime())) {
+            if (nowCalendar.getTime().after(lastClassCalendar.getTime()) || dayID == 0) {
                 dayID++;
-                if(dayID > 6) dayID = 1;
                 currentTime = TIME_START;
             }
 

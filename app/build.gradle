@@ -8,8 +8,8 @@ android {
         applicationId "com.mcgowan.timetable.android"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 2
-        versionName "Build Version: 2.0"
+        versionCode 3
+        versionName "Build Version: 2.1"
     }
     buildTypes {
         release {
