@@ -95,6 +95,9 @@
     <string name="blank"> </string>
     <string name="no_classes_left_today">No more classes today or tomorrow :-)</string>
     <string name="no_classes_today">No classes today :-)</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
 
 
 </resources>
