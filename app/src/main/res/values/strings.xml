@@ -97,7 +97,7 @@
     <string name="no_classes_today">No classes today :-)</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
+    <string name="drawer_settings_label">Settings</string>
 
 
 </resources>

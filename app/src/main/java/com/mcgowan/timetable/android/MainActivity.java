@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.mcgowan.timetable.android.sync.TimetableSyncAdapter;
 import com.mcgowan.timetable.android.utility.Utility;
@@ -160,6 +161,54 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(MenuItem menuItem) {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+
+        int id = menuItem.getItemId();
+
+        switch (id){
+            case R.id.nav_settings_general:
+                launchSettingsActivity();
+                break;
+
+            case R.id.nav_settings_about:
+                launchAboutActivity();
+                break;
+
+            case R.id.nav_settings_version:
+                displayVersion();
+                break;
+        }
+
         return true;
+    }
+
+    private void launchSettingsActivity(){
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+    }
+
+    private void launchAboutActivity() {
+        Intent intent = new Intent(this, AboutActivity.class);
+        startActivity(intent);
+    }
+
+    private void displayVersion() {
+        LayoutInflater inflater = LayoutInflater.from(this);
+
+        View view = inflater.inflate(R.layout.dialog_main, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setView(view).setTitle(getString(R.string.app_version_title));
+
+        TextView content = (TextView) view.findViewById(R.id.dialog_main_text_view);
+
+        content.setText(BuildConfig.VERSION_NAME);
+
+        builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
     }
 }
