@@ -1,7 +1,10 @@
 package com.mcgowan.timetable.android;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -17,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mcgowan.timetable.android.sync.TimetableSyncAdapter;
 import com.mcgowan.timetable.android.utility.Utility;
@@ -27,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static final String TIMETABLE_URL = "https://itsligo.ie/student-hub/my-timetable/";
     public static final String LABS_URL = "https://itsligo.ie/student-hub/computer-labs/";
     public static final String LOG_TAG = MainActivity.class.getSimpleName();
+    public static final String SYNC_UPDATE = "SYNC_STATUS";
 
     private TabPagesAdapter mTabsPagesAdapter;
     private ViewPager mViewPager;
@@ -63,6 +68,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        SyncReceiver myReceiver = new SyncReceiver();
+        IntentFilter intentFilter = new IntentFilter("com.mcgowan.timetable.android.syncComplete");
+        registerReceiver(myReceiver, intentFilter);
 
     }
 
@@ -163,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         int id = menuItem.getItemId();
 
-        switch (id){
+        switch (id) {
             case R.id.nav_settings_general:
                 drawer.closeDrawer(GravityCompat.START);
                 launchSettingsActivity();
@@ -184,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    private void launchSettingsActivity(){
+    private void launchSettingsActivity() {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
@@ -213,5 +222,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
         builder.create().show();
+    }
+
+
+    public class SyncReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle extras = intent.getExtras();
+            String status = extras.getString(SYNC_UPDATE);
+            if(status != null) {
+                Toast.makeText(context, status, Toast.LENGTH_LONG).show();
+            }
+        }
     }
 }

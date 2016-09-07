@@ -7,6 +7,7 @@ import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SyncRequest;
 import android.content.SyncResult;
@@ -83,6 +84,7 @@ public class TimetableSyncAdapter extends AbstractThreadedSyncAdapter {
                 createCursorFromDatabase(studentID);
                 setServerStatus(getContext(), SERVER_STATUS_OK);
                 //broadcast reciever here
+                broadcastStatus("Data Successfully loaded");
             } else {
                 Utility.deleteAllRecordsFromDatabase(getContext());
             }
@@ -222,5 +224,12 @@ public class TimetableSyncAdapter extends AbstractThreadedSyncAdapter {
         SharedPreferences.Editor spe = prefs.edit();
         spe.putInt(context.getString(R.string.server_status_key), serverStatus);
         spe.commit();
+    }
+
+    public void broadcastStatus(String status){
+        Intent intent = new Intent();
+        intent.putExtra(MainActivity.SYNC_UPDATE, status);
+        intent.setAction("com.mcgowan.timetable.android.syncComplete");
+        mContext.sendBroadcast(intent);
     }
 }
