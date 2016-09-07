@@ -160,22 +160,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(MenuItem menuItem) {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
 
         int id = menuItem.getItemId();
 
         switch (id){
             case R.id.nav_settings_general:
+                drawer.closeDrawer(GravityCompat.START);
                 launchSettingsActivity();
                 break;
 
             case R.id.nav_settings_about:
+                drawer.closeDrawer(GravityCompat.START);
                 launchAboutActivity();
                 break;
 
             case R.id.nav_settings_version:
                 displayVersion();
                 break;
+            default:
+                drawer.closeDrawer(GravityCompat.START);
         }
 
         return true;

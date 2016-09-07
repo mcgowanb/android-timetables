@@ -21,8 +21,8 @@ import android.util.Log;
 
 import com.mcgowan.timetable.android.MainActivity;
 import com.mcgowan.timetable.android.R;
-import com.mcgowan.timetable.android.utility.Utility;
 import com.mcgowan.timetable.android.data.TimetableContract;
+import com.mcgowan.timetable.android.utility.Utility;
 import com.mcgowan.timetable.scraper.TimeTable;
 
 import org.jsoup.HttpStatusException;
@@ -36,7 +36,7 @@ import java.util.Vector;
 public class TimetableSyncAdapter extends AbstractThreadedSyncAdapter {
     public final String LOG_TAG = TimetableSyncAdapter.class.getSimpleName();
     public static final int BAD_REQUEST_CODE = 400;
-
+    private Context mContext;
     public static final int SYNC_INTERVAL = 60 * 720;
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL / 3;
 
@@ -56,6 +56,7 @@ public class TimetableSyncAdapter extends AbstractThreadedSyncAdapter {
 
     public TimetableSyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
+        mContext = context;
     }
 
     @Override
@@ -81,6 +82,7 @@ public class TimetableSyncAdapter extends AbstractThreadedSyncAdapter {
                 Utility.addRecordsToDatabase(getContext(), cVector);
                 createCursorFromDatabase(studentID);
                 setServerStatus(getContext(), SERVER_STATUS_OK);
+                //broadcast reciever here
             } else {
                 Utility.deleteAllRecordsFromDatabase(getContext());
             }

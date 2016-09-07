@@ -44,7 +44,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupActionBar();
+        addPreferencesFromResource(R.xml.pref_general);
         addPreferenceChangeListener();
+        bindPreferenceSummaryToValue(findPreference(getString(R.string.student_id_key)));
+        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_timetable_key)));
     }
 
     @Override

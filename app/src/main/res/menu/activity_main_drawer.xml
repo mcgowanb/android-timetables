@@ -5,7 +5,7 @@
         <menu>
             <item
                 android:id="@+id/nav_settings_general"
-                android:icon="@drawable/ic_build_black_24dp"
+                android:icon="@drawable/ic_settings_black_24dp"
                 android:title="@string/pref_header_general" />
             <item
                 android:id="@+id/nav_settings_about"
