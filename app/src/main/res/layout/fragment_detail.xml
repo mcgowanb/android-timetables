@@ -58,7 +58,8 @@
                         android:id="@+id/detail_day"
                         style="@style/DetailTextView"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                        tools:text="Lecturer" />
+                        tools:text="Lecturer"
+                        android:textSize="20sp" />
 
                     <TextView
                         android:id="@+id/detail_time"

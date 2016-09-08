@@ -166,6 +166,7 @@ public class NextClassFragment extends Fragment implements LoaderManager.LoaderC
 
         TextView endTimeView = (TextView) getView().findViewById(R.id.detail_day);
         String day = cursor.getString(NextClassFragment.COL_TIMETABLE_DAY);
+        endTimeView.setTypeface(face);
         endTimeView.setText(day);
         mFab.show();
 

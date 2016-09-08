@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 
 import com.mcgowan.timetable.android.data.TimetableContract.AvailableLabEntry;
 import com.mcgowan.timetable.android.data.TimetableContract.TimetableEntry;
+import com.mcgowan.timetable.android.utility.ClassTime;
 
 import static android.text.TextUtils.isEmpty;
 
@@ -182,7 +183,7 @@ public class TimetableProvider extends ContentProvider {
         String dayIdSetting = TimetableEntry.getDayIDFromUri(uri);
         String startTimeSetting = TimetableEntry.getStartTimeFromUri(uri);
         String[] selectionArgs = {studentIdSetting, dayIdSetting, startTimeSetting};
-        return sTimetableQueryBuilder.query(
+        Cursor cursor = sTimetableQueryBuilder.query(
                 mHelper.getReadableDatabase(),
                 projectionIn,
                 queryParams,
@@ -192,6 +193,22 @@ public class TimetableProvider extends ContentProvider {
                 sortOrder,
                 limit
         );
+        if (!cursor.moveToFirst()){
+            //if no class for rest of day, move time to start and day to following day
+            selectionArgs = ClassTime.getSelectionArgsForMorning(selectionArgs);
+            cursor = sTimetableQueryBuilder.query(
+                    mHelper.getReadableDatabase(),
+                    projectionIn,
+                    queryParams,
+                    selectionArgs,
+                    null,
+                    null,
+                    sortOrder,
+                    limit
+            );
+        }
+
+        return cursor;
     }
 
     private Cursor getTimeTableById(Uri uri, String[] projection, String sortOrder) {

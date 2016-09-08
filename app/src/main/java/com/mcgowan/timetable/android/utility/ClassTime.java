@@ -53,4 +53,22 @@ public class ClassTime {
             Log.e(LOG_TAG, "Error parsing times with : " + e.getMessage());
         }
     }
+
+    public static String getTimeStart() {
+        return TIME_START;
+    }
+
+    /**
+     * generates the selection args for tomorrow first thing as next class
+     * @param selectionArgs
+     * @return
+     */
+    public static String[] getSelectionArgsForMorning(String[] selectionArgs){
+        selectionArgs[2] = TIME_START;
+        int dayID = Integer.parseInt(selectionArgs[1]);
+        dayID++;
+        selectionArgs[1] = String.valueOf(dayID);
+        return selectionArgs;
+
+    }
 }
