@@ -17,20 +17,14 @@
                 android:title="@string/action_version" />
         </menu>
     </item>
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_camera"
-            android:title="Import" />
-        <item
-            android:id="@+id/nav_gallery"
-            android:title="Gallery" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:title="Slideshow" />
-        <item
-            android:id="@+id/nav_manage"
-            android:title="Tools" />
-    </group>
+    <item android:title="@string/drawer_other_label">
+        <menu>
+            <item
+                android:id="@+id/action_refresh"
+                android:icon="@drawable/ic_autorenew_black_24dp"
+                android:title="@string/refresh" />
+        </menu>
+    </item>
 
 
 </menu>

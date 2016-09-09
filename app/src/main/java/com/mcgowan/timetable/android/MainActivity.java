@@ -1,5 +1,6 @@
 package com.mcgowan.timetable.android;
 
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -32,6 +33,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static final String LABS_URL = "https://itsligo.ie/student-hub/computer-labs/";
     public static final String LOG_TAG = MainActivity.class.getSimpleName();
     public static final String SYNC_UPDATE = "SYNC_STATUS";
+    private SyncReceiver mSyncReciever;
+    private ProgressDialog mProgress;
+    private IntentFilter mSyncFilter;
 
     private TabPagesAdapter mTabsPagesAdapter;
     private ViewPager mViewPager;
@@ -69,9 +73,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        SyncReceiver myReceiver = new SyncReceiver();
-        IntentFilter intentFilter = new IntentFilter("com.mcgowan.timetable.android.syncComplete");
-        registerReceiver(myReceiver, intentFilter);
+        mSyncReciever = new SyncReceiver();
+        mSyncFilter = new IntentFilter(TimetableSyncAdapter.INTENT_SYNC_ACTION);
+        registerReceiver(mSyncReciever, mSyncFilter);
 
     }
 
@@ -90,31 +94,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             TabLayout tabLayout = (TabLayout) findViewById(R.id.tabbar);
             tabLayout.setupWithViewPager(mViewPager);
         }
+        registerReceiver(mSyncReciever, mSyncFilter);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        unregisterReceiver(mSyncReciever);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
+//        getMenuInflater().inflate(R.menu.menu, menu);
 
-        getMenuInflater().inflate(R.menu.menu_timetablefragmemt, menu);
+//        getMenuInflater().inflate(R.menu.menu_timetablefragmemt, menu);
         //add fonts to all items
-        for (int i = 0; i < menu.size(); i++) {
-            MenuItem mi = menu.getItem(i);
-            Utility.applyFontToMenuItem(this, mi);
-        }
-
+//        for (int i = 0; i < menu.size(); i++) {
+//            MenuItem mi = menu.getItem(i);
+//            Utility.applyFontToMenuItem(this, mi);
+//        }
+//
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-        for (int i = 0; i < menu.size(); i++) {
-            MenuItem mi = menu.getItem(i);
-            Utility.applyFontToMenuItem(this, mi);
-        }
+//
+//        for (int i = 0; i < menu.size(); i++) {
+//            MenuItem mi = menu.getItem(i);
+//            Utility.applyFontToMenuItem(this, mi);
+//        }
 
 
         return true;
@@ -186,6 +192,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_settings_version:
                 displayVersion();
                 break;
+
+            case R.id.action_refresh:
+                TimetableSyncAdapter.syncImmediately(this);
             default:
                 drawer.closeDrawer(GravityCompat.START);
         }
@@ -224,14 +233,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         builder.create().show();
     }
 
+    private void displayLoading(String msg) {
+        mProgress = ProgressDialog.show(this, "",
+                msg, true);
+        mProgress.show();
+    }
+
+    private void dismissLoading() {
+        mProgress.dismiss();
+    }
+
 
     public class SyncReceiver extends BroadcastReceiver {
-
         @Override
         public void onReceive(Context context, Intent intent) {
             Bundle extras = intent.getExtras();
             String status = extras.getString(SYNC_UPDATE);
-            if(status != null) {
+
+            if (status.equals(TimetableSyncAdapter.LOADING_MESSAGE)) {
+                displayLoading(status);
+            } else if (status.equals(TimetableSyncAdapter.LOADING_COMPLETE)) {
+                dismissLoading();
                 Toast.makeText(context, status, Toast.LENGTH_LONG).show();
             }
         }

@@ -1,7 +1,7 @@
 <resources xmlns:xliff="http://schemas.android.com/tools">
     <string name="app_name">ITS Timetable</string>
     <string name="action_settings">Settings</string>
-    <string name="refresh">Refresh</string>
+    <string name="refresh">Refresh Timetable</string>
     <string name="title_activity_detail">Class Details</string>
     <string name="title_activity_activity_detail">ActivityDetail</string>
     <string name="title_activity_settings">Settings</string>
@@ -98,6 +98,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="drawer_settings_label">Settings</string>
+    <string name="drawer_other_label">Other</string>
 
 
 </resources>

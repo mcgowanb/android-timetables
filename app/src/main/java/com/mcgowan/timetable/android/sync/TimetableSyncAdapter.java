@@ -2,6 +2,7 @@ package com.mcgowan.timetable.android.sync;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.app.ProgressDialog;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
@@ -35,11 +36,15 @@ import java.util.Vector;
 
 
 public class TimetableSyncAdapter extends AbstractThreadedSyncAdapter {
+    public static final String INTENT_SYNC_ACTION = "com.mcgowan.timetable.android.syncComplete";
     public final String LOG_TAG = TimetableSyncAdapter.class.getSimpleName();
+    public static final String LOADING_COMPLETE = "Data Successfully updated";
+    public static final String LOADING_MESSAGE = "Refreshing data, please wait.....";
     public static final int BAD_REQUEST_CODE = 400;
     private Context mContext;
     public static final int SYNC_INTERVAL = 60 * 720;
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL / 3;
+    private ProgressDialog mProgressDialog;
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({SERVER_STATUS_OK,
@@ -84,7 +89,7 @@ public class TimetableSyncAdapter extends AbstractThreadedSyncAdapter {
                 createCursorFromDatabase(studentID);
                 setServerStatus(getContext(), SERVER_STATUS_OK);
                 //broadcast reciever here
-                broadcastStatus("Data Successfully loaded");
+                broadcastStatus(LOADING_COMPLETE);
             } else {
                 Utility.deleteAllRecordsFromDatabase(getContext());
             }
@@ -167,9 +172,16 @@ public class TimetableSyncAdapter extends AbstractThreadedSyncAdapter {
      * @param context The context used to access the account service
      */
     public static void syncImmediately(Context context) {
+
         Bundle bundle = new Bundle();
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+
+        Intent intent = new Intent();
+        intent.putExtra(MainActivity.SYNC_UPDATE, LOADING_MESSAGE);
+        intent.setAction(INTENT_SYNC_ACTION);
+        context.sendBroadcast(intent);
+
         ContentResolver.requestSync(getSyncAccount(context),
                 context.getString(R.string.content_authority), bundle);
     }
