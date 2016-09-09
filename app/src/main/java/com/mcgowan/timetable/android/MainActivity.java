@@ -54,10 +54,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //                // No need to do anything
 //                break;
             case FIRST_TIME_VERSION:
-                // TODO show what's new
+                Toast.makeText(this, "New Version", Toast.LENGTH_LONG).show();
                 break;
             case FIRST_TIME:
-                // TODO show a tutorial
+                launchWelcomeMessage();
                 break;
             default:
                 break;
@@ -105,41 +105,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.menu, menu);
-
-//        getMenuInflater().inflate(R.menu.menu_timetablefragmemt, menu);
-        //add fonts to all items
-//        for (int i = 0; i < menu.size(); i++) {
-//            MenuItem mi = menu.getItem(i);
-//            Utility.applyFontToMenuItem(this, mi);
-//        }
-//
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-//
-//        for (int i = 0; i < menu.size(); i++) {
-//            MenuItem mi = menu.getItem(i);
-//            Utility.applyFontToMenuItem(this, mi);
-//        }
-
-
         return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        switch (id) {
-            case R.id.action_settings:
-                return openSettingsDetail();
-            case R.id.action_refresh:
-                TimetableSyncAdapter.syncImmediately(this);
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 
     /**
@@ -157,7 +125,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * No Student ID set dialog launcher
      */
     private void showNoStudentIdDialog() {
-
         LayoutInflater inflater = LayoutInflater.from(this);
         View view = inflater.inflate(R.layout.dialog_main, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -175,9 +142,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(MenuItem menuItem) {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-
         int id = menuItem.getItemId();
-
         switch (id) {
             case R.id.nav_settings_general:
                 drawer.closeDrawer(GravityCompat.START);
@@ -193,12 +158,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 displayVersion();
                 break;
 
+            case R.id.action_test:
+                launchWelcomeMessage();
+                break;
+
             case R.id.action_refresh:
                 TimetableSyncAdapter.syncImmediately(this);
+                drawer.closeDrawer(GravityCompat.START);
+                break;
+
             default:
                 drawer.closeDrawer(GravityCompat.START);
         }
-
         return true;
     }
 
@@ -234,13 +205,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void displayLoading(String msg) {
-        mProgress = ProgressDialog.show(this, "",
-                msg, true);
-        mProgress.show();
+        mProgress = ProgressDialog.show(this, "", msg, true);
     }
 
     private void dismissLoading() {
-        mProgress.dismiss();
+
+        if (mProgress != null && mProgress.isShowing())
+            mProgress.dismiss();
+    }
+
+    private void launchWelcomeMessage() {
+        LayoutInflater inflater = LayoutInflater.from(this);
+
+        View view = inflater.inflate(R.layout.dialog_main, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setView(view).setTitle(getString(R.string.welcome_title));
+
+        TextView content = (TextView) view.findViewById(R.id.dialog_main_text_view);
+        content.setText(R.string.welcome_message);
+
+        builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
     }
 
 

@@ -99,6 +99,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="drawer_settings_label">Settings</string>
     <string name="drawer_other_label">Other</string>
+    <string name="welcome_title">Welcome</string>
+    <string name="welcome_message">Users please be aware that this app takes its data from the IT\'s website for my personal timetable. It relies solely on this site being kept up to date, so alas if the website is incorrect, this app will be too :-(</string>
 
 
 </resources>

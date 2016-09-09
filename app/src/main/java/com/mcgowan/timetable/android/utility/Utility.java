@@ -225,9 +225,4 @@ public class Utility {
         cal.setFirstDayOfWeek(Calendar.MONDAY);
         return String.valueOf(cal.get(Calendar.DAY_OF_WEEK) - 1);
     }
-
-    public static String getNecessaryDay() {
-//        String dayOfWeek = new SimpleDateFormat("EEEE", Locale.ENGLISH).format();
-        return "";
-    }
 }
