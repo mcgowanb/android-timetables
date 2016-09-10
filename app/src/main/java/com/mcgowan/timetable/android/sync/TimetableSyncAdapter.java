@@ -2,7 +2,6 @@ package com.mcgowan.timetable.android.sync;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.app.ProgressDialog;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
@@ -38,13 +37,12 @@ import java.util.Vector;
 public class TimetableSyncAdapter extends AbstractThreadedSyncAdapter {
     public static final String INTENT_SYNC_ACTION = "com.mcgowan.timetable.android.syncComplete";
     public final String LOG_TAG = TimetableSyncAdapter.class.getSimpleName();
-    public static final String LOADING_COMPLETE = "Data Successfully updated";
+    public static final String LOADING_COMPLETE = "Timetable data successfully updated";
     public static final String LOADING_MESSAGE = "Refreshing data, please wait.....";
     public static final int BAD_REQUEST_CODE = 400;
     private Context mContext;
     public static final int SYNC_INTERVAL = 60 * 720;
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL / 3;
-    private ProgressDialog mProgressDialog;
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({SERVER_STATUS_OK,
@@ -68,7 +66,6 @@ public class TimetableSyncAdapter extends AbstractThreadedSyncAdapter {
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
         Log.d(LOG_TAG, "onPerformSync Called.");
-        //todo check here for null for student id and return an error if it is
 
         String url = MainActivity.TIMETABLE_URL;
 //        url = "http://google.com/?";

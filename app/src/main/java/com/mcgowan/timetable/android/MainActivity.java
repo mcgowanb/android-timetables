@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -158,10 +159,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 displayVersion();
                 break;
 
-            case R.id.action_test:
-                launchWelcomeMessage();
-                break;
-
             case R.id.action_refresh:
                 TimetableSyncAdapter.syncImmediately(this);
                 drawer.closeDrawer(GravityCompat.START);
@@ -245,7 +242,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 displayLoading(status);
             } else if (status.equals(TimetableSyncAdapter.LOADING_COMPLETE)) {
                 dismissLoading();
-                Toast.makeText(context, status, Toast.LENGTH_LONG).show();
+                Snackbar.make(findViewById(R.id.drawer_layout), status, Snackbar.LENGTH_LONG).show();
             }
         }
     }
