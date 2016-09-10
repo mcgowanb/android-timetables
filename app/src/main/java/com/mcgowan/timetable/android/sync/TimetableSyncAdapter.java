@@ -7,6 +7,7 @@ import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SyncRequest;
 import android.content.SyncResult;
@@ -21,8 +22,8 @@ import android.util.Log;
 
 import com.mcgowan.timetable.android.MainActivity;
 import com.mcgowan.timetable.android.R;
-import com.mcgowan.timetable.android.utility.Utility;
 import com.mcgowan.timetable.android.data.TimetableContract;
+import com.mcgowan.timetable.android.utility.Utility;
 import com.mcgowan.timetable.scraper.TimeTable;
 
 import org.jsoup.HttpStatusException;
@@ -34,9 +35,12 @@ import java.util.Vector;
 
 
 public class TimetableSyncAdapter extends AbstractThreadedSyncAdapter {
+    public static final String INTENT_SYNC_ACTION = "com.mcgowan.timetable.android.syncComplete";
     public final String LOG_TAG = TimetableSyncAdapter.class.getSimpleName();
+    public static final String LOADING_COMPLETE = "Timetable data successfully updated";
+    public static final String LOADING_MESSAGE = "Refreshing data, please wait.....";
     public static final int BAD_REQUEST_CODE = 400;
-
+    private Context mContext;
     public static final int SYNC_INTERVAL = 60 * 720;
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL / 3;
 
@@ -56,12 +60,12 @@ public class TimetableSyncAdapter extends AbstractThreadedSyncAdapter {
 
     public TimetableSyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
+        mContext = context;
     }
 
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
         Log.d(LOG_TAG, "onPerformSync Called.");
-        //todo check here for null for student id and return an error if it is
 
         String url = MainActivity.TIMETABLE_URL;
 //        url = "http://google.com/?";
@@ -81,6 +85,8 @@ public class TimetableSyncAdapter extends AbstractThreadedSyncAdapter {
                 Utility.addRecordsToDatabase(getContext(), cVector);
                 createCursorFromDatabase(studentID);
                 setServerStatus(getContext(), SERVER_STATUS_OK);
+                //broadcast reciever here
+                broadcastStatus(LOADING_COMPLETE);
             } else {
                 Utility.deleteAllRecordsFromDatabase(getContext());
             }
@@ -163,9 +169,16 @@ public class TimetableSyncAdapter extends AbstractThreadedSyncAdapter {
      * @param context The context used to access the account service
      */
     public static void syncImmediately(Context context) {
+
         Bundle bundle = new Bundle();
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+
+        Intent intent = new Intent();
+        intent.putExtra(MainActivity.SYNC_UPDATE, LOADING_MESSAGE);
+        intent.setAction(INTENT_SYNC_ACTION);
+        context.sendBroadcast(intent);
+
         ContentResolver.requestSync(getSyncAccount(context),
                 context.getString(R.string.content_authority), bundle);
     }
@@ -220,5 +233,12 @@ public class TimetableSyncAdapter extends AbstractThreadedSyncAdapter {
         SharedPreferences.Editor spe = prefs.edit();
         spe.putInt(context.getString(R.string.server_status_key), serverStatus);
         spe.commit();
+    }
+
+    public void broadcastStatus(String status){
+        Intent intent = new Intent();
+        intent.putExtra(MainActivity.SYNC_UPDATE, status);
+        intent.setAction("com.mcgowan.timetable.android.syncComplete");
+        mContext.sendBroadcast(intent);
     }
 }

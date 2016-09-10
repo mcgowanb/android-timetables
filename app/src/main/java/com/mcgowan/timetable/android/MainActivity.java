@@ -1,10 +1,19 @@
 package com.mcgowan.timetable.android;
 
+import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -12,16 +21,22 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mcgowan.timetable.android.sync.TimetableSyncAdapter;
 import com.mcgowan.timetable.android.utility.Utility;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final String TIMETABLE_URL = "https://itsligo.ie/student-hub/my-timetable/";
     public static final String LABS_URL = "https://itsligo.ie/student-hub/computer-labs/";
     public static final String LOG_TAG = MainActivity.class.getSimpleName();
+    public static final String SYNC_UPDATE = "SYNC_STATUS";
+    private SyncReceiver mSyncReciever;
+    private ProgressDialog mProgress;
+    private IntentFilter mSyncFilter;
 
     private TabPagesAdapter mTabsPagesAdapter;
     private ViewPager mViewPager;
@@ -40,15 +55,29 @@ public class MainActivity extends AppCompatActivity {
 //                // No need to do anything
 //                break;
             case FIRST_TIME_VERSION:
-                // TODO show what's new
+                Toast.makeText(this, "New Version", Toast.LENGTH_LONG).show();
                 break;
             case FIRST_TIME:
-                // TODO show a tutorial
+                launchWelcomeMessage();
                 break;
             default:
                 break;
         }
         TimetableSyncAdapter.initializeSyncAdapter(this);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        mSyncReciever = new SyncReceiver();
+        mSyncFilter = new IntentFilter(TimetableSyncAdapter.INTENT_SYNC_ACTION);
+        registerReceiver(mSyncReciever, mSyncFilter);
+
     }
 
     @Override
@@ -66,50 +95,20 @@ public class MainActivity extends AppCompatActivity {
             TabLayout tabLayout = (TabLayout) findViewById(R.id.tabbar);
             tabLayout.setupWithViewPager(mViewPager);
         }
+        registerReceiver(mSyncReciever, mSyncFilter);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        unregisterReceiver(mSyncReciever);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
-
-        getMenuInflater().inflate(R.menu.menu_timetablefragmemt, menu);
-        //add fonts to all items
-        for (int i = 0; i < menu.size(); i++) {
-            MenuItem mi = menu.getItem(i);
-            Utility.applyFontToMenuItem(this, mi);
-        }
-
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-        for (int i = 0; i < menu.size(); i++) {
-            MenuItem mi = menu.getItem(i);
-            Utility.applyFontToMenuItem(this, mi);
-        }
-
-
         return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        switch (id) {
-            case R.id.action_settings:
-                return openSettingsDetail();
-            case R.id.action_refresh:
-                TimetableSyncAdapter.syncImmediately(this);
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 
     /**
@@ -127,7 +126,6 @@ public class MainActivity extends AppCompatActivity {
      * No Student ID set dialog launcher
      */
     private void showNoStudentIdDialog() {
-
         LayoutInflater inflater = LayoutInflater.from(this);
         View view = inflater.inflate(R.layout.dialog_main, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -140,5 +138,112 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         builder.create().show();
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem menuItem) {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        int id = menuItem.getItemId();
+        switch (id) {
+            case R.id.nav_settings_general:
+                drawer.closeDrawer(GravityCompat.START);
+                launchSettingsActivity();
+                break;
+
+            case R.id.nav_settings_about:
+                drawer.closeDrawer(GravityCompat.START);
+                launchAboutActivity();
+                break;
+
+            case R.id.nav_settings_version:
+                displayVersion();
+                break;
+
+            case R.id.action_refresh:
+                TimetableSyncAdapter.syncImmediately(this);
+                drawer.closeDrawer(GravityCompat.START);
+                break;
+
+            default:
+                drawer.closeDrawer(GravityCompat.START);
+        }
+        return true;
+    }
+
+    private void launchSettingsActivity() {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+    }
+
+    private void launchAboutActivity() {
+        Intent intent = new Intent(this, AboutActivity.class);
+        startActivity(intent);
+    }
+
+    private void displayVersion() {
+        LayoutInflater inflater = LayoutInflater.from(this);
+
+        View view = inflater.inflate(R.layout.dialog_main, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setView(view).setTitle(getString(R.string.app_version_title));
+
+        TextView content = (TextView) view.findViewById(R.id.dialog_main_text_view);
+
+        content.setText(BuildConfig.VERSION_NAME);
+
+        builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
+    }
+
+    private void displayLoading(String msg) {
+        mProgress = ProgressDialog.show(this, "", msg, true);
+    }
+
+    private void dismissLoading() {
+
+        if (mProgress != null && mProgress.isShowing())
+            mProgress.dismiss();
+    }
+
+    private void launchWelcomeMessage() {
+        LayoutInflater inflater = LayoutInflater.from(this);
+
+        View view = inflater.inflate(R.layout.dialog_main, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setView(view).setTitle(getString(R.string.welcome_title));
+
+        TextView content = (TextView) view.findViewById(R.id.dialog_main_text_view);
+        content.setText(R.string.welcome_message);
+
+        builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.create().show();
+    }
+
+
+    public class SyncReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle extras = intent.getExtras();
+            String status = extras.getString(SYNC_UPDATE);
+
+            if (status.equals(TimetableSyncAdapter.LOADING_MESSAGE)) {
+                displayLoading(status);
+            } else if (status.equals(TimetableSyncAdapter.LOADING_COMPLETE)) {
+                dismissLoading();
+                Snackbar.make(findViewById(R.id.drawer_layout), status, Snackbar.LENGTH_LONG).show();
+            }
+        }
     }
 }

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="@string/drawer_settings_label">
+        <menu>
+            <item
+                android:id="@+id/nav_settings_general"
+                android:icon="@drawable/ic_settings_black_24dp"
+                android:title="@string/pref_header_general" />
+            <item
+                android:id="@+id/nav_settings_about"
+                android:icon="@drawable/ic_info_black_24dp"
+                android:title="@string/action_about" />
+            <item
+                android:id="@+id/nav_settings_version"
+                android:icon="@drawable/ic_whatshot_black_24dp"
+                android:title="@string/action_version" />
+        </menu>
+    </item>
+    <item android:title="@string/drawer_other_label">
+        <menu>
+            <item
+                android:id="@+id/action_refresh"
+                android:icon="@drawable/ic_autorenew_black_24dp"
+                android:title="@string/refresh" />
+        </menu>
+    </item>
+
+
+</menu>
