@@ -22,7 +22,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mcgowan.timetable.android.sync.TimetableSyncAdapter;
 import com.mcgowan.timetable.android.utility.Utility;
@@ -34,6 +33,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static final String LABS_URL = "https://itsligo.ie/student-hub/computer-labs/";
     public static final String LOG_TAG = MainActivity.class.getSimpleName();
     public static final String SYNC_UPDATE = "SYNC_STATUS";
+    public static final int NEW_INSTALL = 1;
+    public static final int UPDATE_VERSION = 2;
     private SyncReceiver mSyncReciever;
     private ProgressDialog mProgress;
     private IntentFilter mSyncFilter;
@@ -55,10 +56,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //                // No need to do anything
 //                break;
             case FIRST_TIME_VERSION:
-                Toast.makeText(this, "New Version", Toast.LENGTH_LONG).show();
+                displayUpdateMessage(UPDATE_VERSION);
                 break;
             case FIRST_TIME:
-                launchWelcomeMessage();
+                displayUpdateMessage(NEW_INSTALL);
                 break;
             default:
                 break;
@@ -211,7 +212,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             mProgress.dismiss();
     }
 
-    private void launchWelcomeMessage() {
+    private void displayUpdateMessage(int state) {
         LayoutInflater inflater = LayoutInflater.from(this);
 
         View view = inflater.inflate(R.layout.dialog_main, null);
@@ -220,7 +221,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         builder.setView(view).setTitle(getString(R.string.welcome_title));
 
         TextView content = (TextView) view.findViewById(R.id.dialog_main_text_view);
-        content.setText(R.string.welcome_message);
+        switch (state){
+            case NEW_INSTALL:
+                content.setText(R.string.welcome_message);
+                break;
+            case UPDATE_VERSION:
+                content.setText(R.string.update_message);
+                break;
+            default:
+                content.setText(R.string.welcome_message);
+                break;
+        }
 
         builder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
             @Override

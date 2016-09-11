@@ -8,8 +8,8 @@ android {
         applicationId "com.mcgowan.timetable.android"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 4
-        versionName "Build Version: 2.2"
+        versionCode 5
+        versionName "Build Version: 3.0"
     }
     buildTypes {
         release {
@@ -23,7 +23,7 @@ android {
     }
     
     lintOptions { 
-        abortOnError false 
+        abortOnError true
     }
     
 }

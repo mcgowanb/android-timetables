@@ -103,6 +103,7 @@
     <string name="welcome_message">Users please be aware that this app takes its data from the IT\'s website for my personal timetable. It relies solely on this site being kept up to date, so alas if the website is incorrect, this app will be too :-(</string>
     <string name="nav_header_title">IT Sligo</string>
     <string name="nav_header_sub_title">Student Timetables</string>
+    <string name="update_message">In this update, I have removed the settings option in the tradiitonal sense and replaced it with the new sliding menu bar from the left, Should make fore a better UI experience. Enjoy :-)</string>
 
 
 </resources>
