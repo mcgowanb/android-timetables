@@ -206,10 +206,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mProgress = ProgressDialog.show(this, "", msg, true);
     }
 
-    private void dismissLoading() {
+    private void dismissLoading(String status) {
 
         if (mProgress != null && mProgress.isShowing())
             mProgress.dismiss();
+        Snackbar.make(findViewById(R.id.drawer_layout), status, Snackbar.LENGTH_LONG).show();
+
     }
 
     private void displayUpdateMessage(int state) {
@@ -251,9 +253,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             if (status.equals(TimetableSyncAdapter.LOADING_MESSAGE)) {
                 displayLoading(status);
-            } else if (status.equals(TimetableSyncAdapter.LOADING_COMPLETE)) {
-                dismissLoading();
-                Snackbar.make(findViewById(R.id.drawer_layout), status, Snackbar.LENGTH_LONG).show();
+            } else {
+                dismissLoading(status);
             }
         }
     }

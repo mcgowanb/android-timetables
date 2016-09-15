@@ -39,6 +39,9 @@ public class TimetableSyncAdapter extends AbstractThreadedSyncAdapter {
     public final String LOG_TAG = TimetableSyncAdapter.class.getSimpleName();
     public static final String LOADING_COMPLETE = "Timetable data successfully updated";
     public static final String LOADING_MESSAGE = "Refreshing data, please wait.....";
+    public static final String BAD_STUDENT_ID = "Malformed request, bad student ID";
+    public static final String UNKNOWN_ERROR = "Unknown error connecting to server";
+    public static final String CONNECTION_ERROR = "Error connecting to ITS website";
     public static final int BAD_REQUEST_CODE = 400;
     private Context mContext;
     public static final int SYNC_INTERVAL = 60 * 720;
@@ -94,15 +97,18 @@ public class TimetableSyncAdapter extends AbstractThreadedSyncAdapter {
 
             int error = e.getStatusCode();
             if (error == BAD_REQUEST_CODE) {
-                Log.e(LOG_TAG, "Malformed request, bad student ID", e);
+                Log.e(LOG_TAG, BAD_STUDENT_ID, e);
+                broadcastStatus(BAD_STUDENT_ID);
                 setServerStatus(getContext(), SERVER_STATUS_ID_INVALID);
             } else {
-                Log.e(LOG_TAG, "Error connecting to ITS website", e);
+                Log.e(LOG_TAG, CONNECTION_ERROR, e);
+                broadcastStatus(CONNECTION_ERROR);
                 setServerStatus(getContext(), SERVER_STATUS_SERVER_DOWN);
             }
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+            broadcastStatus(UNKNOWN_ERROR);
             setServerStatus(getContext(), SERVER_STATUS_UNKNOWN);
         }
     }
