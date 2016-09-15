@@ -39,7 +39,7 @@ public class TimetableSyncAdapter extends AbstractThreadedSyncAdapter {
     public final String LOG_TAG = TimetableSyncAdapter.class.getSimpleName();
     public static final String LOADING_COMPLETE = "Timetable data successfully updated";
     public static final String LOADING_MESSAGE = "Refreshing data, please wait.....";
-    public static final String BAD_STUDENT_ID = "Malformed request, bad student ID";
+    public static final String BAD_STUDENT_ID = "400 Bad Request Cannot Find Student Set with ID Number Unknown";
     public static final String UNKNOWN_ERROR = "Unknown error connecting to server";
     public static final String CONNECTION_ERROR = "Error connecting to ITS website";
     public static final int BAD_REQUEST_CODE = 400;
