@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -16,13 +17,11 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mcgowan.timetable.android.sync.TimetableSyncAdapter;
 import com.mcgowan.timetable.android.utility.Utility;
@@ -211,10 +210,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (mProgress != null && mProgress.isShowing())
             mProgress.dismiss();
-//        Snackbar.make(findViewById(R.id.drawer_layout), status, Snackbar.LENGTH_LONG).show();
-        Toast toast = Toast.makeText(this, status, Toast.LENGTH_LONG);
-        toast.setGravity(Gravity.CENTER, 0, 0);
-        toast.show();
+        Snackbar.make(findViewById(R.id.drawer_layout), status, Snackbar.LENGTH_LONG).show();
 
     }
 
